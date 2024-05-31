@@ -1,0 +1,54 @@
+<?php
+class Rajaongkir {
+    private $api_key = '5506ba1045e628de422125146fcb1ba0'; // API key Anda
+    private $ci;
+
+    public function __construct() {
+        $this->ci =& get_instance();
+        $this->ci->load->library('curl');
+    }
+
+    public function get_provinces() {
+        $endpoint = 'https://api.rajaongkir.com/starter/province';
+        $response = $this->ci->curl->simple_get($endpoint, [
+            'headers' => [
+                'key' => $this->api_key
+            ]
+        ]);
+
+        $data = json_decode($response, true);
+        return $data['rajaongkir']['results'];
+    }
+
+    public function get_cities($province_id) {
+        $endpoint = 'https://api.rajaongkir.com/starter/city?province=' . $province_id;
+        $response = $this->ci->curl->simple_get($endpoint, [
+            'headers' => [
+                'key' => $this->api_key
+            ]
+        ]);
+
+        $data = json_decode($response, true);
+        return $data['rajaongkir']['results'];
+    }
+
+    public function get_costs($origin, $destination, $weight, $courier) {
+        $endpoint = 'https://api.rajaongkir.com/starter/cost';
+        $data = [
+            'origin' => $origin,
+            'destination' => $destination,
+            'weight' => $weight,
+            'courier' => $courier
+        ];
+
+        $response = $this->ci->curl->simple_post($endpoint, $data, [
+            'headers' => [
+                'key' => $this->api_key,
+                'content-type' => 'application/x-www-form-urlencoded'
+            ]
+        ]);
+
+        $data = json_decode($response, true);
+        return $data['rajaongkir']['results'];
+    }
+}
