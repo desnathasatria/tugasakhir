@@ -84,7 +84,7 @@ class Manage_supplier extends CI_Controller
     public function get_data()
     {
         $query = [
-            'select' => 'a.id, a.id_produk, a.nama_supplier, a.stok, b.title ',
+            'select' => 'a.id, a.id_produk, a.nama_supplier, a.stok, b.title, a.created_date ',
             'from' => 'supplier a',
             'join' => [
                 'produk b, b.id = a.id_produk'
@@ -103,7 +103,7 @@ class Manage_supplier extends CI_Controller
     {
         $id = $this->input->post('id');
         $query = [
-            'select' => 'a.id, a.id_produk, a.nama_supplier, a.stok, b.title ',
+            'select' => 'a.id, a.id_produk, a.nama_supplier, a.stok, b.title, a.created_date ',
             'from' => 'supplier a',
             'join' => [
                 'produk b, b.id = a.id_produk'
@@ -113,59 +113,61 @@ class Manage_supplier extends CI_Controller
             ]
         ];
 
-        $result = $this->data->get($query)->result();        
+        $result = $this->data->get($query)->result();
         echo json_encode($result);
     }
 
     public function get_data_supplier()
-{
-    if ($this->input->get('searchTerm', TRUE)) {
-        $input = $this->input->get('searchTerm', TRUE);
-        $query = [
-            'select' => 'id, title',
-            'from' => 'supplier',
-            'like' => [
-                'title' => $input, // Mengubah 'name' menjadi 'title'
-            ],
-        ];
-        $data = $this->data->get($query)->result();
-    } else {
-        $query = [
-            'select' => 'id, title',
-            'from' => 'supplier',
-        ];
-        $data = $this->data->get($query)->result();
+    {
+        if ($this->input->get('searchTerm', TRUE)) {
+            $input = $this->input->get('searchTerm', TRUE);
+            $query = [
+                'select' => 'id, title',
+                'from' => 'supplier',
+                'like' => [
+                    'title' => $input, // Mengubah 'name' menjadi 'title'
+                ],
+            ];
+            $data = $this->data->get($query)->result();
+        } else {
+            $query = [
+                'select' => 'id, title',
+                'from' => 'supplier',
+            ];
+            $data = $this->data->get($query)->result();
+        }
+
+        $this->output->set_status_header(200)->set_content_type('application/json')->set_output(json_encode($data));
     }
 
-    $this->output->set_status_header(200)->set_content_type('application/json')->set_output(json_encode($data));
-}
+    public function insert_data()
+    {
+        $this->form_validation->set_rules('nama', 'Nama', 'required|trim');
+        $this->form_validation->set_rules('nama_supplier', 'Nama Supplier', 'required|trim');
+        $this->form_validation->set_rules('stok', 'stok', 'required|trim');
 
-public function insert_data()
-{
-    $this->form_validation->set_rules('nama', 'Nama', 'required|trim');
-    $this->form_validation->set_rules('nama_supplier', 'Nama Supplier', 'required|trim');
-    $this->form_validation->set_rules('stok', 'stok', 'required|trim');
-
-    if ($this->form_validation->run() == false) {
-        $response['errors'] = $this->form_validation->error_array();
-    } else {
-        $where = array('email' => $this->session->userdata('email'));
-        $data['user'] = $this->data->find('st_user', $where)->row_array();
-        $judul = $this->input->post('nama');
-        $nama_supplier = $this->input->post('nama_supplier');
-        $stok = $this->input->post('stok');
-        $cek_data = $this->data->find('supplier', array('id_produk' => $judul, 'is_deleted' => '0'))->row_array();
-        if(isset($cek_data)){
-            $response['errors']['nama'] = "data produk sudah ada";
-        } else{
-            $data_insert = array( 
+        if ($this->form_validation->run() == false) {
+            $response['errors'] = $this->form_validation->error_array();
+        } else {
+            $where = array('email' => $this->session->userdata('email'));
+            $data['user'] = $this->data->find('st_user', $where)->row_array();
+            $judul = $this->input->post('nama');
+            $nama_supplier = $this->input->post('nama_supplier');
+            $stok = $this->input->post('stok');
+            
+            $barang = $this->data->find('produk', array('id' => $judul))->row_array();
+            $data_insert = array(
                 'id_produk' => $judul,
                 'nama_supplier' => $nama_supplier,
                 'stok' => $stok,
                 'created_by' => $data['user']['id'],
             );
             $this->data->insert('supplier', $data_insert); // Menggunakan $data_insert untuk memasukkan data
-    
+
+            $jumlah_stok = $barang['total_stok'];
+            $jumlah_stok += $stok;
+            $this->data->update('produk', array('id' => $judul), array('total_stok' => $jumlah_stok));
+
             $response['success'] = "<script>$(document).ready(function () {
                 var Toast = Swal.mixin({
                     toast: true,
@@ -180,39 +182,39 @@ public function insert_data()
                   })
               });</script>";
         }
+
+        echo json_encode($response);
     }
-    echo json_encode($response);
-}
 
-public function edit_data()
-{
-    $this->form_validation->set_rules('nama', 'Nama', 'required|trim');
-    $this->form_validation->set_rules('nama_supplier', 'Nama Supplier', 'required|trim');
-    $this->form_validation->set_rules('stok', 'stok', 'required|trim');
+    public function edit_data()
+    {
+        $this->form_validation->set_rules('nama', 'Nama', 'required|trim');
+        $this->form_validation->set_rules('nama_supplier', 'Nama Supplier', 'required|trim');
+        $this->form_validation->set_rules('stok', 'stok', 'required|trim');
 
-    if ($this->form_validation->run() == false) {
-        $response['errors'] = $this->form_validation->error_array();
-    } else {
-        $where = array('email' => $this->session->userdata('email'));
-        $data['user'] = $this->data->find('st_user', $where)->row_array();
+        if ($this->form_validation->run() == false) {
+            $response['errors'] = $this->form_validation->error_array();
+        } else {
+            $where = array('email' => $this->session->userdata('email'));
+            $data['user'] = $this->data->find('st_user', $where)->row_array();
 
-        $judul = $this->input->post('nama');
-        $nama_supplier = $this->input->post('nama_supplier');
-        $stok = $this->input->post('stok');
-        $timestamp = $this->db->query("SELECT NOW() as timestamp")->row()->timestamp;
+            $judul = $this->input->post('nama');
+            $nama_supplier = $this->input->post('nama_supplier');
+            $stok = $this->input->post('stok');
+            $timestamp = $this->db->query("SELECT NOW() as timestamp")->row()->timestamp;
 
-        $data_update = array( // Mengubah variabel $data menjadi $data_update untuk menghindari konflik
-            'id_produk' => $judul, // Mengubah 'title' menjadi 'judul'
-            'nama_supplierk' => $nama_supplier, // Mengubah 'title' menjadi 'judul'
-            'stok' => $stok,
-            'updated_date' => $timestamp,
-            'updated_by' => $data['user']['id'],
-        );
+            $data_update = array( // Mengubah variabel $data menjadi $data_update untuk menghindari konflik
+                'id_produk' => $judul, // Mengubah 'title' menjadi 'judul'
+                'nama_supplierk' => $nama_supplier, // Mengubah 'title' menjadi 'judul'
+                'stok' => $stok,
+                'updated_date' => $timestamp,
+                'updated_by' => $data['user']['id'],
+            );
 
-        $id = $this->input->post('id'); // Mengambil nilai id dari inputan POST
-        $where = array('id' => $id);
-        $this->data->update('supplier', $where, $data_update); // Menggunakan $data_update untuk mengupdate data
-        $response['success'] = "<script>$(document).ready(function () {
+            $id = $this->input->post('id'); // Mengambil nilai id dari inputan POST
+            $where = array('id' => $id);
+            $this->data->update('supplier', $where, $data_update); // Menggunakan $data_update untuk mengupdate data
+            $response['success'] = "<script>$(document).ready(function () {
             var Toast = Swal.mixin({
                 toast: true,
                 position: 'top-end',
@@ -225,27 +227,27 @@ public function edit_data()
                 title: 'Anda telah melakukan aksi edit data. Data berhasil diedit.'
               })
           });</script>";
+        }
+        echo json_encode($response);
     }
-    echo json_encode($response);
-}
 
-public function delete_data()
-{
-    $where = array('email' => $this->session->userdata('email'));
-    $data['user'] = $this->data->find('st_user', $where)->row_array();
-    $id = $this->input->post('id');
-    $timestamp = $this->db->query("SELECT NOW() as timestamp")->row()->timestamp;
+    public function delete_data()
+    {
+        $where = array('email' => $this->session->userdata('email'));
+        $data['user'] = $this->data->find('st_user', $where)->row_array();
+        $id = $this->input->post('id');
+        $timestamp = $this->db->query("SELECT NOW() as timestamp")->row()->timestamp;
 
-    $data_update = array( // Mengubah variabel $data menjadi $data_update untuk menghindari konflik
-        'is_deleted' => '1',
-        'deleted_date' => $timestamp,
-        'deleted_by' => $data['user']['id'],
-    );
-    $where = array('id' => $id);
+        $data_update = array( // Mengubah variabel $data menjadi $data_update untuk menghindari konflik
+            'is_deleted' => '1',
+            'deleted_date' => $timestamp,
+            'deleted_by' => $data['user']['id'],
+        );
+        $where = array('id' => $id);
 
-    $updated = $this->data->update('supplier', $where, $data_update);
-    if ($updated) {
-        $response['success'] = "<script>$(document).ready(function () {
+        $updated = $this->data->update('supplier', $where, $data_update);
+        if ($updated) {
+            $response['success'] = "<script>$(document).ready(function () {
             var Toast = Swal.mixin({
                 toast: true,
                 position: 'top-end',
@@ -258,8 +260,7 @@ public function delete_data()
                 title: 'Anda telah melakukan aksi hapus data. Data berhasil dihapus.'
               })
           });</script>";
+        }
+        echo json_encode($response);
     }
-    echo json_encode($response);
 }
-}
-

@@ -109,33 +109,11 @@
                                      <tr>
                                          <th scope="row">
                                              <div class="d-flex align-items-center mt-2">
-                                                 <img src="<?= base_url() ?>assets/template-user/img/vegetable-item-2.jpg" class="img-fluid rounded-circle" style="width: 90px; height: 90px;" alt="">
+                                                 <img src="<?= base_url('assets/image/product/') . $pr->image ?>" class="img-fluid rounded-circle" style="width: 90px; height: 90px;" alt="">
                                              </div>
                                          </th>
-                                         <td class="py-5">Awesome Brocoli</td>
-                                         <td class="py-5">$69.00</td>
-                                         <td class="py-5">2</td>
-                                         <td class="py-5">$138.00</td>
-                                     </tr>
-                                     <tr>
-                                         <th scope="row">
-                                             <div class="d-flex align-items-center mt-2">
-                                                 <img src="<?= base_url() ?>assets/template-user/img/vegetable-item-5.jpg" class="img-fluid rounded-circle" style="width: 90px; height: 90px;" alt="">
-                                             </div>
-                                         </th>
-                                         <td class="py-5">Potatoes</td>
-                                         <td class="py-5">$69.00</td>
-                                         <td class="py-5">2</td>
-                                         <td class="py-5">$138.00</td>
-                                     </tr>
-                                     <tr>
-                                         <th scope="row">
-                                             <div class="d-flex align-items-center mt-2">
-                                                 <img src="<?= base_url() ?>assets/template-user/img/vegetable-item-3.png" class="img-fluid rounded-circle" style="width: 90px; height: 90px;" alt="">
-                                             </div>
-                                         </th>
-                                         <td class="py-5">Big Banana</td>
-                                         <td class="py-5">$69.00</td>
+                                         <td class="py-5"><?= $pr->title ?></td>
+                                         <td class="py-5"><?= $pr->price ?></td>
                                          <td class="py-5">2</td>
                                          <td class="py-5">$138.00</td>
                                      </tr>

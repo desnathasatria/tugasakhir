@@ -82,11 +82,10 @@ class Manage_product extends CI_Controller
     public function get_data()
     {
         $query = [
-            'select' => 'a.id, a.title, a.description, a.price, a.weight, a.image, b.name, a.id_category_product, c.stok, c.is_deleted',
+            'select' => 'a.id, a.title, a.description, a.price, a.weight, a.image, b.name, a.id_category_product, a.total_stok',
             'from' => 'produk a',
             'join' => [
                 'kategori_produk b, b.id = a.id_category_product',
-                'supplier c, a.id = c.id_produk AND c.is_deleted = 0, left'
             ],
             'where' => [
                 'a.is_deleted' => 0           
@@ -101,7 +100,7 @@ class Manage_product extends CI_Controller
     {
         $id = $this->input->post('id');
         $query = [
-            'select' => 'a.id, a.title, a.description, a.price, a.weight, a.image, b.name, a.id_category_product',
+            'select' => 'a.id, a.title, a.description, a.price, a.weight, a.image, b.name, a.id_category_product, a.total_stok',
             'from' => 'produk a',
             'join' => [
                 'kategori_produk b, b.id = a.id_category_product'

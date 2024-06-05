@@ -119,7 +119,7 @@
                                 <label for="harga" class="col-lg-2 col-form-label">Harga</label>
                                 <div class="col-lg-10">
                                     <input type="text" name="harga" id="harga" class="form-control"
-                                        placeholder="Masukkan Harga">
+                                        placeholder="Masukkan Harga" oninput="formatRupiahInput(this)">
                                     <small class="text-danger pl-1" id="error-harga"></small>
                                 </div>
                             </div>

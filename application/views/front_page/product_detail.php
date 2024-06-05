@@ -41,7 +41,8 @@
                                 </button>
                             </div>
                         </div>
-                        <a href="<?= base_url("Front_page/checkout/$pr->id") ?>" class="btn border border-secondary rounded-pill px-4 py-2 mb-4 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</a>
+                        <a href="<?= base_url("Front_page/checkout/$pr->id") ?>" class="btn border border-secondary rounded-pill px-4 py-2 mb-4 text-primary"></i> Beli Sekarang</a>
+                        <a href="#" class="btn border border-secondary rounded-pill px-4 py-2 mb-4 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</a>
                     </div>
                     <div class="col-lg-12">
                         <nav>
@@ -58,42 +59,18 @@
                                         <div class="col-6">
                                             <div class="row bg-light align-items-center text-center justify-content-center py-2">
                                                 <div class="col-6">
-                                                    <p class="mb-0">Weight</p>
+                                                    <p class="mb-0">Berat</p>
                                                 </div>
                                                 <div class="col-6">
-                                                    <p class="mb-0">1 kg</p>
-                                                </div>
-                                            </div>
-                                            <div class="row text-center align-items-center justify-content-center py-2">
-                                                <div class="col-6">
-                                                    <p class="mb-0">Country of Origin</p>
-                                                </div>
-                                                <div class="col-6">
-                                                    <p class="mb-0">Agro Farm</p>
-                                                </div>
-                                            </div>
-                                            <div class="row bg-light text-center align-items-center justify-content-center py-2">
-                                                <div class="col-6">
-                                                    <p class="mb-0">Quality</p>
-                                                </div>
-                                                <div class="col-6">
-                                                    <p class="mb-0">Organic</p>
+                                                    <p class="mb-0"><?= $pr->weight ?> Gram</p>
                                                 </div>
                                             </div>
                                             <div class="row text-center align-items-center justify-content-center py-2">
                                                 <div class="col-6">
-                                                    <p class="mb-0">Сheck</p>
+                                                    <p class="mb-0">Kategori</p>
                                                 </div>
                                                 <div class="col-6">
-                                                    <p class="mb-0">Healthy</p>
-                                                </div>
-                                            </div>
-                                            <div class="row bg-light text-center align-items-center justify-content-center py-2">
-                                                <div class="col-6">
-                                                    <p class="mb-0">Min Weight</p>
-                                                </div>
-                                                <div class="col-6">
-                                                    <p class="mb-0">250 Kg</p>
+                                                    <p class="mb-0"><?= $pr->name ?></p>
                                                 </div>
                                             </div>
                                         </div>

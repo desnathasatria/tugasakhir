@@ -44,6 +44,7 @@
                             <th width="15%">Nama Produk</th>
                             <th width="15%">Nama Supplier</th>
                             <th width="15%">Stok</th>
+                            <th width="15%">Tanggal</th>
                             <th width="15%">Aksi</th>
                         </tr>
                     </thead>

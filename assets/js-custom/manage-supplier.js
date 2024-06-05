@@ -63,6 +63,14 @@ function get_data() {
                     { data: "nama_supplier" }, // Mengubah 'name' menjadi 'title'
                     { data: "stok" },
                     {
+                        data: "created_date",
+                        render: function(data) {
+                            var date = new Date(data);
+                            var options = { year: 'numeric', month: 'long', day: 'numeric' };
+                            return date.toLocaleDateString('id-ID', options);
+                        }
+                    },
+					{
                         data: null,
                         className: "text-center",
                         render: function (data, type, row) {

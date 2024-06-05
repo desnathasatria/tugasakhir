@@ -183,4 +183,5 @@ class Data_model extends CI_Model
         $query = $this->db->query($query);
         return $query;
     }
+    
 }
