@@ -107,15 +107,19 @@
                                  </thead>
                                  <tbody>
                                      <tr>
+                                        <?php
+                                        $hargaTanpaRpTitik = str_replace("Rp. ", "", $pr->price);
+                                        $hargaTanpaRpTitik = str_replace(".", "", $hargaTanpaRpTitik);
+                                        ?>
                                          <th scope="row">
                                              <div class="d-flex align-items-center mt-2">
                                                  <img src="<?= base_url('assets/image/product/') . $pr->image ?>" class="img-fluid rounded-circle" style="width: 90px; height: 90px;" alt="">
                                              </div>
                                          </th>
                                          <td class="py-5"><?= $pr->title ?></td>
-                                         <td class="py-5"><?= $pr->price ?></td>
-                                         <td class="py-5">2</td>
-                                         <td class="py-5">$138.00</td>
+                                         <td class="py-5"><?= $hargaTanpaRpTitik ?></td>
+                                         <td class="py-5"><?= $jumlah ?></td>
+                                         <td class="py-5"><?= $hargaTanpaRpTitik * $jumlah?></td>
                                      </tr>
                                      <tr>
                                          <th scope="row">

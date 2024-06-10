@@ -115,6 +115,7 @@ class Front_page extends CI_Controller
     public function checkout($x)
     {
         $this->check_auth();
+        $jumlah = $this->input->post('jumlah');
         $query = [
             'select' => 'a.id, a.title, a.description, a.price, a.image, b.name, a.id_category_product',
             'from' => 'produk a',
@@ -126,7 +127,7 @@ class Front_page extends CI_Controller
                 'a.id' => $x
             ]
         ];
-
+        $this->app_data['jumlah'] = $jumlah;
         $this->app_data['produk'] = $this->data->get($query)->result();
         $this->load->view('front_page/checkout', $this->app_data);
         $this->footer();
