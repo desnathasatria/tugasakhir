@@ -61,7 +61,7 @@ class Auth_user extends CI_Controller
                     redirect('');
                 } else {
                     $this->session->set_flashdata('message', '<div class="alert alert-danger alert-dismissible fade show" role="alert">
-                     <strong>ERROR,  </strong>Password yang anda masukkan salah
+                     <strong>ERROR,  </strong>Password yang anda masukkan salah 
                      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                      </div>');
                     redirect('login');

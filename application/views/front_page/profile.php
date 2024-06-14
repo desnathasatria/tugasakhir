@@ -5,8 +5,6 @@
             <div class="col-lg-2">
                 <label for="profil">Foto Profil</label>
                 <img src="" style="max-width: 200px; max-height: 200px;" class="img-thumbnail" alt="" name="profile_user" id="profile_user">
-                <label for="ktp">Foto KTP</label>
-                <img src="" style="max-width: 200px; max-height: 200px;" class="img-thumbnail" alt="" name="ktp_user" id="ktp_user">
             </div>
             <div class="col-lg-6 offset-2">
                 <label for="nama">Nama Lengkap</label>
@@ -43,16 +41,6 @@
                 </div>
                 <small class="text-danger pl-1" id="error-profil"></small>
                 <div id="imageProfil"></div><br>
-
-                <label for="ktp">Foto KTP</label>
-                <div class="input-group">
-                    <div class="custom-file">
-                        <input type="file" class="custom-file-input" name="ktp" id="ktp" onchange="previewImage(event, 'imageKTP')">
-                        <label class="custom-file-label" for="ktp">Pilih file</label>
-                    </div>
-                </div>
-                <small class="text-danger pl-1" id="error-ktp"></small>
-                <div id="imageKTP"></div><br>
                 <div class="col-lg-3">
                     <button type="button" id="btn-tambah" onclick="edit_profil()" class="btn btn-outline-primary btn-block">Edit</button>
                 </div>
@@ -60,3 +48,7 @@
         </div>
     </div>
     <!-- Profile Content End -->
+    <script>
+    var base_url = '<?php echo base_url() ?>';
+    var _controller = '<?= $this->router->fetch_class() ?>';
+    </script>

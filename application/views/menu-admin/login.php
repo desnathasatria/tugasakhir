@@ -3,7 +3,7 @@
 
 <head>
     <link href="<?= base_url('assets/image/logo-umkm.png') ?>" rel="icon">
-    <title>SIPK | LOGIN</title>
+    <title>SI-GTT | LOGIN</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 

@@ -20,17 +20,17 @@
                     </div>
                 </div>
                 <div class="row g-5">
-                <?php foreach ($profile as $loc) : ?>
-                    <div class="col-lg-6 col-md-9">
-                        <div class="footer-item">
-                            <h4 class="text-light mb-3">Contact</h4>
-                            <p>Address: <?= $loc->address ?></p>
-                            <p>Email: <?= $loc->email ?></p>
-                            <p>Phone: <?= $loc->phone_number ?></p>
-                            <p>Payment Accepted</p>
-                            <img src="<?= base_url() ?>assets/template-user/img/payment.png" class="img-fluid" alt="">
+                    <?php foreach ($profile as $loc) : ?>
+                        <div class="col-lg-6 col-md-9">
+                            <div class="footer-item">
+                                <h4 class="text-light mb-3">Contact</h4>
+                                <p>Address: <?= $loc->address ?></p>
+                                <p>Email: <?= $loc->email ?></p>
+                                <p>Phone: <?= $loc->phone_number ?></p>
+                                <p>Payment Accepted</p>
+                                <img src="<?= base_url() ?>assets/template-user/img/payment.png" class="img-fluid" alt="">
+                            </div>
                         </div>
-                    </div>
                     <?php endforeach; ?>
                 </div>
             </div>
@@ -70,6 +70,8 @@
         <script src="<?= base_url() ?>assets/template-user/js/main.js"></script>
         <!-- Gallery Filter Javascript -->
         <script src="<?php echo base_url('assets/template-user/js/gallery_filter.js') ?>"></script>
+        <!-- Panggil file custom.js -->
+        <script src="<?= base_url('assets/js-custom/custom.js') ?>"></script>
         </body>
 
         </html>

@@ -41,13 +41,11 @@ class Front_page extends CI_Controller
     {
         $where = array('id_company' => '1');
         $this->app_data['profile'] = $this->data->find('company_profile', $where)->result();
-
         $session = array('email' => $this->session->userdata('email_user'));
         $data = $this->data->find('st_user', $session)->row_array();
 
         $kondisi = array('id' => $data['id']);
         $this->app_data['user'] = $this->data->find('st_user', $kondisi)->row_array();
-
         $this->load->view('front_page/header_1', $this->app_data);
     }
     public function footer()
@@ -177,6 +175,23 @@ class Front_page extends CI_Controller
         }
         echo json_encode($response);
     }
+    public function get_data_history()
+    {
+        $where = array('email' => $this->session->userdata('email_user'));
+        $data['user'] = $this->data->find('st_user', $where)->row_array();
+        $query = [
+            'select' => 'a.id, a.id_produk, b.name, a.harga_transaksi, a.status ',
+            'from' => 'transaksi a',
+            'join' => [
+                'st_user b, b.id = a.id_pelanggan'
+            ],
+            'where' => [
+                'a.id_pelanggan' => $data['user']['id'],
+            ]
+        ];
+        $result = $this->data->get($query)->result();
+        echo json_encode($result);
+    }
     public function profile()
     {
         if (!$this->is_logged_in()) {
@@ -190,7 +205,7 @@ class Front_page extends CI_Controller
     }
     public function get_profile()
     {
-        $where = array('email' => $this->session->userdata('email'));
+        $where = array('email' => $this->session->userdata('email_user'));
         $data['user'] = $this->data->find('st_user', $where)->row_array();
 
         $where = array('id' => $data['user']['id']);
@@ -210,7 +225,7 @@ class Front_page extends CI_Controller
         if ($this->form_validation->run() == false) {
             $response['errors'] = $this->form_validation->error_array();
         } else {
-            $where = array('email' => $this->session->userdata('email'));
+            $where = array('email' => $this->session->userdata('email_user'));
             $data['user'] = $this->data->find('st_user', $where)->row_array();
 
             $id = $this->input->post('id');
@@ -264,26 +279,6 @@ class Front_page extends CI_Controller
                         $response['errors']['image'] = strip_tags($this->upload->display_errors());
                     }
                 }
-
-                if (!empty($_FILES['ktp']['name'])) {
-                    $currentDateTime = date('Y-m-d_H-i-s');
-                    $config['upload_path'] = './assets/image/user/';
-                    $config['allowed_types'] = 'gif|jpg|jpeg|png';
-                    $config['max_size'] = 2048;
-                    $config['file_name'] = $username . ' - ' . $currentDateTime;
-                    $this->load->library('upload', $config);
-
-                    if ($this->upload->do_upload('ktp')) {
-                        $upload_data = $this->upload->data();
-                        $file_name = $upload_data['file_name'];
-
-                        $data = array('card_image' => $file_name);
-                        $where = array('id' => $id);
-                        $this->data->update('st_user', $where, $data);
-                    } else {
-                        $response['errors']['image'] = strip_tags($this->upload->display_errors());
-                    }
-                }
                 $response['success'] = "Data successfully updated!";
             }
         }
@@ -295,5 +290,46 @@ class Front_page extends CI_Controller
         $this->load->view('front_page/history');
         $this->footer();
         $this->load->view('js-custom', $this->app_data);
+    }
+    public function add_to_cart($product_id)
+    {
+        if (!$this->is_logged_in()) {
+            redirect('login');
+        } else {
+            $user_id = $this->session->userdata('id_user');
+            $quantity = $this->input->post('jumlah');
+
+            $data = array(
+                'user_id' => $user_id,
+                'product_id' => $product_id,
+                'quantity' => $quantity
+            );
+
+            $this->data->insert('shopping_cart', $data);
+
+            redirect('Front_page/product_detail/' . $product_id);
+        }
+    }
+    public function get_cart_data()
+    {
+        if (!$this->is_logged_in()) {
+            redirect('login');
+        } else {
+            $user_id = $this->session->userdata('id_user');
+
+            $query = [
+                'select' => 'a.product_id, b.title, b.price, a.quantity',
+                'from' => 'shopping_cart a',
+                'join' => [
+                    'produk b, b.id = a.product_id'
+                ],
+                'where' => [
+                    'a.user_id' => $user_id
+                ]
+            ];
+
+            $cart_data = $this->data->get($query)->result_array();
+            echo json_encode($cart_data);
+        }
     }
 }

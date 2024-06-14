@@ -27,7 +27,6 @@ function delete_error_profile() {
 	$("#error-password").hide();
 	$("#error-password1").hide();
 	$("#error-profil").hide();
-	$("#error-ktp").hide();
 }
 
 function get_profil() {
@@ -48,8 +47,6 @@ function get_profil() {
 
 			var imageSrc = base_url + "assets/image/user/" + data[0].image;
 			$("[name='profile_user']").attr("src", imageSrc);
-			var ktpSrc = base_url + "assets/image/user/" + data[0].card_image;
-			$("[name='ktp_user']").attr("src", ktpSrc);
 		},
 		error: function (xhr, textStatus, errorThrown) {
 			console.log(xhr.statusText);
@@ -70,10 +67,6 @@ function edit_profil() {
 	var imageInput = $("[name='profil']")[0];
 	if (imageInput.files.length > 0) {
 		formData.append("profil", imageInput.files[0]);
-	}
-	var imageInput1 = $("[name='ktp']")[0];
-	if (imageInput.files.length > 0) {
-		formData.append("ktp", imageInput1.files[0]);
 	}
 
 	$.ajax({
