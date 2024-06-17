@@ -12,8 +12,7 @@
 	},
 	"require": {
 		"php": ">=5.3.7",
-		"xendit/xendit-php": "^5.0",
-		"midtrans/midtrans-php": "*"
+		"midtrans/midtrans-php": "^2.5"
 	},
 	"suggest": {
 		"paragonie/random_compat": "Provides better randomness in PHP 5.x"

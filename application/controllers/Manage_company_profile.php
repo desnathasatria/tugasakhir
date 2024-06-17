@@ -1,5 +1,14 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
+/**
+ * @property data $data
+ * @property db $db
+ * @property session $session
+ * @property input $input
+ * @property form_validation $form_validation 
+ * @property upload $upload
+ * @property output $output
+ */
 
 class Manage_company_profile extends CI_Controller
 {
@@ -87,6 +96,8 @@ class Manage_company_profile extends CI_Controller
     {
         $this->form_validation->set_rules('nama', 'Nama Perusahaan', 'required|trim');
         $this->form_validation->set_rules('alamat', 'Alamat Perusahaan', 'required|trim');
+        $this->form_validation->set_rules('provinsi', 'Provinsi Perusahaan', 'required|trim');
+        $this->form_validation->set_rules('kota', 'Kota Perusahaan', 'required|trim');
         $this->form_validation->set_rules('telepon', 'Nomor Telepon', 'required|trim|numeric');
         $this->form_validation->set_rules('email', 'Email', 'required|trim|valid_email');
         $this->form_validation->set_rules('map', 'Link Google Map', 'required|trim|valid_url');
@@ -100,6 +111,8 @@ class Manage_company_profile extends CI_Controller
             $id = $this->input->post('id');
             $nama = $this->input->post('nama');
             $alamat = $this->input->post('alamat');
+            $provinsi = $this->input->post('provinsi');
+            $kota = $this->input->post('kota');
             $telepon = $this->input->post('telepon');
             $email = $this->input->post('email');
             $map = $this->input->post('map');
@@ -108,6 +121,8 @@ class Manage_company_profile extends CI_Controller
             $data = array(
                 'company_name' => $nama,
                 'address' => $alamat,
+                'province' => $provinsi,
+                'city' => $kota,
                 'phone_number' => $telepon,
                 'email' => $email,
                 'embed_address' => $map,
@@ -154,10 +169,9 @@ class Manage_company_profile extends CI_Controller
                         title: 'Anda telah melakukan aksi edit data Data berhasil diedit'
                       })
                   });</script>";
-                }
+            }
         }
 
         echo json_encode($response);
     }
-
 }

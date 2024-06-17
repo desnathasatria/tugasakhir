@@ -1,5 +1,5 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /*
 | -------------------------------------------------------------------
@@ -40,7 +40,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 |
 */
 $autoload['packages'] = array();
-
+// $autoload['packages'] = array(APPPATH.'third_party', FCPATH.'vendor');
 /*
 | -------------------------------------------------------------------
 |  Auto-load Libraries
@@ -58,7 +58,7 @@ $autoload['packages'] = array();
 |
 |	$autoload['libraries'] = array('user_agent' => 'ua');
 */
-$autoload['libraries'] = array('database', 'session', 'form_validation');;
+$autoload['libraries'] = array('database', 'session', 'form_validation','midtrans');;
 
 /*
 | -------------------------------------------------------------------

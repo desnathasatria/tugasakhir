@@ -1,9 +1,18 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
+/**
+ * @property data $data
+ * @property db $db
+ * @property session $session
+ * @property input $input
+ * @property form_validation $form_validation 
+ * @property upload $upload
+ * @property output $output
+ */
 
 class Front_page extends CI_Controller
 {
-    var $module_js = ['letter', 'history', 'message', 'profile'];
+    var $module_js = ['letter', 'history', 'message', 'profile', 'checkout'];
     var $app_data = [];
 
     public function __construct()
@@ -110,6 +119,13 @@ class Front_page extends CI_Controller
         $this->load->view('front_page/location', $this->app_data);
         $this->footer();
     }
+
+    public function get_umkm()
+    {
+        $result = $this->data->get_all('company_profile')->result();
+        echo json_encode($result);
+    }
+
     public function checkout($x)
     {
         $this->check_auth();
@@ -127,8 +143,10 @@ class Front_page extends CI_Controller
         ];
         $this->app_data['jumlah'] = $jumlah;
         $this->app_data['produk'] = $this->data->get($query)->result();
+        $this->app_data['location'] = $this->data->get_all('company_profile')->result();
         $this->load->view('front_page/checkout', $this->app_data);
         $this->footer();
+        $this->load->view('js-custom', $this->app_data);
     }
     public function gallery()
     {
@@ -219,6 +237,8 @@ class Front_page extends CI_Controller
         $this->form_validation->set_rules('email', 'Email', 'required|trim|valid_email');
         $this->form_validation->set_rules('telepon', 'No HP', 'required|trim|numeric');
         $this->form_validation->set_rules('alamat', 'Alamat', 'required|trim');
+        $this->form_validation->set_rules('provinsi', 'Provinsi', 'required|trim');
+        $this->form_validation->set_rules('kota', 'Kota', 'required|trim');
         $this->form_validation->set_rules('username', 'Username', 'required|trim');
         $this->form_validation->set_rules('password1', 'Password Baru', 'trim|min_length[8]');
 
@@ -233,6 +253,8 @@ class Front_page extends CI_Controller
             $email = $this->input->post('email');
             $telepon = $this->input->post('telepon');
             $alamat = $this->input->post('alamat');
+            $provinsi = $this->input->post('provinsi');
+            $kota = $this->input->post('kota');
             $username = $this->input->post('username');
             $password = $this->input->post('password1');
             $hash = hash("sha256", $password . config_item('encryption_key'));
@@ -243,6 +265,8 @@ class Front_page extends CI_Controller
                 'email' => $email,
                 'phone_number' => $telepon,
                 'address' => $alamat,
+                'province' => $provinsi,
+                'city' => $kota,
                 'username' => $username,
                 'updated_date' => $timestamp,
                 'updated_by' => $data['user']['id'],
