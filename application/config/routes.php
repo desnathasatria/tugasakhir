@@ -66,6 +66,7 @@ $route['manage-product'] = 'Manage_product';
 $route['manage-supplier'] = 'Manage_supplier';
 $route['manage-purchase'] = 'Manage_purchase';
 $route['manage-shipping'] = 'Manage_shipping';
+$route['manage-history'] = 'Manage_history';
 $route['registrasi'] = 'Auth_user/register';
 $route['login'] = 'Auth_user';
 $route['logout_1'] = 'Auth_user/logout';

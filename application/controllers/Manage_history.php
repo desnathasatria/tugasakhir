@@ -81,22 +81,8 @@ class Manage_history extends CI_Controller
 
     public function get_data()
     {
-        $where = array('is_deleted' => '0');
-        $result = $this->data->find('transaksi', $where)->result();
-        echo json_encode($result);
-    }
-
-    public function get_data_id()
-    {
-        $id = $this->input->post('id');
-        $where = array('id' => $id);
-        $result = $this->data->find('transaksi', $where)->result();
-        echo json_encode($result);
-    }
-    public function get_data_info()
-    {
         $query = [
-            'select' => 'a.id, a.id_produk, a.id_pelanggan, a.harga_transaksi, a.tgl_pembelian, b.title, b.price, c.name',
+            'select' => 'a.id, a.id_pelanggan, a.id_produk, a.harga_transaksi, a.created_date, a.status_pembayaran, a.status_pengiriman, b.title, c.name  ',
             'from' => 'transaksi a',
             'join' => [
                 'produk b, b.id = a.id_produk',
@@ -104,7 +90,28 @@ class Manage_history extends CI_Controller
             ],
             'where' => [
                 'a.is_deleted' => '0',
-            ]
+            ],
+            'order_by' => 'a.id'
+        ];
+
+        $result = $this->data->get($query)->result();
+        echo json_encode($result);
+    }
+
+    public function get_data_id()
+    {
+        $id = $this->input->post('id');
+        $query = [
+            'select' => 'a.id, a.id_pelanggan, a.id_produk, a.harga_transaksi, a.created_date, a.status_pembayaran, a.status_pengiriman, b.title, c.name  ',
+            'from' => 'transaksi a',
+            'join' => [
+                'produk b, b.id = a.id_produk',
+                'st_user c, c.id = a.id_pelanggan'
+            ],
+            'where' => [
+                'a.is_deleted' => '0',
+            ],
+            'order_by' => 'a.id'
         ];
 
         $result = $this->data->get($query)->result();

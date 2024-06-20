@@ -101,16 +101,18 @@ function get_data() {
 							return meta.row + 1;
 						},
 					},
+					{ data: "title", className: "text-center" },
 					{ data: "name", className: "text-center" },
-					{ data: "letter_name", className: "text-center" },
-					{ data: "submit_date", className: "text-center" },
-					{ data: "finish_date", className: "text-center" },
+					{ data: "harga_transaksi", className: "text-center" },
+					{ data: "created_date", className: "text-center" },
+					{ data: "status_pembayaran", className: "text-center" },
+					{ data: "status_pengiriman", className: "text-center" },
 					{
 						data: null,
 						className: "text-center",
 						render: function (data, type, row) {
 							return (
-								'<button class="btn btn-info" data-toggle="modal" data-target="#detailArsip" title="detail" onclick="detail(' +
+								'<button class="btn btn-info" data-toggle="modal" data-target="#detailHistory" title="detail" onclick="detail(' +
 								row.id +
 								')"><i class="fa-solid fa-circle-info"></i></button> '
 							);

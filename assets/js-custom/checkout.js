@@ -100,7 +100,7 @@ $("#courierService").on("change", function () {
 	}
 });
 
-function createPayment() {
+function createPayment(id) {
 	var timestamp = new Date().getTime();
 	var random_number = Math.floor(Math.random() * 1000);
 	var order_id = "order-" + timestamp + "-" + random_number;
@@ -120,6 +120,7 @@ function createPayment() {
 		url: base_url + "MidtransController/create_payment",
 		method: "POST",
 		data: {
+			id_produk: id,
 			order_id: order_id,
 			gross_amount: totalPrice,
 			first_name: first_name,

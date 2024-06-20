@@ -58,13 +58,11 @@
                         <tr>
                             <th width="5%">No</th>
                             <th width="10%">Produk</th>
-                            <th width="15%">Nama Pelanggan</th>
+                            <th width="15%">Pelanggan</th>
                             <th width="10%">Harga</th>
-                            <th width="5%">Ongkir</th>
-                            <th width="15%">Tanggal Pembelian</th>
-                            <th width="10%">Status</th>
-                            <th width="10%">Foto</th>
-                            <th width="5%">Stok</th>
+                            <th width="15%">Tanggal</th>
+                            <th width="10%">Pembayaran</th>
+                            <th width="10%">Pengiriman</th>
                             <th width="10%">Aksi</th>
                         </tr>
                     </thead>
@@ -95,7 +93,7 @@
                                 <label for="nama" class="col-lg-2 col-form-label">Nama Produk</label>
                                 <div class="col-lg-10">
                                     <input type="hidden" name="id" class="form-control">
-                                    <input type="text" name="judul" id="judul" class="form-control" placeholder="Masukkan Nama Produk">
+                                    <input type="text" name="judul" id="judul" class="form-control" placeholder="Masukkan Nama Produk" readonly>
                                     <small class="text-danger pl-1" id="error-judul"></small>
                                 </div>
                             </div>
@@ -105,7 +103,7 @@
                             <div class="row">
                                 <label for="pelanggan" class="col-lg-2 col-form-label">Nama Pelanggan</label>
                                 <div class="col-lg-10">
-                                    <input type="text" name="pelanggan" id="pelanggan" class="form-control" placeholder="Masukkan Pelanggan">
+                                    <input type="text" name="pelanggan" id="pelanggan" class="form-control" placeholder="Masukkan Pelanggan" readonly>
                                     <small class="text-danger pl-1" id="error-pelanggan"></small>
                                 </div>
                             </div>
@@ -115,18 +113,8 @@
                             <div class="row">
                                 <label for="harga" class="col-lg-2 col-form-label">Harga</label>
                                 <div class="col-lg-10">
-                                    <input type="text" name="harga" id="harga" class="form-control" placeholder="Masukkan Harga">
+                                    <input type="text" name="harga" id="harga" class="form-control" placeholder="Masukkan Harga" readonly>
                                     <small class="text-danger pl-1" id="error-harga"></small>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <div class="row">
-                                <label for="ongkir" class="col-lg-2 col-form-label">Ongkir</label>
-                                <div class="col-lg-10">
-                                    <input type="text" name="ongkir" id="ongkir" class="form-control" placeholder="Masukkan Ongkir">
-                                    <small class="text-danger pl-1" id="error-ongkir"></small>
                                 </div>
                             </div>
                         </div>
@@ -135,7 +123,7 @@
                             <div class="row">
                                 <label for="tanggal" class="col-lg-2 col-form-label">Tanggal Pembelian</label>
                                 <div class="col-lg-10">
-                                    <input type="text" name="tanggal" id="tanggal" class="form-control" placeholder="Masukkan Tanggal">
+                                    <input type="text" name="tanggal" id="tanggal" class="form-control" placeholder="Masukkan Tanggal" readonly>
                                     <small class="text-danger pl-1" id="error-tanggal"></small>
                                 </div>
                             </div>
@@ -143,45 +131,30 @@
 
                         <div class="form-group">
                             <div class="row">
-                                <label for="dokumen" class="col-lg-3 col-form-label">Status</label>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="status" id="blm1" value="1">
-                                    <label class="form-check-label" for="blm">Belum Bayar</label>
+                                <label for="pembayaran" class="col-lg-2 col-form-label">Pembayaran</label>
+                                <div class="col-lg-10">
+                                    <input type="text" name="pembayaran" id="pembayaran" class="form-control" placeholder="Pembayaran" readonly>
+                                    <small class="text-danger pl-1" id="error-pembayaran"></small>
                                 </div>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="status" id="dikemas1" value="2">
-                                    <label class="form-check-label" for="belum">Dikemas</label>
-                                </div>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="status" id="dikirim1" value="3">
-                                    <label class="form-check-label" for="terpenuhi">Dikirim</label>
-                                </div>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="status" id="sudah1" value="4">
-                                    <label class="form-check-label" for="non-halal">Selesai</label>
-                                </div>
-                                <small class="text-danger pl-3" id="error-status"></small>
                             </div>
                         </div>
 
                         <div class="form-group">
                             <div class="row">
-                                <label for="image" class="col-lg-2 col-form-label">Foto Produk</label>
-                                <div class="col-lg-10">
-                                    <div class="input-group">
-                                        <div class="custom-file">
-                                            <input type="file" class="custom-file-input" name="image" id="image"
-                                                onchange="previewImage(event)">
-                                            <label class="custom-file-label" for="image">Pilih file</label>
-                                        </div>
-                                    </div>
+                                <label for="status" class="col-lg-3 col-form-label">Pengiriman</label>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="status" id="status_dikemas" value="Dikemas">
+                                    <label class="form-check-label" for="status_dikemas">Dikemas</label>
                                 </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-lg-4 offset-2">
-                                    <small class="text-danger pl-1" id="error-image"></small>
-                                    <div id="imagePreview"></div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="status" id="status_dikirim" value="Dikirim">
+                                    <label class="form-check-label" for="status_dikirim">Dikirim</label>
                                 </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="status" id="status_sudah" value="Selesai">
+                                    <label class="form-check-label" for="status_sudah">Selesai</label>
+                                </div>
+                                <small class="text-danger pl-3" id="error-status"></small>
                             </div>
                         </div>
                     </div>
@@ -202,6 +175,7 @@
         </div>
     </div>
 </div>
+
 
 <!-- modal untuk hapus data -->
 <div class="modal fade" id="hapusGaleri">

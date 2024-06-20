@@ -8,7 +8,7 @@
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="<?= base_url('dashboard') ?>">Home</a></li>
-                        <li class="breadcrumb-item active">Kelola History</li>
+                        <li class="breadcrumb-item active">History</li>
                     </ol>
                 </div>
             </div>
@@ -17,12 +17,8 @@
 
     <section class="content">
         <div class="card">
-            <h5 class="card-header">Data History</h5>
+            <h5 class="card-header">History</h5>
             <div class="card-body">
-                <button class="btn btn-danger text-white" data-toggle="modal" data-target="#exampleModal" onclick="submit('cetak')">
-                    <i class="bi bi-file-earmark-arrow-down-fill"></i> Cetak Laporan
-                </button>
-                <hr>
                 <div class="row">
                     <div class="col-lg-4">
                         <h6>Filter range tanggal</h6>
@@ -32,8 +28,10 @@
                     <div class="row">
                         <div class="col-lg-2">
                             <div class="input-group date" id="reservationdate1" data-target-input="nearest">
-                                <input type="text" class="form-control datetimepicker-input" data-target="#reservationdate1" id="date1" name="date1" />
-                                <div class="input-group-append" data-target="#reservationdate1" data-toggle="datetimepicker">
+                                <input type="text" class="form-control datetimepicker-input"
+                                    data-target="#reservationdate1" id="date1" name="date1" />
+                                <div class="input-group-append" data-target="#reservationdate1"
+                                    data-toggle="datetimepicker">
                                     <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                                 </div>
                             </div>
@@ -41,8 +39,10 @@
                         <h3> - </h3>
                         <div class="col-lg-2">
                             <div class="input-group date" id="reservationdate2" data-target-input="nearest">
-                                <input type="text" class="form-control datetimepicker-input" data-target="#reservationdate2" id="date2" name="date2" />
-                                <div class="input-group-append" data-target="#reservationdate2" data-toggle="datetimepicker">
+                                <input type="text" class="form-control datetimepicker-input"
+                                    data-target="#reservationdate2" id="date2" name="date2" />
+                                <div class="input-group-append" data-target="#reservationdate2"
+                                    data-toggle="datetimepicker">
                                     <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                                 </div>
                             </div>
@@ -58,13 +58,11 @@
                         <tr>
                             <th width="5%">No</th>
                             <th width="10%">Produk</th>
-                            <th width="15%">Nama Pelanggan</th>
+                            <th width="15%">Pelanggan</th>
                             <th width="10%">Harga</th>
-                            <th width="5%">Ongkir</th>
-                            <th width="15%">Tanggal Pembelian</th>
-                            <th width="10%">Status</th>
-                            <th width="10%">Foto</th>
-                            <th width="5%">Stok</th>
+                            <th width="15%">Tanggal</th>
+                            <th width="10%">Pembayaran</th>
+                            <th width="10%">Pengiriman</th>
                             <th width="10%">Aksi</th>
                         </tr>
                     </thead>
@@ -77,12 +75,12 @@
     </section>
 </div>
 
-<!-- modal untuk detail arsip/history-->
-<div class="modal fade" id="detailArsip">
+<!-- modal untuk insert dan edit data -->
+<div class="modal fade" id="exampleModal">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">Arsip Surat</h4>
+                <h4 class="modal-title">Form Data Pembelian</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -123,16 +121,6 @@
 
                         <div class="form-group">
                             <div class="row">
-                                <label for="ongkir" class="col-lg-2 col-form-label">Ongkir</label>
-                                <div class="col-lg-10">
-                                    <input type="text" name="ongkir" id="ongkir" class="form-control" placeholder="Masukkan Ongkir">
-                                    <small class="text-danger pl-1" id="error-ongkir"></small>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <div class="row">
                                 <label for="tanggal" class="col-lg-2 col-form-label">Tanggal Pembelian</label>
                                 <div class="col-lg-10">
                                     <input type="text" name="tanggal" id="tanggal" class="form-control" placeholder="Masukkan Tanggal">
@@ -143,11 +131,17 @@
 
                         <div class="form-group">
                             <div class="row">
-                                <label for="dokumen" class="col-lg-3 col-form-label">Status</label>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="status" id="blm1" value="1">
-                                    <label class="form-check-label" for="blm">Belum Bayar</label>
+                                <label for="pembayaran" class="col-lg-2 col-form-label">Pembayaran</label>
+                                <div class="col-lg-10">
+                                    <input type="text" name="pembayaran" id="pembayaran" class="form-control" placeholder="Pembayaran">
+                                    <small class="text-danger pl-1" id="error-pembayaran"></small>
                                 </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="row">
+                                <label for="status" class="col-lg-3 col-form-label">Pengiriman</label>
                                 <div class="form-check form-check-inline">
                                     <input class="form-check-input" type="radio" name="status" id="dikemas1" value="2">
                                     <label class="form-check-label" for="belum">Dikemas</label>
@@ -163,35 +157,36 @@
                                 <small class="text-danger pl-3" id="error-status"></small>
                             </div>
                         </div>
-
-                        <div class="form-group">
-                            <div class="row">
-                                <label for="image" class="col-lg-2 col-form-label">Foto Produk</label>
-                                <div class="col-lg-10">
-                                    <div class="input-group">
-                                        <div class="custom-file">
-                                            <input type="file" class="custom-file-input" name="image" id="image" onchange="previewImage(event)">
-                                            <label class="custom-file-label" for="image">Pilih file</label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-lg-4 offset-2">
-                                    <small class="text-danger pl-1" id="error-image"></small>
-                                    <div id="imagePreview"></div>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
             <div class="modal-footer d-flex justify-content-start">
-                <div class="col-lg-2">
-                    <button type="button" id="btn-balas" class="btn btn-outline-primary btn-block" data-dismiss="modal">Tutup</button>
+                <div class="col-lg-12">
+                    <div class="row">
+                        <div class="col-lg-2">
+                            <button class="btn btn-outline-primary btn-block" type="button" data-dismiss="modal">Cancel</button>
+                        </div>
+                        <div class="col-lg-4">
+                            <button type="button" id="btn-status" onclick="update_status()" class="btn btn-outline-primary btn-block">Ubah Status</button>
+                        </div>
+                    </div>
                 </div>
             </div>
+        </div>
+    </div>
+</div>
 
+<!-- modal untuk hapus data -->
+<div class="modal fade" id="hapusGaleri">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <h5>Klik hapus jika anda ingin menghapus data ini</h5>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                <button class="btn btn-warning" type="button" id="btn-hapus" data-dismiss="modal">Hapus</button>
+            </div>
         </div>
     </div>
 </div>

@@ -18,7 +18,37 @@ class MidtransController extends CI_Controller {
         $last_name = $this->input->post('last_name');
         $email = $this->input->post('email');
         $phone = $this->input->post('phone');
-
+        $order_notes = $this->input->post('order_notes');
+    
+        // Ambil id_produk dari session
+        $id_produk = $this->input->post('id_produk');
+    
+        // Ambil id_pelanggan dari session dan join dengan tabel st_user
+        $id_user = $this->session->userdata('id_user');
+        $this->db->select('id');
+        $this->db->from('st_user');
+        $this->db->where('id', $id_user);
+        $query = $this->db->get();
+        $row = $query->row();
+        $id_pelanggan = $row->id;
+    
+        $harga_transaksi = $gross_amount;
+    
+        // Simpan data transaksi ke dalam tabel transaksi
+        $data_transaksi = [
+            'id_produk' => $id_produk,
+            'id_pelanggan' => $id_pelanggan,
+            'harga_transaksi' => $harga_transaksi,
+            'alamat' => $order_notes,
+            'status_pembayaran' => 'Menunggu Pembayaran', // Set status awal
+            'status_pengiriman' => 'Dikemas',
+            'created_by' => $id_user
+        ];
+    
+        $this->db->insert('transaksi', $data_transaksi);
+        $transaksi_id = $this->db->insert_id();
+    
+        // Lanjutkan dengan membuat permintaan pembayaran ke Midtrans
         $data = [
             'transaction_details' => [
                 'order_id' => $order_id,
@@ -31,10 +61,10 @@ class MidtransController extends CI_Controller {
                 'phone' => $phone,
             ],
         ];
-
+    
         try {
             $response = $this->midtrans->create_payment_link($data);
-
+        
             if (isset($response->error)) {
                 echo 'Error: ' . $response->error;
             } else {
@@ -46,16 +76,17 @@ class MidtransController extends CI_Controller {
     }
 
     public function notification() {
-        $order_id = $this->input->get('order_id');
-        $status_code = $this->input->get('status_code');
-        $transaction_status = $this->input->get('transaction_status');
-
-        // Menyiapkan data untuk ditampilkan di view
-        $data['order_id'] = $order_id;
-        $data['status_code'] = $status_code;
-        $data['transaction_status'] = $transaction_status;
-
-        // Memuat view status pembayaran dengan data yang diperlukan
-        $this->load->view('front_page/payment_status', $data);
+        $notificationBody = $this->input->raw_input_stream;
+        $notification = json_decode($notificationBody);
+    
+        $order_id = $notification->order_id;
+        $transaction_status = $notification->transaction_status;
+    
+        // Update status pembayaran berdasarkan transaction_status
+        $this->db->where('id', $order_id);
+        $this->db->update('transaksi', ['status_pembayaran' => $transaction_status]);
+    
+        // Kirim respons ke Midtrans
+        $this->output->set_status_header(200);
     }
 }

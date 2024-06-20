@@ -132,7 +132,7 @@
                                          </td>
                                          <td class="py-5">
                                              <div class="py-3 border-bottom border-top">
-                                                 <p class="mb-0 text-dark" id="productPrice"><?= $hargaTanpaRpTitik ?></p>
+                                                 <p class="mb-0 text-dark" id="productPrice"><?= $hargaTanpaRpTitik * $jumlah ?></p>
                                              </div>
                                          </td>
                                      </tr>
@@ -176,7 +176,7 @@
                          </div>
                          
                          <div class="row g-4 text-center align-items-center justify-content-center pt-4">
-                             <button type="button" class="btn border-secondary py-3 px-4 text-uppercase w-100 text-primary" onclick="createPayment()">Place Order</button>
+                             <button type="button" class="btn border-secondary py-3 px-4 text-uppercase w-100 text-primary" onclick="createPayment(<?= $pr->id ?>)">Place Order</button>
                          </div>
                      </div>
                  </div>

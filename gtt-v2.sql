@@ -28,14 +28,14 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `administration` (
-  `id` int(11) NOT NULL,
-  `id_user` int(11) DEFAULT NULL,
-  `id_letter` int(11) DEFAULT NULL,
-  `status` tinyint(1) DEFAULT 1,
-  `file_name` varchar(100) DEFAULT NULL,
-  `submit_date` datetime DEFAULT current_timestamp(),
-  `finish_date` datetime DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `id` INT(11) NOT NULL,
+  `id_user` INT(11) DEFAULT NULL,
+  `id_letter` INT(11) DEFAULT NULL,
+  `status` TINYINT(1) DEFAULT 1,
+  `file_name` VARCHAR(100) DEFAULT NULL,
+  `submit_date` DATETIME DEFAULT CURRENT_TIMESTAMP(),
+  `finish_date` DATETIME DEFAULT NULL
+) ENGINE=INNODB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `administration`
@@ -53,16 +53,16 @@ INSERT INTO `administration` (`id`, `id_user`, `id_letter`, `status`, `file_name
 --
 
 CREATE TABLE `app_credential` (
-  `id` int(11) NOT NULL,
-  `name` varchar(100) DEFAULT NULL,
-  `created_date` timestamp NULL DEFAULT current_timestamp(),
-  `created_by` int(11) DEFAULT NULL,
-  `updated_date` timestamp NULL DEFAULT NULL,
-  `updated_by` int(11) DEFAULT NULL,
-  `deleted_date` timestamp NULL DEFAULT NULL,
-  `deleted_by` int(11) DEFAULT NULL,
-  `is_deleted` tinyint(1) DEFAULT 0
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `id` INT(11) NOT NULL,
+  `name` VARCHAR(100) DEFAULT NULL,
+  `created_date` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP(),
+  `created_by` INT(11) DEFAULT NULL,
+  `updated_date` TIMESTAMP NULL DEFAULT NULL,
+  `updated_by` INT(11) DEFAULT NULL,
+  `deleted_date` TIMESTAMP NULL DEFAULT NULL,
+  `deleted_by` INT(11) DEFAULT NULL,
+  `is_deleted` TINYINT(1) DEFAULT 0
+) ENGINE=INNODB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `app_credential`
@@ -80,23 +80,23 @@ INSERT INTO `app_credential` (`id`, `name`, `created_date`, `created_by`, `updat
 --
 
 CREATE TABLE `app_menu` (
-  `id` int(11) NOT NULL,
-  `id_parent` int(11) DEFAULT NULL,
-  `name` varchar(100) DEFAULT NULL,
-  `description` text DEFAULT NULL,
-  `icon` text DEFAULT NULL,
-  `link` varchar(100) DEFAULT NULL,
-  `sort` int(11) DEFAULT NULL,
-  `type` int(11) DEFAULT NULL,
-  `is_admin` tinyint(1) DEFAULT NULL,
-  `created_date` timestamp NOT NULL DEFAULT current_timestamp(),
-  `created_by` int(11) DEFAULT NULL,
-  `updated_date` timestamp NULL DEFAULT NULL,
-  `updated_by` int(11) DEFAULT NULL,
-  `deleted_date` timestamp NULL DEFAULT NULL,
-  `deleted_by` int(11) DEFAULT NULL,
-  `is_deleted` tinyint(1) DEFAULT 0
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `id` INT(11) NOT NULL,
+  `id_parent` INT(11) DEFAULT NULL,
+  `name` VARCHAR(100) DEFAULT NULL,
+  `description` TEXT DEFAULT NULL,
+  `icon` TEXT DEFAULT NULL,
+  `link` VARCHAR(100) DEFAULT NULL,
+  `sort` INT(11) DEFAULT NULL,
+  `type` INT(11) DEFAULT NULL,
+  `is_admin` TINYINT(1) DEFAULT NULL,
+  `created_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP(),
+  `created_by` INT(11) DEFAULT NULL,
+  `updated_date` TIMESTAMP NULL DEFAULT NULL,
+  `updated_by` INT(11) DEFAULT NULL,
+  `deleted_date` TIMESTAMP NULL DEFAULT NULL,
+  `deleted_by` INT(11) DEFAULT NULL,
+  `is_deleted` TINYINT(1) DEFAULT 0
+) ENGINE=INNODB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `app_menu`
@@ -126,18 +126,18 @@ INSERT INTO `app_menu` (`id`, `id_parent`, `name`, `description`, `icon`, `link`
 --
 
 CREATE TABLE `carousel_menu` (
-  `id` int(11) NOT NULL,
-  `title` varchar(100) DEFAULT NULL,
-  `sub_title` varchar(255) DEFAULT NULL,
-  `image` varchar(255) DEFAULT NULL,
-  `created_date` datetime NOT NULL DEFAULT current_timestamp(),
-  `created_by` int(11) DEFAULT NULL,
-  `updated_date` datetime DEFAULT NULL,
-  `updated_by` int(11) DEFAULT NULL,
-  `deleted_date` datetime DEFAULT NULL,
-  `deleted_by` int(11) DEFAULT NULL,
-  `is_deleted` tinyint(1) DEFAULT 0
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `id` INT(11) NOT NULL,
+  `title` VARCHAR(100) DEFAULT NULL,
+  `sub_title` VARCHAR(255) DEFAULT NULL,
+  `image` VARCHAR(255) DEFAULT NULL,
+  `created_date` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP(),
+  `created_by` INT(11) DEFAULT NULL,
+  `updated_date` DATETIME DEFAULT NULL,
+  `updated_by` INT(11) DEFAULT NULL,
+  `deleted_date` DATETIME DEFAULT NULL,
+  `deleted_by` INT(11) DEFAULT NULL,
+  `is_deleted` TINYINT(1) DEFAULT 0
+) ENGINE=INNODB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `carousel_menu`
@@ -158,11 +158,11 @@ INSERT INTO `carousel_menu` (`id`, `title`, `sub_title`, `image`, `created_date`
 --
 
 CREATE TABLE `ci_sessions` (
-  `id` varchar(128) NOT NULL,
-  `ip_address` varchar(45) NOT NULL,
-  `timestamp` int(10) UNSIGNED NOT NULL DEFAULT 0,
-  `data` blob NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `id` VARCHAR(128) NOT NULL,
+  `ip_address` VARCHAR(45) NOT NULL,
+  `timestamp` INT(10) UNSIGNED NOT NULL DEFAULT 0,
+  `data` BLOB NOT NULL
+) ENGINE=INNODB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -171,24 +171,24 @@ CREATE TABLE `ci_sessions` (
 --
 
 CREATE TABLE `company_profile` (
-  `id_company` int(11) NOT NULL,
-  `company_name` varchar(150) DEFAULT NULL,
-  `address` varchar(255) DEFAULT NULL,
-  `province` varchar(100) DEFAULT NULL,
-  `city` varchar(100) DEFAULT NULL,
-  `phone_number` varchar(20) DEFAULT NULL,
-  `email` varchar(100) DEFAULT NULL,
-  `embed_address` text DEFAULT NULL,
-  `company_logo` varchar(255) DEFAULT NULL,
-  `logo_footer` varchar(255) DEFAULT NULL,
-  `created_date` datetime DEFAULT current_timestamp(),
-  `created_by` int(11) DEFAULT NULL,
-  `updated_date` datetime DEFAULT NULL,
-  `updated_by` int(11) DEFAULT NULL,
-  `deleted_date` datetime DEFAULT NULL,
-  `deleted_by` int(11) DEFAULT NULL,
-  `is_deleted` tinyint(1) DEFAULT 0
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `id_company` INT(11) NOT NULL,
+  `company_name` VARCHAR(150) DEFAULT NULL,
+  `address` VARCHAR(255) DEFAULT NULL,
+  `province` VARCHAR(100) DEFAULT NULL,
+  `city` VARCHAR(100) DEFAULT NULL,
+  `phone_number` VARCHAR(20) DEFAULT NULL,
+  `email` VARCHAR(100) DEFAULT NULL,
+  `embed_address` TEXT DEFAULT NULL,
+  `company_logo` VARCHAR(255) DEFAULT NULL,
+  `logo_footer` VARCHAR(255) DEFAULT NULL,
+  `created_date` DATETIME DEFAULT CURRENT_TIMESTAMP(),
+  `created_by` INT(11) DEFAULT NULL,
+  `updated_date` DATETIME DEFAULT NULL,
+  `updated_by` INT(11) DEFAULT NULL,
+  `deleted_date` DATETIME DEFAULT NULL,
+  `deleted_by` INT(11) DEFAULT NULL,
+  `is_deleted` TINYINT(1) DEFAULT 0
+) ENGINE=INNODB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `company_profile`
@@ -204,16 +204,16 @@ INSERT INTO `company_profile` (`id_company`, `company_name`, `address`, `provinc
 --
 
 CREATE TABLE `gallery_category` (
-  `id` int(11) NOT NULL,
-  `name` varchar(100) DEFAULT NULL,
-  `created_date` datetime DEFAULT current_timestamp(),
-  `created_by` int(11) DEFAULT NULL,
-  `updated_date` datetime DEFAULT NULL,
-  `updated_by` int(11) DEFAULT NULL,
-  `deleted_date` datetime DEFAULT NULL,
-  `deleted_by` int(11) DEFAULT NULL,
-  `is_deleted` tinyint(1) DEFAULT 0
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `id` INT(11) NOT NULL,
+  `name` VARCHAR(100) DEFAULT NULL,
+  `created_date` DATETIME DEFAULT CURRENT_TIMESTAMP(),
+  `created_by` INT(11) DEFAULT NULL,
+  `updated_date` DATETIME DEFAULT NULL,
+  `updated_by` INT(11) DEFAULT NULL,
+  `deleted_date` DATETIME DEFAULT NULL,
+  `deleted_by` INT(11) DEFAULT NULL,
+  `is_deleted` TINYINT(1) DEFAULT 0
+) ENGINE=INNODB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `gallery_category`
@@ -236,19 +236,19 @@ INSERT INTO `gallery_category` (`id`, `name`, `created_date`, `created_by`, `upd
 --
 
 CREATE TABLE `gallery_image` (
-  `id` int(11) NOT NULL,
-  `id_category` int(11) DEFAULT NULL,
-  `title` varchar(100) DEFAULT NULL,
-  `description` text DEFAULT NULL,
-  `image` varchar(255) DEFAULT NULL,
-  `created_date` datetime DEFAULT current_timestamp(),
-  `created_by` int(11) DEFAULT NULL,
-  `updated_date` datetime DEFAULT NULL,
-  `updated_by` int(11) DEFAULT NULL,
-  `deleted_date` datetime DEFAULT NULL,
-  `deleted_by` int(11) DEFAULT NULL,
-  `is_deleted` tinyint(1) DEFAULT 0
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `id` INT(11) NOT NULL,
+  `id_category` INT(11) DEFAULT NULL,
+  `title` VARCHAR(100) DEFAULT NULL,
+  `description` TEXT DEFAULT NULL,
+  `image` VARCHAR(255) DEFAULT NULL,
+  `created_date` DATETIME DEFAULT CURRENT_TIMESTAMP(),
+  `created_by` INT(11) DEFAULT NULL,
+  `updated_date` DATETIME DEFAULT NULL,
+  `updated_by` INT(11) DEFAULT NULL,
+  `deleted_date` DATETIME DEFAULT NULL,
+  `deleted_by` INT(11) DEFAULT NULL,
+  `is_deleted` TINYINT(1) DEFAULT 0
+) ENGINE=INNODB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `gallery_image`
@@ -269,16 +269,16 @@ INSERT INTO `gallery_image` (`id`, `id_category`, `title`, `description`, `image
 --
 
 CREATE TABLE `kategori_produk` (
-  `id` int(11) NOT NULL,
-  `name` varchar(100) DEFAULT NULL,
-  `created_date` datetime DEFAULT current_timestamp(),
-  `created_by` int(11) DEFAULT NULL,
-  `updated_date` datetime DEFAULT NULL,
-  `updated_by` int(11) DEFAULT NULL,
-  `deleted_date` datetime DEFAULT NULL,
-  `deleted_by` int(11) DEFAULT NULL,
-  `is_deleted` tinyint(1) DEFAULT 0
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `id` INT(11) NOT NULL,
+  `name` VARCHAR(100) DEFAULT NULL,
+  `created_date` DATETIME DEFAULT CURRENT_TIMESTAMP(),
+  `created_by` INT(11) DEFAULT NULL,
+  `updated_date` DATETIME DEFAULT NULL,
+  `updated_by` INT(11) DEFAULT NULL,
+  `deleted_date` DATETIME DEFAULT NULL,
+  `deleted_by` INT(11) DEFAULT NULL,
+  `is_deleted` TINYINT(1) DEFAULT 0
+) ENGINE=INNODB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `kategori_produk`
@@ -297,14 +297,14 @@ INSERT INTO `kategori_produk` (`id`, `name`, `created_date`, `created_by`, `upda
 --
 
 CREATE TABLE `message_user` (
-  `id` int(11) NOT NULL,
-  `name` varchar(100) DEFAULT NULL,
-  `email` varchar(100) DEFAULT NULL,
-  `message` text DEFAULT NULL,
-  `date_send` timestamp NOT NULL DEFAULT current_timestamp(),
-  `status` tinyint(1) DEFAULT 1,
-  `is_deleted` tinyint(1) DEFAULT 0
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `id` INT(11) NOT NULL,
+  `name` VARCHAR(100) DEFAULT NULL,
+  `email` VARCHAR(100) DEFAULT NULL,
+  `message` TEXT DEFAULT NULL,
+  `date_send` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP(),
+  `status` TINYINT(1) DEFAULT 1,
+  `is_deleted` TINYINT(1) DEFAULT 0
+) ENGINE=INNODB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `message_user`
@@ -321,11 +321,11 @@ INSERT INTO `message_user` (`id`, `name`, `email`, `message`, `date_send`, `stat
 --
 
 CREATE TABLE `ongkir` (
-  `id_ongkir` int(11) NOT NULL,
-  `nama_ekspedisi` varchar(255) DEFAULT NULL,
-  `harga_ongkir` varchar(255) DEFAULT NULL,
-  `harga_berat` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `id_ongkir` INT(11) NOT NULL,
+  `nama_ekspedisi` VARCHAR(255) DEFAULT NULL,
+  `harga_ongkir` VARCHAR(255) DEFAULT NULL,
+  `harga_berat` VARCHAR(255) DEFAULT NULL
+) ENGINE=INNODB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -334,13 +334,13 @@ CREATE TABLE `ongkir` (
 --
 
 CREATE TABLE `pelanggan` (
-  `id_pelanggan` int(11) NOT NULL,
-  `email` varchar(255) DEFAULT NULL,
-  `password` varchar(255) DEFAULT NULL,
-  `nama_pelanggan` varchar(255) DEFAULT NULL,
-  `alamat` varchar(255) DEFAULT NULL,
-  `no_hp` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `id_pelanggan` INT(11) NOT NULL,
+  `email` VARCHAR(255) DEFAULT NULL,
+  `password` VARCHAR(255) DEFAULT NULL,
+  `nama_pelanggan` VARCHAR(255) DEFAULT NULL,
+  `alamat` VARCHAR(255) DEFAULT NULL,
+  `no_hp` VARCHAR(255) DEFAULT NULL
+) ENGINE=INNODB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -349,22 +349,22 @@ CREATE TABLE `pelanggan` (
 --
 
 CREATE TABLE `produk` (
-  `id` int(11) NOT NULL,
-  `id_category_product` int(11) DEFAULT NULL,
-  `title` varchar(100) DEFAULT NULL,
-  `description` varchar(100) DEFAULT NULL,
-  `price` varchar(100) DEFAULT NULL,
-  `weight` varchar(100) DEFAULT NULL,
-  `image` varchar(100) DEFAULT NULL,
-  `total_stok` varchar(100) DEFAULT NULL,
-  `created_date` datetime DEFAULT current_timestamp(),
-  `created_by` int(11) DEFAULT NULL,
-  `updated_date` datetime DEFAULT NULL,
-  `updated_by` int(11) DEFAULT NULL,
-  `deleted_date` datetime DEFAULT NULL,
-  `deleted_by` int(11) DEFAULT NULL,
-  `is_deleted` int(11) DEFAULT 0
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `id` INT(11) NOT NULL,
+  `id_category_product` INT(11) DEFAULT NULL,
+  `title` VARCHAR(100) DEFAULT NULL,
+  `description` VARCHAR(100) DEFAULT NULL,
+  `price` VARCHAR(100) DEFAULT NULL,
+  `weight` VARCHAR(100) DEFAULT NULL,
+  `image` VARCHAR(100) DEFAULT NULL,
+  `total_stok` VARCHAR(100) DEFAULT NULL,
+  `created_date` DATETIME DEFAULT CURRENT_TIMESTAMP(),
+  `created_by` INT(11) DEFAULT NULL,
+  `updated_date` DATETIME DEFAULT NULL,
+  `updated_by` INT(11) DEFAULT NULL,
+  `deleted_date` DATETIME DEFAULT NULL,
+  `deleted_by` INT(11) DEFAULT NULL,
+  `is_deleted` INT(11) DEFAULT 0
+) ENGINE=INNODB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `produk`
@@ -381,12 +381,12 @@ INSERT INTO `produk` (`id`, `id_category_product`, `title`, `description`, `pric
 --
 
 CREATE TABLE `reply_message` (
-  `id` int(11) NOT NULL,
-  `id_message` int(11) DEFAULT NULL,
-  `message` text DEFAULT NULL,
-  `reply_by` int(11) DEFAULT NULL,
-  `date_send` datetime DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `id` INT(11) NOT NULL,
+  `id_message` INT(11) DEFAULT NULL,
+  `message` TEXT DEFAULT NULL,
+  `reply_by` INT(11) DEFAULT NULL,
+  `date_send` DATETIME DEFAULT CURRENT_TIMESTAMP()
+) ENGINE=INNODB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `reply_message`
@@ -403,11 +403,11 @@ INSERT INTO `reply_message` (`id`, `id_message`, `message`, `reply_by`, `date_se
 --
 
 CREATE TABLE `shopping_cart` (
-  `id` int(11) NOT NULL,
-  `user_id` int(11) NOT NULL,
-  `product_id` int(11) NOT NULL,
-  `quantity` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `id` INT(11) NOT NULL,
+  `user_id` INT(11) NOT NULL,
+  `product_id` INT(11) NOT NULL,
+  `quantity` INT(11) NOT NULL
+) ENGINE=INNODB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -416,10 +416,10 @@ CREATE TABLE `shopping_cart` (
 --
 
 CREATE TABLE `st_log_login` (
-  `id` int(11) NOT NULL,
-  `ip_address` varchar(20) DEFAULT NULL,
-  `date` timestamp NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `id` INT(11) NOT NULL,
+  `ip_address` VARCHAR(20) DEFAULT NULL,
+  `date` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP()
+) ENGINE=INNODB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `st_log_login`
@@ -547,26 +547,26 @@ INSERT INTO `st_log_login` (`id`, `ip_address`, `date`) VALUES
 --
 
 CREATE TABLE `st_user` (
-  `id` int(11) NOT NULL,
-  `id_credential` int(11) DEFAULT NULL,
-  `name` varchar(100) DEFAULT NULL,
-  `email` varchar(100) DEFAULT NULL,
-  `phone_number` varchar(13) DEFAULT NULL,
-  `address` text DEFAULT NULL,
-  `province` varchar(100) DEFAULT NULL,
-  `city` varchar(100) DEFAULT NULL,
-  `image` varchar(100) DEFAULT 'default.jpeg',
-  `username` varchar(100) DEFAULT NULL,
-  `password` text DEFAULT NULL,
-  `last_login` timestamp NULL DEFAULT NULL,
-  `created_date` timestamp NULL DEFAULT current_timestamp(),
-  `created_by` int(11) DEFAULT NULL,
-  `updated_date` timestamp NULL DEFAULT NULL,
-  `updated_by` int(11) DEFAULT NULL,
-  `deleted_date` timestamp NULL DEFAULT NULL,
-  `deleted_by` int(11) DEFAULT NULL,
-  `is_deleted` tinyint(1) DEFAULT 0
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `id` INT(11) NOT NULL,
+  `id_credential` INT(11) DEFAULT NULL,
+  `name` VARCHAR(100) DEFAULT NULL,
+  `email` VARCHAR(100) DEFAULT NULL,
+  `phone_number` VARCHAR(13) DEFAULT NULL,
+  `address` TEXT DEFAULT NULL,
+  `province` VARCHAR(100) DEFAULT NULL,
+  `city` VARCHAR(100) DEFAULT NULL,
+  `image` VARCHAR(100) DEFAULT 'default.jpeg',
+  `username` VARCHAR(100) DEFAULT NULL,
+  `password` TEXT DEFAULT NULL,
+  `last_login` TIMESTAMP NULL DEFAULT NULL,
+  `created_date` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP(),
+  `created_by` INT(11) DEFAULT NULL,
+  `updated_date` TIMESTAMP NULL DEFAULT NULL,
+  `updated_by` INT(11) DEFAULT NULL,
+  `deleted_date` TIMESTAMP NULL DEFAULT NULL,
+  `deleted_by` INT(11) DEFAULT NULL,
+  `is_deleted` TINYINT(1) DEFAULT 0
+) ENGINE=INNODB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `st_user`
@@ -592,18 +592,18 @@ INSERT INTO `st_user` (`id`, `id_credential`, `name`, `email`, `phone_number`, `
 --
 
 CREATE TABLE `supplier` (
-  `id` int(11) NOT NULL,
-  `id_produk` int(11) DEFAULT NULL,
-  `nama_supplier` varchar(100) DEFAULT NULL,
-  `stok` varchar(100) DEFAULT NULL,
-  `created_date` datetime DEFAULT current_timestamp(),
-  `created_by` int(11) DEFAULT NULL,
-  `updated_date` datetime DEFAULT NULL,
-  `updated_by` int(11) DEFAULT NULL,
-  `deleted_date` datetime DEFAULT NULL,
-  `deleted_by` int(11) DEFAULT NULL,
-  `is_deleted` int(11) DEFAULT 0
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `id` INT(11) NOT NULL,
+  `id_produk` INT(11) DEFAULT NULL,
+  `nama_supplier` VARCHAR(100) DEFAULT NULL,
+  `stok` VARCHAR(100) DEFAULT NULL,
+  `created_date` DATETIME DEFAULT CURRENT_TIMESTAMP(),
+  `created_by` INT(11) DEFAULT NULL,
+  `updated_date` DATETIME DEFAULT NULL,
+  `updated_by` INT(11) DEFAULT NULL,
+  `deleted_date` DATETIME DEFAULT NULL,
+  `deleted_by` INT(11) DEFAULT NULL,
+  `is_deleted` INT(11) DEFAULT 0
+) ENGINE=INNODB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `supplier`
@@ -620,21 +620,21 @@ INSERT INTO `supplier` (`id`, `id_produk`, `nama_supplier`, `stok`, `created_dat
 --
 
 CREATE TABLE `transaksi` (
-  `id` int(11) NOT NULL,
-  `id_produk` int(11) DEFAULT NULL,
-  `id_pelanggan` int(11) DEFAULT NULL,
-  `harga_transaksi` varchar(255) DEFAULT NULL,
-  `tgl_pembelian` datetime DEFAULT NULL,
-  `alamat` varchar(255) DEFAULT NULL,
-  `status` varchar(100) DEFAULT NULL,
-  `created_date` datetime DEFAULT current_timestamp(),
-  `created_by` int(11) DEFAULT NULL,
-  `updated_date` datetime DEFAULT NULL,
-  `updated_by` int(11) DEFAULT NULL,
-  `deleted_date` datetime DEFAULT NULL,
-  `deleted_by` int(11) DEFAULT NULL,
-  `is_deleted` tinyint(1) DEFAULT 0
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `id` INT(11) NOT NULL,
+  `id_produk` INT(11) DEFAULT NULL,
+  `id_pelanggan` INT(11) DEFAULT NULL,
+  `harga_transaksi` VARCHAR(255) DEFAULT NULL,
+  `alamat` VARCHAR(255) DEFAULT NULL,
+  `status_pembayaran` VARCHAR(100) DEFAULT NULL,
+  `status_pengiriman` VARCHAR(100) DEFAULT NULL,
+  `created_date` DATETIME DEFAULT CURRENT_TIMESTAMP(),
+  `created_by` INT(11) DEFAULT NULL,
+  `updated_date` DATETIME DEFAULT NULL,
+  `updated_by` INT(11) DEFAULT NULL,
+  `deleted_date` DATETIME DEFAULT NULL,
+  `deleted_by` INT(11) DEFAULT NULL,
+  `is_deleted` TINYINT(1) DEFAULT 0
+) ENGINE=INNODB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Indexes for dumped tables
