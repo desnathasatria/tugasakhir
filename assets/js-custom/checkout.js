@@ -38,6 +38,92 @@ function get_umkm() {
 	});
 }
 
+function masukan_keranjang(id){
+	var formData = new FormData();
+	formData.append("id_produk", id);
+	formData.append("jumlah", $("[name='jumlah']").val());
+
+	$.ajax({
+		type: "POST",
+		url: base_url + "/" + _controller + "/keranjang",
+		data: formData,
+		dataType: "json",
+		processData: false,
+		contentType: false,
+		success: function (response) {
+			delete_error();
+			if (response.errors) {
+				for (var fieldName in response.errors) {
+					$("#error-" + fieldName).show();
+					$("#error-" + fieldName).html(response.errors[fieldName]);
+				}
+			} else if (response.success) {
+				$("#exampleModal").modal("hide");
+				$("body").append(response.success);
+				$("[name='jumlah']").val(1);
+				get_keranjang();
+			}
+		},
+		error: function (xhr, status, error) {
+			console.error("AJAX Error: " + error);
+		},
+	});
+}
+
+// function get_keranjang() {
+//     delete_error();
+//     $.ajax({
+//         url: base_url + _controller + "/get_data_keranjang",
+//         method: "GET",
+//         dataType: "json",
+//         success: function (data) {
+//             // Process the data to remove "Rp. " and "."
+//             data = data.map(function (item) {
+//                 item.price = item.price.replace("Rp. ", "").replace(/\./g, "");
+//                 return item;
+//             });
+
+//             var table = $("#tabelKeranjang").DataTable({
+//                 destroy: true,
+//                 searching: false,
+//                 paging: false,
+//                 data: data,
+//                 columns: [
+//                     { data: "title" },
+//                     { data: "price" },
+//                     { data: "quantity" },
+//                     {
+//                         data: null,
+//                         className: "text-center",
+//                         render: function (data, type, row) {
+//                             var total = row.price * row.quantity;
+//                             return total;
+//                         },
+//                     },
+//                     {
+//                         data: null,
+//                         className: "text-center",
+//                         render: function (data, type, row) {
+//                             return (
+//                                 '<button class="btn btn-warning" data-toggle="modal" data-target="#hapusKeranjang" title="hapus" data-id="' +
+//                                 row.id +
+//                                 '"><i class="fa-solid fa-trash-can"></i></button>'
+//                             );
+//                         },
+//                     },
+//                 ],
+//                 initComplete: function () {
+//                     // Set column titles alignment to center
+//                     $("th").css("text-align", "center");
+//                 },
+//             });
+//         },
+//         error: function (xhr, textStatus, errorThrown) {
+//             console.log(xhr.statusText);
+//         },
+//     });
+// }
+
 $("#courierName").change(function () {
 	courierName = $(this).val();
 	wightProduct = 2000;
@@ -100,7 +186,7 @@ $("#courierService").on("change", function () {
 	}
 });
 
-function createPayment(id) {
+function createPayment(id,jumlah) {
 	var timestamp = new Date().getTime();
 	var random_number = Math.floor(Math.random() * 1000);
 	var order_id = "order-" + timestamp + "-" + random_number;
@@ -112,6 +198,7 @@ function createPayment(id) {
 		last_name: last_name,
 		email: email,
 		phone: phone,
+		jumlah: jumlah,
 	};
 
 	// console.log(data);
@@ -127,6 +214,7 @@ function createPayment(id) {
 			last_name: last_name,
 			email: email,
 			phone: phone,
+			jumlah: jumlah,
 		},
 		success: function (response) {
 			var data = JSON.parse(response).redirect_url;

@@ -65,13 +65,154 @@
         <script src="<?= base_url() ?>assets/template-user/lib/waypoints/waypoints.min.js"></script>
         <script src="<?= base_url() ?>assets/template-user/lib/lightbox/js/lightbox.min.js"></script>
         <script src="<?= base_url() ?>assets/template-user/lib/owlcarousel/owl.carousel.min.js"></script>
+        <script src="<?= base_url() ?>assets/template-admin/plugins/datatables/jquery.dataTables.min.js"></script>
+        <script src="<?= base_url() ?>assets/template-admin/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+        <script src="<?= base_url() ?>assets/template-admin/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+        <script src="<?= base_url() ?>assets/template-admin/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+        <script src="<?= base_url() ?>assets/template-admin/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+        <script src="<?= base_url() ?>assets/template-admin/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+        <script src="<?= base_url() ?>assets/template-admin/plugins/jszip/jszip.min.js"></script>
+        <script src="<?= base_url() ?>assets/template-admin/plugins/pdfmake/pdfmake.min.js"></script>
+        <script src="<?= base_url() ?>assets/template-admin/plugins/pdfmake/vfs_fonts.js"></script>
+        <script src="<?= base_url() ?>assets/template-admin/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+        <script src="<?= base_url() ?>assets/template-admin/plugins/datatables-buttons/js/buttons.print.min.js"></script>
+        <script src="<?= base_url() ?>assets/template-admin/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
 
         <!-- Template Javascript -->
         <script src="<?= base_url() ?>assets/template-user/js/main.js"></script>
         <!-- Gallery Filter Javascript -->
         <script src="<?php echo base_url('assets/template-user/js/gallery_filter.js') ?>"></script>
-        <!-- Panggil file custom.js -->
-        <script src="<?= base_url('assets/js-custom/custom.js') ?>"></script>
         </body>
+        <script>
+            $(document).ready(function() {
+                get_keranjang();
+            });
+
+            var base_url = '<?php echo base_url() ?>';
+            var _controller = '<?= $this->router->fetch_class() ?>';
+
+            function updateCartItemCount(count) {
+                $('#cartItemCount').text(count);
+            }
+
+            function get_keranjang() {
+                $.ajax({
+                    url: base_url + _controller + "/get_data_keranjang",
+                    method: "GET",
+                    dataType: "json",
+                    success: function(data) {
+                        var id_produk_array = data.map(function(item) {
+                            return item.id_produk;
+                        });
+                        var id_produk_string = id_produk_array.join(',');
+                        $("[name='id_produk']").val(id_produk_string);
+                        // Process the data to remove "Rp. " and "."
+                        data = data.map(function(item) {
+                            item.price = item.price.replace("Rp. ", "").replace(/\./g, "");
+                            return item;
+                        });
+
+                        // Update the cart item count
+                        updateCartItemCount(data.length);
+
+                        var table = $("#tabelKeranjang").DataTable({
+                            destroy: true,
+                            searching: false,
+                            paging: false,
+                            data: data,
+                            columns: [{
+                                    data: "title"
+                                },
+                                {
+                                    data: "price"
+                                },
+                                {
+                                    data: "quantity"
+                                },
+                                {
+                                    data: null,
+                                    className: "text-center",
+                                    render: function(data, type, row) {
+                                        var total = row.price * row.quantity;
+                                        return total;
+                                    },
+                                },
+                                {
+                                    data: null,
+                                    className: "text-center",
+                                    render: function(data, type, row) {
+                                        return (
+                                            '<button class="btn btn-warning hapusKeranjang" title="hapus" data-id="' +
+                                            row.id +
+                                            '"><i class="fa-solid fa-trash-can"></i></button>'
+                                        );
+                                    },
+                                },
+                            ],
+                            initComplete: function() {
+                                // Set column titles alignment to center
+                                $("th").css("text-align", "center");
+                            },
+                        });
+
+                        // Add click event listener for delete buttons
+                        $('.hapusKeranjang').on('click', function() {
+                            var itemId = $(this).data('id');
+                            delete_keranjang(itemId);
+                        });
+                    },
+                    error: function(xhr, textStatus, errorThrown) {
+                        console.log(xhr.statusText);
+                    },
+                });
+            }
+
+            function delete_keranjang(itemId) {
+                $.ajax({
+                    url: base_url + _controller + "/delete_data_keranjang",
+                    method: "POST",
+                    data: {
+                        id: itemId
+                    },
+                    success: function(response) {
+                        // Reload the cart data
+                        get_keranjang();
+                    },
+                    error: function(xhr, textStatus, errorThrown) {
+                        console.log(xhr.statusText);
+                    },
+                });
+            }
+
+            function insert_data_keranjang(id) {
+                var formData = new FormData();
+                formData.append("id", $("[name='id_produk']").val());
+
+                $.ajax({
+                    type: "POST",
+                    url: base_url + "/" + _controller + "/insert_data_keranjang",
+                    data: formData,
+                    dataType: "json",
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+                        delete_error();
+                        if (response.errors) {
+                            for (var fieldName in response.errors) {
+                                $("#error-" + fieldName).show();
+                                $("#error-" + fieldName).html(response.errors[fieldName]);
+                            }
+                        } else if (response.success) {
+                            $("#exampleModal").modal("hide");
+                            $("body").append(response.success);
+                            get_keranjang();
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error("AJAX Error: " + error);
+                    },
+                });
+            }
+        </script>
 
         </html>

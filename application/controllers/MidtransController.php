@@ -19,6 +19,7 @@ class MidtransController extends CI_Controller {
         $email = $this->input->post('email');
         $phone = $this->input->post('phone');
         $order_notes = $this->input->post('order_notes');
+        $jumlah = $this->input->post('jumlah');
     
         // Ambil id_produk dari session
         $id_produk = $this->input->post('id_produk');
@@ -31,6 +32,7 @@ class MidtransController extends CI_Controller {
         $query = $this->db->get();
         $row = $query->row();
         $id_pelanggan = $row->id;
+        
     
         $harga_transaksi = $gross_amount;
     
@@ -39,7 +41,7 @@ class MidtransController extends CI_Controller {
             'id_produk' => $id_produk,
             'id_pelanggan' => $id_pelanggan,
             'harga_transaksi' => $harga_transaksi,
-            'alamat' => $order_notes,
+            'jumlah' => $jumlah,
             'status_pembayaran' => 'Menunggu Pembayaran', // Set status awal
             'status_pengiriman' => 'Dikemas',
             'created_by' => $id_user
@@ -47,6 +49,12 @@ class MidtransController extends CI_Controller {
     
         $this->db->insert('transaksi', $data_transaksi);
         $transaksi_id = $this->db->insert_id();
+
+        $produk = $this->data->find('produk', array('id' => $id_produk))->row_array();
+        $total = $produk['total_stok'] - $jumlah;
+
+
+       $this->data->update('produk', array('id' => $id_produk),  array('total_stok' => $total));
     
         // Lanjutkan dengan membuat permintaan pembayaran ke Midtrans
         $data = [

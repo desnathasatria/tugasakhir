@@ -111,6 +111,7 @@ class Front_page extends CI_Controller
         $this->app_data['produk'] = $this->data->get($query)->result();
         $this->load->view('front_page/product_detail', $this->app_data);
         $this->footer();
+        $this->load->view('js-custom', $this->app_data);
     }
     public function location()
     {
@@ -148,6 +149,107 @@ class Front_page extends CI_Controller
         $this->footer();
         $this->load->view('js-custom', $this->app_data);
     }
+    public function keranjang()
+    {
+        $id_produk = $this->input->post('id_produk');
+        $jumlah = $this->input->post('jumlah');
+        $user_id = $this->session->userdata('id_user');
+
+        $where = array(
+            'product_id' => $id_produk,
+            'user_id' => $user_id
+        );
+        $existing_item = $this->data->find('shopping_cart', $where)->row_array();
+
+        if (isset($existing_item)) {
+            $new_quantity = $existing_item['quantity'] + $jumlah;
+            $data = array('quantity' => $new_quantity);
+            $where = array('id' => $existing_item['id']);
+            $this->data->update('shopping_cart', $where, $data);
+            $response['success'] = "update data";
+        } else {
+            $insert_data = array(
+                'product_id' => $id_produk,
+                'quantity' => $jumlah,
+                'user_id' => $user_id
+            );
+            $this->data->insert('shopping_cart', $insert_data);
+            $response['success'] = "insert data";
+        }
+
+        echo json_encode($response);
+    }
+
+    public function get_data_keranjang()
+    {
+        $user_id = $this->session->userdata('id_user');
+        $query = [
+            'select' => 'p.id as id_produk, sc.id, p.title, p.price, sc.quantity',
+            'from' => 'shopping_cart sc',
+            'join' => [
+                'produk p, p.id = sc.product_id'
+            ],
+            'where' => [
+                'sc.user_id' => $user_id,
+            ],
+            'order_by' => 'sc.id'
+        ];
+
+        $result = $this->data->get($query)->result();
+        echo json_encode($result);
+    }
+    public function delete_data_keranjang()
+    {
+        $id = $this->input->post('id');
+        $this->db->where('id', $id);
+        $deleted = $this->db->delete('shopping_cart');
+
+        if ($deleted) {
+            echo json_encode(['status' => 'success']);
+        } else {
+            echo json_encode(['status' => 'error']);
+        }
+    }
+    public function insert_data_keranjang()
+    {
+        $where = array('email' => $this->session->userdata('email'));
+        $data['user'] = $this->data->find('st_user', $where)->row_array();
+        $id_transaksi = $this->input->post('id_transaksi');
+        $id_produk = $this->input->post('id_produk');
+        $produk_array = explode(',',$id_produk);
+        $jml_produk = count($produk_array);
+
+        for ($i = 0; $i < $jml_produk; $i++){
+            ${"id_produk" . ($i +1)} = $produk_array[$i];
+
+            $data_gabung = array(
+                'id_produk' => ${"id_produk" . ($i + 1)}
+            );
+            $this->data->insert('detail_transaksi', $data_gabung);
+        }
+        $data = array(
+            'id_transaksi' => $id_transaksi,
+            'id_produk' => $id_produk,
+        );
+        $this->data->insert('detail_transaksi', $data);
+
+        $response['success'] = "<script>$(document).ready(function () {
+                var Toast = Swal.mixin({
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 2000,
+                  });
+
+                Toast.fire({
+                    icon: 'success',
+                    title: 'Anda telah melakukan aksi tambah data Data berhasil dimasukkan'
+                  })
+              });</script>";
+
+        echo json_encode($response);
+    }
+
     public function gallery()
     {
         $where = array('is_deleted' => '0');
@@ -314,46 +416,5 @@ class Front_page extends CI_Controller
         $this->load->view('front_page/history');
         $this->footer();
         $this->load->view('js-custom', $this->app_data);
-    }
-    public function add_to_cart($product_id)
-    {
-        if (!$this->is_logged_in()) {
-            redirect('login');
-        } else {
-            $user_id = $this->session->userdata('id_user');
-            $quantity = $this->input->post('jumlah');
-
-            $data = array(
-                'user_id' => $user_id,
-                'product_id' => $product_id,
-                'quantity' => $quantity
-            );
-
-            $this->data->insert('shopping_cart', $data);
-
-            redirect('Front_page/product_detail/' . $product_id);
-        }
-    }
-    public function get_cart_data()
-    {
-        if (!$this->is_logged_in()) {
-            redirect('login');
-        } else {
-            $user_id = $this->session->userdata('id_user');
-
-            $query = [
-                'select' => 'a.product_id, b.title, b.price, a.quantity',
-                'from' => 'shopping_cart a',
-                'join' => [
-                    'produk b, b.id = a.product_id'
-                ],
-                'where' => [
-                    'a.user_id' => $user_id
-                ]
-            ];
-
-            $cart_data = $this->data->get($query)->result_array();
-            echo json_encode($cart_data);
-        }
     }
 }

@@ -13,7 +13,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Raleway:wght@600;800&display=swap" rel="stylesheet">
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <!-- Icon Font Stylesheet -->
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
@@ -24,6 +24,9 @@
 
     <!-- Customized Bootstrap Stylesheet -->
     <link href="<?= base_url() ?>assets/template-user/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="<?= base_url() ?>assets/template-admin/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" href="<?= base_url() ?>assets/template-admin/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+    <link rel="stylesheet" href="<?= base_url() ?>assets/template-admin/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
 
     <!-- Template Stylesheet -->
     <link href="<?= base_url() ?>assets/template-user/css/style.css" rel="stylesheet">
@@ -107,97 +110,31 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <table class="table table-bordered">
-                    <thead>
+                <table id="tabelKeranjang" class="table table-hover table-bordered" style="width:100%">
+                    <thead class="table-light">
                         <tr>
-                            <th>Product</th>
-                            <th>Price</th>
-                            <th>Quantity</th>
-                            <th>Total</th>
-                            <th>Action</th>
+                            <th width="10%">Produk</th>
+                            <th width="15%">Harga</th>
+                            <th width="15%">Jumlah</th>
+                            <th width="15%">Total</th>
+                            <th width="15%">Aksi</th>
                         </tr>
                     </thead>
-                    <tbody id="shoppingCartTableBody">
-                        <!-- Cart items will be inserted here -->
+                    <tbody>
+
                     </tbody>
                 </table>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Checkout</button>
+                <input type="hidden" name="id_produk" id="id_produk">
+                <button type="button" class="btn btn-primary" onclick="insert_data_keranjang()">Checkout</button>
             </div>
         </div>
     </div>
 </div>
 <!-- Tambahkan script JavaScript di bagian akhir file html -->
 <script>
-    $(document).ready(function() {
-        var shoppingCart = [];
-
-        // Fungsi untuk menambahkan produk ke keranjang
-        $('.btn-add-to-cart').click(function() {
-            var productId = $(this).data('product-id');
-            var productName = $(this).data('product-name');
-            var productPrice = $(this).data('product-price');
-            var quantity = parseInt($('input[name="jumlah"]').val());
-
-            var cartItem = {
-                id: productId,
-                name: productName,
-                price: productPrice,
-                quantity: quantity
-            };
-
-            shoppingCart.push(cartItem);
-            updateShoppingCartModal();
-            $('#shoppingCartModal').modal('show');
-        });
-
-        // Fungsi untuk memperbarui tampilan modal keranjang
-        function updateShoppingCartModal() {
-            var tableBody = $('#shoppingCartTableBody');
-            tableBody.empty();
-
-            shoppingCart.forEach(function(item) {
-                var row = `
-                    <tr>
-                        <td>${item.name}</td>
-                        <td>${item.price}</td>
-                        <td>${item.quantity}</td>
-                        <td>${item.price * item.quantity}</td>
-                        <td><button class="btn btn-danger btn-sm remove-item" data-product-id="${item.id}">Remove</button></td>
-                    </tr>
-                `;
-                tableBody.append(row);
-            });
-        }
-
-
-        // Fungsi untuk menghapus produk dari keranjang
-        $(document).on('click', '.remove-item', function() {
-            var productId = $(this).data('product-id');
-            shoppingCart = shoppingCart.filter(function(item) {
-                return item.id !== productId;
-            });
-            updateShoppingCartModal();
-        });
-
-        function getShoppingCartData() {
-            $.ajax({
-                url: '<?php echo base_url('Front_page/get_cart_data'); ?>',
-                type: 'GET',
-                dataType: 'json',
-                success: function(data) {
-                    shoppingCart = data;
-                    updateShoppingCartModal();
-                },
-                error: function() {
-                    alert('Error retrieving shopping cart data');
-                }
-            });
-        }
-
-        // Panggil fungsi getShoppingCartData() saat halaman dimuat
-        getShoppingCartData();
-    });
+    var base_url = '<?php echo base_url() ?>';
+    var _controller = '<?= $this->router->fetch_class() ?>';
 </script>
