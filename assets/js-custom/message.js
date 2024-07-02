@@ -37,6 +37,8 @@ function insert_message() {
 				delete_form();
 
 				get_data();
+			} else if (response.error) {
+				alertify.error(response.error);
 			}
 		},
 		error: function (xhr, status, error) {

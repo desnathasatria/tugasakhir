@@ -130,37 +130,43 @@ class Front_page extends CI_Controller
     public function checkout()
     {
         $this->check_auth();
-        $jumlah = $this->input->post('jumlah');
+
         $id_produk = $this->input->post('id_produk');
+        $jumlah = $this->input->post('jumlah');
+        if ($this->session->userdata('logged_in_user')) {
 
-        // First, get the product details including the total_stok
-        $query = [
-            'select' => 'a.id, a.title, a.description, a.price, a.image, b.name, a.id_category_product, a.total_stok',
-            'from' => 'produk a',
-            'join' => [
-                'kategori_produk b, b.id = a.id_category_product',
-            ],
-            'where' => [
-                'a.is_deleted' => 0,
-                'a.id' => $id_produk
-            ]
-        ];
+            // First, get the product details including the total_stok
+            $query = [
+                'select' => 'a.id, a.title, a.description, a.price, a.image, b.name, a.id_category_product, a.total_stok',
+                'from' => 'produk a',
+                'join' => [
+                    'kategori_produk b, b.id = a.id_category_product',
+                ],
+                'where' => [
+                    'a.is_deleted' => 0,
+                    'a.id' => $id_produk
+                ]
+            ];
 
-        $product = $this->data->get($query)->row();
+            $product = $this->data->get($query)->row();
 
-        // Check if the requested quantity exceeds the available stock
-        if ($jumlah > $product->total_stok) {
-            // If it exceeds, set an error message and redirect back
-            $this->session->set_flashdata('error', 'Jumlah melebihi stok yang tersedia. Stok tersedia: ' . $product->total_stok);
-            redirect('Front_page/product_detail/' . $id_produk); // Assuming you have a product detail page
+            // Check if the requested quantity exceeds the available stock
+            if ($jumlah > $product->total_stok) {
+                // If it exceeds, set an error message and redirect back
+                $this->session->set_flashdata('error', 'Jumlah melebihi stok yang tersedia. Stok tersedia: ' . $product->total_stok);
+                redirect('Front_page/product_detail/' . $id_produk); // Assuming you have a product detail page
+            } else {
+                // If stock is sufficient, proceed with checkout
+                $this->app_data['jumlah'] = $jumlah;
+                $this->app_data['produk'] = [$product]; // We already have the product, no need for another query
+                $this->app_data['location'] = $this->data->get_all('company_profile')->result();
+                $this->load->view('front_page/checkout', $this->app_data);
+                $this->footer();
+                $this->load->view('js-custom', $this->app_data);
+            }
         } else {
-            // If stock is sufficient, proceed with checkout
-            $this->app_data['jumlah'] = $jumlah;
-            $this->app_data['produk'] = [$product]; // We already have the product, no need for another query
-            $this->app_data['location'] = $this->data->get_all('company_profile')->result();
-            $this->load->view('front_page/checkout', $this->app_data);
-            $this->footer();
-            $this->load->view('js-custom', $this->app_data);
+            $this->session->set_flashdata('error_login', 'Anda belum <b>LOGIN</b>!!!');
+            redirect('Front_page/product_detail/' . $id_produk); // Assuming you have a product detail page
         }
     }
 
@@ -200,30 +206,34 @@ class Front_page extends CI_Controller
     }
     public function keranjang()
     {
-        $id_produk = $this->input->post('id_produk');
-        $jumlah = $this->input->post('jumlah');
-        $user_id = $this->session->userdata('id_user');
+        if ($this->session->userdata('logged_in_user')) {
+            $id_produk = $this->input->post('id_produk');
+            $jumlah = $this->input->post('jumlah');
+            $user_id = $this->session->userdata('id_user');
 
-        $where = array(
-            'product_id' => $id_produk,
-            'user_id' => $user_id
-        );
-        $existing_item = $this->data->find('shopping_cart', $where)->row_array();
-
-        if (isset($existing_item)) {
-            $new_quantity = $existing_item['quantity'] + $jumlah;
-            $data = array('quantity' => $new_quantity);
-            $where = array('id' => $existing_item['id']);
-            $this->data->update('shopping_cart', $where, $data);
-            $response['success'] = "update data";
-        } else {
-            $insert_data = array(
+            $where = array(
                 'product_id' => $id_produk,
-                'quantity' => $jumlah,
                 'user_id' => $user_id
             );
-            $this->data->insert('shopping_cart', $insert_data);
-            $response['success'] = "insert data";
+            $existing_item = $this->data->find('shopping_cart', $where)->row_array();
+
+            if (isset($existing_item)) {
+                $new_quantity = $existing_item['quantity'] + $jumlah;
+                $data = array('quantity' => $new_quantity);
+                $where = array('id' => $existing_item['id']);
+                $this->data->update('shopping_cart', $where, $data);
+                $response['success'] = "update data";
+            } else {
+                $insert_data = array(
+                    'product_id' => $id_produk,
+                    'quantity' => $jumlah,
+                    'user_id' => $user_id
+                );
+                $this->data->insert('shopping_cart', $insert_data);
+                $response['success'] = "insert data";
+            }
+        } else {
+            $response['error'] = "Anda belum <b>LOGIN</b>!!!";
         }
 
         echo json_encode($response);
@@ -321,27 +331,33 @@ class Front_page extends CI_Controller
     }
     public function insert_message()
     {
-        $this->form_validation->set_rules('nama', 'Nama', 'required|trim');
-        $this->form_validation->set_rules('email', 'Email', 'required|trim|valid_email');
-        $this->form_validation->set_rules('pesan', 'pesan', 'required|trim');
+
+        if ($this->session->userdata('logged_in_user')) {
+            $this->form_validation->set_rules('nama', 'Nama', 'required|trim');
+            $this->form_validation->set_rules('email', 'Email', 'required|trim|valid_email');
+            $this->form_validation->set_rules('pesan', 'pesan', 'required|trim');
 
 
-        if ($this->form_validation->run() == false) {
-            $response['errors'] = $this->form_validation->error_array();
+            if ($this->form_validation->run() == false) {
+                $response['errors'] = $this->form_validation->error_array();
+            } else {
+                $nama = $this->input->post('nama');
+                $email = $this->input->post('email');
+                $pesan = $this->input->post('pesan');
+
+                $data = array(
+                    'name' => $nama,
+                    'email' => $email,
+                    'message' => $pesan,
+                );
+                $this->data->insert('message_user', $data);
+
+                $response['success'] = "Data successfully inserted!";
+            }
         } else {
-            $nama = $this->input->post('nama');
-            $email = $this->input->post('email');
-            $pesan = $this->input->post('pesan');
-
-            $data = array(
-                'name' => $nama,
-                'email' => $email,
-                'message' => $pesan,
-            );
-            $this->data->insert('message_user', $data);
-
-            $response['success'] = "Data successfully inserted!";
+            $response['error'] = 'Anda belum <b>LOGIN</b>!!!';
         }
+
         echo json_encode($response);
     }
     public function get_data_history()

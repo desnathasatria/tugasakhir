@@ -8,7 +8,8 @@
             </div>
             <div class="modal-body d-flex align-items-center">
                 <div class="input-group w-75 mx-auto d-flex">
-                    <input type="search" class="form-control p-3" placeholder="keywords" aria-describedby="search-icon-1">
+                    <input type="search" class="form-control p-3" placeholder="keywords"
+                        aria-describedby="search-icon-1">
                     <span id="search-icon-1" class="input-group-text p-3"><i class="fa fa-search"></i></span>
                 </div>
             </div>
@@ -31,7 +32,7 @@
 
 <!-- Contact Start -->
 <div class="container-fluid contact py-5">
-    <?php foreach ($location as $loc) : ?>
+    <?php foreach ($location as $loc): ?>
         <div class="container py-5">
             <div class="p-5 bg-light rounded">
                 <div class="row g-4">
@@ -43,16 +44,23 @@
                     </div>
                     <div class="col-lg-12">
                         <div class="h-100 rounded">
-                        <iframe src="<?= $loc->embed_address ?>" width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                            <iframe src="<?= $loc->embed_address ?>" width="100%" height="450" style="border:0;"
+                                allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
                         </div>
                     </div>
                     <div class="col-lg-7">
-                        <form action="" class="">
-                            <input type="text" class="w-100 form-control border-0 py-3 mb-4" name="nama" id="nama" placeholder="Your Name">
-                            <input type="email" class="w-100 form-control border-0 py-3 mb-4" name="email" id="email" placeholder="Enter Your Email">
-                            <textarea class="w-100 form-control border-0 mb-4" rows="5" cols="10"  name="pesan" id="pesan" placeholder="Your Message"></textarea>
-                            <button class="w-100 btn form-control border-secondary py-3 bg-white text-primary " onclick="insert_message()" type="submit">Submit</button>
-                        </form>
+                        <b class="text-danger pl-1 mb-1" id="error-login"></b>
+                        <input type="text" class="w-100 form-control border-0 py-3 mb-1" name="nama" id="nama"
+                            placeholder="Your Name">
+                        <small class="text-danger pl-1 mb-1" id="error-nama"></small>
+                        <input type="email" class="w-100 form-control border-0 py-3 mb-1" name="email" id="email"
+                            placeholder="Enter Your Email">
+                        <small class="text-danger pl-1 mb-1" id="error-email"></small>
+                        <textarea class="w-100 form-control border-0 mb-1" rows="5" cols="10" name="pesan" id="pesan"
+                            placeholder="Your Message"></textarea>
+                        <small class="text-danger pl-1 mb-1" id="error-pesan"></small>
+                        <button class="w-100 btn form-control border-secondary py-3 bg-white text-primary "
+                            onclick="insert_message()">Submit</button>
                     </div>
                     <div class="col-lg-5">
                         <div class="d-flex p-4 rounded mb-4 bg-white">

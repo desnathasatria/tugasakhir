@@ -38,7 +38,7 @@ function get_umkm() {
 	});
 }
 
-function masukan_keranjang(id){
+function masukan_keranjang(id) {
 	var formData = new FormData();
 	formData.append("id_produk", id);
 	formData.append("jumlah", $("[name='jumlah']").val());
@@ -62,6 +62,8 @@ function masukan_keranjang(id){
 				$("body").append(response.success);
 				$("[name='jumlah']").val(1);
 				get_keranjang();
+			} else if (response.error) {
+				alertify.error(response.error);
 			}
 		},
 		error: function (xhr, status, error) {
@@ -186,7 +188,7 @@ $("#courierService").on("change", function () {
 	}
 });
 
-function createPayment(id,jumlah) {
+function createPayment(id, jumlah) {
 	var timestamp = new Date().getTime();
 	var random_number = Math.floor(Math.random() * 1000);
 	var order_id = "order-" + timestamp + "-" + random_number;
