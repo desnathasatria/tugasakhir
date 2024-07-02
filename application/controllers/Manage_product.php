@@ -88,8 +88,8 @@ class Manage_product extends CI_Controller
                 'kategori_produk b, b.id = a.id_category_product',
             ],
             'where' => [
-                'a.is_deleted' => 0           
-                ]
+                'a.is_deleted' => 0
+            ]
         ];
 
         $result = $this->data->get($query)->result();
@@ -116,7 +116,12 @@ class Manage_product extends CI_Controller
 
     public function insert_data()
     {
-        $this->form_validation->set_rules('judul', 'Judul', 'required|trim');
+        $judul = $this->input->post('judul');
+        $deskripsi = $this->input->post('deskripsi');
+        $harga = $this->input->post('harga');
+        $berat = $this->input->post('berat');
+        $kategori_product = $this->input->post('kategori');
+        $this->form_validation->set_rules('judul', 'Judul', 'required|trim|callback_check_unique_title');
         $this->form_validation->set_rules('deskripsi', 'Deskripsi', 'required|trim');
         $this->form_validation->set_rules('harga', 'Harga', 'required|trim');
         $this->form_validation->set_rules('berat', 'Berat', 'required|trim');
@@ -133,11 +138,6 @@ class Manage_product extends CI_Controller
             $where = array('email' => $this->session->userdata('email'));
             $data['user'] = $this->data->find('st_user', $where)->row_array();
 
-            $judul = $this->input->post('judul');
-            $deskripsi = $this->input->post('deskripsi');
-            $harga = $this->input->post('harga');
-            $berat = $this->input->post('berat');
-            $kategori_product = $this->input->post('kategori');
 
             if (empty($this->input->post('kategori'))) {
                 $response['errors']['kategori'] = "Kategori harus dipilih";
@@ -190,9 +190,37 @@ class Manage_product extends CI_Controller
         }
         echo json_encode($response);
     }
+
+    public function check_unique_title($judul)
+    {
+        $this->db->where('title', $judul);
+        $this->db->where('is_deleted', '0');
+        $query = $this->db->get('produk');
+
+        if ($query->num_rows() > 0) {
+            $this->form_validation->set_message('check_unique_title', 'Kolom {field} harus unik');
+            return FALSE;
+        } else {
+            return TRUE;
+        }
+    }
+
     public function edit_data()
     {
-        $this->form_validation->set_rules('judul', 'Judul', 'required|trim');
+        $id = $this->input->post('id');
+        $judul = $this->input->post('judul');
+        $deskripsi = $this->input->post('deskripsi');
+        $harga = $this->input->post('harga');
+        $berat = $this->input->post('berat');
+        $kategori_product = $this->input->post('kategori');
+        $timestamp = $this->db->query("SELECT NOW() as timestamp")->row()->timestamp;
+        $data_produk = $this->data->find('produk', array('id' => $id, 'is_deleted' => '0'))->row_array();
+
+        if ($data_produk['title'] !== $judul) {
+            $this->form_validation->set_rules('judul', 'Judul', 'required|trim|callback_check_unique_title');
+        } else {
+            $this->form_validation->set_rules('judul', 'Judul', 'required|trim');
+        }
         $this->form_validation->set_rules('deskripsi', 'Deskripsi', 'required|trim');
         $this->form_validation->set_rules('harga', 'Harga', 'required|trim');
         $this->form_validation->set_rules('berat', 'Berat', 'required|trim');
@@ -202,20 +230,10 @@ class Manage_product extends CI_Controller
             if (empty($this->input->post('kategori'))) {
                 $response['errors']['kategori'] = "Kategori harus dipilih";
             }
-            if (empty($_FILES['image']['name'])) {
-                $response['errors']['image'] = "Foto harus diupload";
-            }
         } else {
             $where = array('email' => $this->session->userdata('email'));
             $data['user'] = $this->data->find('st_user', $where)->row_array();
 
-            $id = $this->input->post('id');
-            $judul = $this->input->post('judul');
-            $deskripsi = $this->input->post('deskripsi');
-            $harga = $this->input->post('harga');
-            $berat = $this->input->post('berat');
-            $kategori_product = $this->input->post('kategori');
-            $timestamp = $this->db->query("SELECT NOW() as timestamp")->row()->timestamp;
 
             if (empty($this->input->post('kategori'))) {
                 $response['errors']['kategori'] = "Kategori harus dipilih";

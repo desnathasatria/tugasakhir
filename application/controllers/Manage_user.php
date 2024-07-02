@@ -132,11 +132,20 @@ class Manage_user extends CI_Controller
 
     public function insert_data()
     {
+        $nama = $this->input->post('nama');
+        $email = $this->input->post('email');
+        $telepon = $this->input->post('telepon');
+        $alamat = $this->input->post('alamat');
+        $akses = $this->input->post('akses');
+        $username = $this->input->post('username');
+        $password = $this->input->post('password');
+        $hash = hash("sha256", $password . config_item('encryption_key'));
+
         $this->form_validation->set_rules('nama', 'Nama', 'required|trim');
         $this->form_validation->set_rules('email', 'Email', 'required|trim|valid_email');
         $this->form_validation->set_rules('telepon', 'No HP', 'required|trim|numeric');
         $this->form_validation->set_rules('alamat', 'Alamat', 'required|trim');
-        $this->form_validation->set_rules('username', 'Username', 'required|trim|is_unique[st_user.username]');
+        $this->form_validation->set_rules('username', 'Username', 'required|trim|callback_check_unique_title');
         $this->form_validation->set_rules('password', 'Password', 'required|trim|min_length[8]');
         $this->form_validation->set_rules('password1', 'Ulangi', 'required|trim|matches[password]');
         $this->form_validation->set_rules('akses', 'Role Akses', 'required');
@@ -153,14 +162,6 @@ class Manage_user extends CI_Controller
             $where = array('email' => $this->session->userdata('email'));
             $data['user'] = $this->data->find('st_user', $where)->row_array();
 
-            $nama = $this->input->post('nama');
-            $email = $this->input->post('email');
-            $telepon = $this->input->post('telepon');
-            $alamat = $this->input->post('alamat');
-            $akses = $this->input->post('akses');
-            $username = $this->input->post('username');
-            $password = $this->input->post('password');
-            $hash = hash("sha256", $password . config_item('encryption_key'));
 
             if (empty($this->input->post('akses'))) {
                 $response['errors']['akses'] = "Role akses harus dipilih";
@@ -237,38 +238,56 @@ class Manage_user extends CI_Controller
         echo json_encode($response);
     }
 
+    public function check_unique_title($username)
+    {
+        $this->db->where('username', $username);
+        $this->db->where('is_deleted', '0');
+        $query = $this->db->get('st_user');
+
+        if ($query->num_rows() > 0) {
+            $this->form_validation->set_message('check_unique_title', 'Kolom {field} harus unik');
+            return FALSE;
+        } else {
+            return TRUE;
+        }
+    }
+
     public function edit_data()
     {
+        $id = $this->input->post('id');
+        $nama = $this->input->post('nama');
+        $email = $this->input->post('email');
+        $telepon = $this->input->post('telepon');
+        $alamat = $this->input->post('alamat');
+        $akses = $this->input->post('akses');
+        $username = $this->input->post('username');
+        $password = $this->input->post('password1');
+        $hash = hash("sha256", $password . config_item('encryption_key'));
+        $timestamp = $this->db->query("SELECT NOW() as timestamp")->row()->timestamp;
+        $user = $this->data->find('st_user', array('id' => $id, 'is_deleted' => '0'))->row_array();
+
         $this->form_validation->set_rules('nama', 'Nama', 'required|trim');
         $this->form_validation->set_rules('email', 'Email', 'required|trim|valid_email');
         $this->form_validation->set_rules('telepon', 'No HP', 'required|trim|numeric');
         $this->form_validation->set_rules('alamat', 'Alamat', 'required|trim');
-        $this->form_validation->set_rules('username', 'Username', 'required|trim');
         $this->form_validation->set_rules('password1', 'Password Lama', 'trim|min_length[8]');
         $this->form_validation->set_rules('akses', 'Role Akses', 'required');
+
+        if ($user['username'] !== $username) {
+            $this->form_validation->set_rules('username', 'Username', 'required|trim|callback_check_unique_title');
+        } else {
+            $this->form_validation->set_rules('username', 'Username', 'required|trim');
+        }
 
         if ($this->form_validation->run() == false) {
             $response['errors'] = $this->form_validation->error_array();
             if (empty($this->input->post('akses'))) {
                 $response['errors']['akses'] = "Role akses harus dipilih";
             }
-            if (empty($_FILES['image']['name'])) {
-                $response['errors']['image'] = "Foto profil harus diupload";
-            }
         } else {
             $where = array('email' => $this->session->userdata('email'));
             $data['user'] = $this->data->find('st_user', $where)->row_array();
 
-            $id = $this->input->post('id');
-            $nama = $this->input->post('nama');
-            $email = $this->input->post('email');
-            $telepon = $this->input->post('telepon');
-            $alamat = $this->input->post('alamat');
-            $akses = $this->input->post('akses');
-            $username = $this->input->post('username');
-            $password = $this->input->post('password1');
-            $hash = hash("sha256", $password . config_item('encryption_key'));
-            $timestamp = $this->db->query("SELECT NOW() as timestamp")->row()->timestamp;
 
             if (empty($this->input->post('akses'))) {
                 $response['errors']['akses'] = "Role akses harus dipilih";

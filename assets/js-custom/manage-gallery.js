@@ -43,7 +43,7 @@ function delete_form() {
 	$("[name='id']").val("");
 	$("[name='judul']").val("");
 	$("[name='deskripsi']").val("");
-	$("[name='kategori']").val("");
+	$("#kategori").val("").trigger("change");
 	$("[name='image']").val("");
 	imagePreview.innerHTML = "";
 }
@@ -114,6 +114,15 @@ function get_data() {
 				initComplete: function () {
 					// Set column titles alignment to center
 					$("th").css("text-align", "center");
+				},
+				drawCallback: function (settings) {
+					var api = this.api();
+					api
+						.column(0, { search: "applied", order: "applied" })
+						.nodes()
+						.each(function (cell, i) {
+							cell.innerHTML = i + 1;
+						});
 				},
 			});
 		},

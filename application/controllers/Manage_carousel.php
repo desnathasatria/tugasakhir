@@ -95,7 +95,10 @@ class Manage_carousel extends CI_Controller
 
     public function insert_data()
     {
-        $this->form_validation->set_rules('judul', 'Judul', 'required|trim|is_unique[carousel_menu.title]');
+        $judul = $this->input->post('judul');
+        $sub = $this->input->post('sub');
+
+        $this->form_validation->set_rules('judul', 'Judul', 'required|trim|callback_check_unique_title');
         $this->form_validation->set_rules('sub', 'Sub', 'required|trim');
 
         if ($this->form_validation->run() == false) {
@@ -107,8 +110,6 @@ class Manage_carousel extends CI_Controller
             $where = array('email' => $this->session->userdata('email'));
             $data['user'] = $this->data->find('st_user', $where)->row_array();
 
-            $judul = $this->input->post('judul');
-            $sub = $this->input->post('sub');
 
             if (empty($_FILES['image']['name'])) {
                 $response['errors']['image'] = "Foto profil harus diupload";
@@ -177,15 +178,29 @@ class Manage_carousel extends CI_Controller
         echo json_encode($response);
     }
 
+    public function check_unique_title($judul)
+    {
+        $this->db->where('title', $judul);
+        $this->db->where('is_deleted', '0');
+        $query = $this->db->get('carousel_menu');
+
+        if ($query->num_rows() > 0) {
+            $this->form_validation->set_message('check_unique_title', 'Kolom {field} harus unik');
+            return FALSE;
+        } else {
+            return TRUE;
+        }
+    }
+
     public function edit_data()
     {
         $judul = $this->input->post('judul');
         $id = $this->input->post('id');
-        $title = $this->data->find('carousel_menu', array('id' => $id))->row_array();
+        $title = $this->data->find('carousel_menu', array('id' => $id, 'is_deleted' => '0'))->row_array();
 
-        if($title['title'] !== $judul){
-            $this->form_validation->set_rules('judul', 'Judul', 'required|trim|is_unique[carousel_menu.title]');
-        } else{
+        if ($title['title'] !== $judul) {
+            $this->form_validation->set_rules('judul', 'Judul', 'required|trim|callback_check_unique_title');
+        } else {
             $this->form_validation->set_rules('judul', 'Judul', 'required|trim');
         }
 

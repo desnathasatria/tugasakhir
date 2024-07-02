@@ -19,7 +19,6 @@ function filterData() {
 	$("#example").DataTable().search($(".akses").val()).draw();
 }
 
-
 $("#hapusSupplier").on("show.bs.modal", function (e) {
 	var button = $(e.relatedTarget);
 	var id = button.data("id");
@@ -42,57 +41,65 @@ function delete_error() {
 }
 
 function get_data() {
-    $.ajax({
-        url: base_url + "/" + _controller + "/get_data",
-        method: "GET",
-        dataType: "json",
-        success: function (data) {
-            var table = $("#example").DataTable({
-                destroy: true,
-                colReorder: true,
-                scrollY: 400,
-                data: data,
-                columns: [
-                    {
-                        data: null,
-                        render: function (data, type, row, meta) {
-                            return meta.row + 1;
-                        },
-                    },
-                    { data: "title" }, // Mengubah 'name' menjadi 'title'
-                    { data: "nama_supplier" }, // Mengubah 'name' menjadi 'title'
-                    { data: "stok" },
-                    {
-                        data: "created_date",
-                        render: function(data) {
-                            var date = new Date(data);
-                            var options = { year: 'numeric', month: 'long', day: 'numeric' };
-                            return date.toLocaleDateString('id-ID', options);
-                        }
-                    },
+	$.ajax({
+		url: base_url + "/" + _controller + "/get_data",
+		method: "GET",
+		dataType: "json",
+		success: function (data) {
+			var table = $("#example").DataTable({
+				destroy: true,
+				colReorder: true,
+				scrollY: 400,
+				data: data,
+				columns: [
 					{
-                        data: null,
-                        className: "text-center",
-                        render: function (data, type, row) {
-                            return (
-                                '<button class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" title="edit" onclick="submit(' +
-                                row.id +
-                                ')"><i class="fa-solid fa-pen-to-square"></i></button> ' +
-                                '<button class="btn btn-warning" data-toggle="modal" data-target="#hapusSupplier" title="hapus" data-id="' +
-                                row.id +
-                                '"><i class="fa-solid fa-trash-can"></i></button>'
-                            );
-                        },
-                    },
-                ],
-            });
-        },
-        error: function (xhr, textStatus, errorThrown) {
-            console.log(xhr.statusText);
-        },
-    });
+						data: null,
+						render: function (data, type, row, meta) {
+							return meta.row + 1;
+						},
+					},
+					{ data: "title" }, // Mengubah 'name' menjadi 'title'
+					{ data: "nama_supplier" }, // Mengubah 'name' menjadi 'title'
+					{ data: "stok" },
+					{
+						data: "created_date",
+						render: function (data) {
+							var date = new Date(data);
+							var options = { year: "numeric", month: "long", day: "numeric" };
+							return date.toLocaleDateString("id-ID", options);
+						},
+					},
+					{
+						data: null,
+						className: "text-center",
+						render: function (data, type, row) {
+							return (
+								'<button class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" title="edit" onclick="submit(' +
+								row.id +
+								')"><i class="fa-solid fa-pen-to-square"></i></button> ' +
+								'<button class="btn btn-warning" data-toggle="modal" data-target="#hapusSupplier" title="hapus" data-id="' +
+								row.id +
+								'"><i class="fa-solid fa-trash-can"></i></button>'
+							);
+						},
+					},
+				],
+				drawCallback: function (settings) {
+					var api = this.api();
+					api
+						.column(0, { search: "applied", order: "applied" })
+						.nodes()
+						.each(function (cell, i) {
+							cell.innerHTML = i + 1;
+						});
+				},
+			});
+		},
+		error: function (xhr, textStatus, errorThrown) {
+			console.log(xhr.statusText);
+		},
+	});
 }
-
 
 function submit(x) {
 	if (x == "tambah") {
@@ -189,7 +196,7 @@ function delete_data(x) {
 		dataType: "json",
 		url: base_url + "/" + _controller + "/delete_data",
 		success: function (response) {
-			if (response.success){
+			if (response.success) {
 				$("body").append(response.success);
 				get_data();
 			}

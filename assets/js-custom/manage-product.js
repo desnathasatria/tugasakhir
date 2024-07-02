@@ -88,16 +88,16 @@ function get_data() {
 					{ data: "title" },
 					{ data: "name" },
 					{ data: "description" },
-					{ 
+					{
 						data: "price",
 						render: function (data, type, row) {
 							return formatRupiah(data);
 						},
 					},
-					{ 
+					{
 						data: "weight",
 						render: function (data, type, row) {
-							return data + ' grams';
+							return data + " grams";
 						},
 					},
 					{
@@ -137,6 +137,15 @@ function get_data() {
 					// Set column titles alignment to center
 					$("th").css("text-align", "center");
 				},
+				drawCallback: function (settings) {
+					var api = this.api();
+					api
+						.column(0, { search: "applied", order: "applied" })
+						.nodes()
+						.each(function (cell, i) {
+							cell.innerHTML = i + 1;
+						});
+				},
 			});
 		},
 		error: function (xhr, textStatus, errorThrown) {
@@ -145,21 +154,20 @@ function get_data() {
 	});
 }
 
-
 function formatRupiah(angka) {
-	const numberString = angka.toString().replace(/[^,\d]/g, '');
-	const split = numberString.split(',');
+	const numberString = angka.toString().replace(/[^,\d]/g, "");
+	const split = numberString.split(",");
 	const sisa = split[0].length % 3;
 	let rupiah = split[0].substr(0, sisa);
 	const ribuan = split[0].substr(sisa).match(/\d{3}/gi);
 
 	if (ribuan) {
-		const separator = sisa ? '.' : '';
-		rupiah += separator + ribuan.join('.');
+		const separator = sisa ? "." : "";
+		rupiah += separator + ribuan.join(".");
 	}
 
-	rupiah = split[1] !== undefined ? rupiah + ',' + split[1] : rupiah;
-	return 'Rp. ' + rupiah;
+	rupiah = split[1] !== undefined ? rupiah + "," + split[1] : rupiah;
+	return "Rp. " + rupiah;
 }
 
 function submit(x) {
@@ -284,22 +292,22 @@ function delete_data(x) {
 }
 
 function formatRupiah(number) {
-	var number_string = number.toString().replace(/[^,\d]/g, ''),
-		split = number_string.split(','),
+	var number_string = number.toString().replace(/[^,\d]/g, ""),
+		split = number_string.split(","),
 		sisa = split[0].length % 3,
 		rupiah = split[0].substr(0, sisa),
 		ribuan = split[0].substr(sisa).match(/\d{3}/gi);
 
 	if (ribuan) {
-		separator = sisa ? '.' : '';
-		rupiah += separator + ribuan.join('.');
+		separator = sisa ? "." : "";
+		rupiah += separator + ribuan.join(".");
 	}
 
-	rupiah = split[1] !== undefined ? rupiah + ',' + split[1] : rupiah;
-	return 'Rp. ' + rupiah;
+	rupiah = split[1] !== undefined ? rupiah + "," + split[1] : rupiah;
+	return "Rp. " + rupiah;
 }
 
 function formatRupiahInput(input) {
-	var value = input.value.replace(/[^,\d]/g, '');
+	var value = input.value.replace(/[^,\d]/g, "");
 	input.value = formatRupiah(value);
 }

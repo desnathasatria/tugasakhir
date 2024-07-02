@@ -116,7 +116,10 @@ class Manage_gallery extends CI_Controller
 
     public function insert_data()
     {
-        $this->form_validation->set_rules('judul', 'Judul', 'required|trim');
+        $judul = $this->input->post('judul');
+        $deskripsi = $this->input->post('deskripsi');
+        $kategori = $this->input->post('kategori');
+        $this->form_validation->set_rules('judul', 'Judul', 'required|trim|callback_check_unique_title');
         $this->form_validation->set_rules('deskripsi', 'deskripsi', 'required|trim');
 
         if ($this->form_validation->run() == false) {
@@ -131,9 +134,6 @@ class Manage_gallery extends CI_Controller
             $where = array('email' => $this->session->userdata('email'));
             $data['user'] = $this->data->find('st_user', $where)->row_array();
 
-            $judul = $this->input->post('judul');
-            $deskripsi = $this->input->post('deskripsi');
-            $kategori = $this->input->post('kategori');
 
             if (empty($this->input->post('kategori'))) {
                 $response['errors']['kategori'] = "Kategori harus dipilih";
@@ -184,9 +184,36 @@ class Manage_gallery extends CI_Controller
         }
         echo json_encode($response);
     }
+
+    public function check_unique_title($judul)
+    {
+        $this->db->where('title', $judul);
+        $this->db->where('is_deleted', '0');
+        $query = $this->db->get('gallery_image');
+
+        if ($query->num_rows() > 0) {
+            $this->form_validation->set_message('check_unique_title', 'Kolom {field} harus unik');
+            return FALSE;
+        } else {
+            return TRUE;
+        }
+    }
+
     public function edit_data()
     {
-        $this->form_validation->set_rules('judul', 'Judul', 'required|trim');
+        $id = $this->input->post('id');
+        $judul = $this->input->post('judul');
+        $deskripsi = $this->input->post('deskripsi');
+        $kategori = $this->input->post('kategori');
+        $timestamp = $this->db->query("SELECT NOW() as timestamp")->row()->timestamp;
+        $gallery = $this->data->find('gallery_image', array('id' => $id, 'is_deleted' => '0'))->row_array();
+
+        if ($gallery['title'] !== $judul) {
+            $this->form_validation->set_rules('judul', 'Judul', 'required|trim|callback_check_unique_title');
+        } else {
+            $this->form_validation->set_rules('judul', 'Judul', 'required|trim');
+        }
+
         $this->form_validation->set_rules('deskripsi', 'deskripsi', 'required|trim');
 
         if ($this->form_validation->run() == false) {
@@ -201,11 +228,6 @@ class Manage_gallery extends CI_Controller
             $where = array('email' => $this->session->userdata('email'));
             $data['user'] = $this->data->find('st_user', $where)->row_array();
 
-            $id = $this->input->post('id');
-            $judul = $this->input->post('judul');
-            $deskripsi = $this->input->post('deskripsi');
-            $kategori = $this->input->post('kategori');
-            $timestamp = $this->db->query("SELECT NOW() as timestamp")->row()->timestamp;
 
             if (empty($this->input->post('kategori'))) {
                 $response['errors']['kategori'] = "Kategori harus dipilih";

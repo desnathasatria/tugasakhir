@@ -92,29 +92,26 @@ function get_data() {
 									row.id +
 									')"><i class="fa-solid fa-eye"></i></button>'
 								);
-							} 
-							else if (data == "2") {
+							} else if (data == "2") {
 								return (
 									'<button class="btn btn-primary" data-toggle="modal" data-target="#cekAjuan" title="Lihat" onclick="submit(' +
 									row.id +
 									')"><i class="fa-solid fa-eye"></i></button>'
 								);
-							} 
-							else if (data == "3") {
+							} else if (data == "3") {
 								return (
 									'<button class="btn btn-primary" data-toggle="modal" data-target="#cekAjuan" title="Lihat" onclick="submit(' +
 									row.id +
 									')"><i class="fa-solid fa-eye"></i></button>'
 								);
-							} 
-							else if (data == "4") {
+							} else if (data == "4") {
 								return (
 									'<button class="btn btn-info" data-toggle="modal" data-target="#cekDetail" title="detail" onclick="detail(' +
 									row.id +
 									')"><i class="fa-solid fa-circle-info"></i></button> ' +
 									'<button class="btn btn-primary" data-toggle="modal" data-target="#cekSyarat" title="syarat" onclick="syarat(' +
 									row.id +
-									')"><i class="fa-solid fa-eye"></i></button> ' + 
+									')"><i class="fa-solid fa-eye"></i></button> ' +
 									'<button class="btn btn-warning" data-toggle="modal" data-target="#tambahArsip" title="arsip" onclick="arsip(' +
 									row.id +
 									')"><i class="fa-solid fa-archive"></i></button> '
@@ -125,6 +122,15 @@ function get_data() {
 				],
 				initComplete: function () {
 					$("th").css("text-align", "center");
+				},
+				drawCallback: function (settings) {
+					var api = this.api();
+					api
+						.column(0, { search: "applied", order: "applied" })
+						.nodes()
+						.each(function (cell, i) {
+							cell.innerHTML = i + 1;
+						});
 				},
 			});
 		},
@@ -147,40 +153,39 @@ function submit(x) {
 			$("[name='letter']").val(hasil[0].name_letter);
 			$("[name='keterangan']").val(hasil[0].keterangan);
 			var namakk = hasil[0].kk;
-				imagePreviewKk.innerHTML = `<br><img src="${base_url}assets/image/administration/requirement/${namakk}" alt="Preview Image" class="img-thumbnail" style="width: 400px; height: 400;">`;
+			imagePreviewKk.innerHTML = `<br><img src="${base_url}assets/image/administration/requirement/${namakk}" alt="Preview Image" class="img-thumbnail" style="width: 400px; height: 400;">`;
 			var namaktp = hasil[0].ktp;
-				imagePreviewKtp.innerHTML = `<br><img src="${base_url}assets/image/administration/requirement/${namaktp}" alt="Preview Image" class="img-thumbnail" style="width: 400px; height: 400;">`;
+			imagePreviewKtp.innerHTML = `<br><img src="${base_url}assets/image/administration/requirement/${namaktp}" alt="Preview Image" class="img-thumbnail" style="width: 400px; height: 400;">`;
 			var namakia = hasil[0].kia;
-				imagePreviewKia.innerHTML = `<br><img src="${base_url}assets/image/administration/requirement/${namakia}" alt="Preview Image" class="img-thumbnail" style="width: 400px; height: 400;">`;
+			imagePreviewKia.innerHTML = `<br><img src="${base_url}assets/image/administration/requirement/${namakia}" alt="Preview Image" class="img-thumbnail" style="width: 400px; height: 400;">`;
 			var namaakta = hasil[0].akta;
-				imagePreviewAkta.innerHTML = `<br><img src="${base_url}assets/image/administration/requirement/${namaakta}" alt="Preview Image" class="img-thumbnail" style="width: 400px; height: 400;">`;
+			imagePreviewAkta.innerHTML = `<br><img src="${base_url}assets/image/administration/requirement/${namaakta}" alt="Preview Image" class="img-thumbnail" style="width: 400px; height: 400;">`;
 			var nama = hasil[0].pengantar_rt;
-				imagePreviewPengantarRt.innerHTML = `<br><img src="${base_url}assets/image/administration/requirement/${nama}" alt="Preview Image" class="img-thumbnail" style="width: 400px; height: 400;">`;
+			imagePreviewPengantarRt.innerHTML = `<br><img src="${base_url}assets/image/administration/requirement/${nama}" alt="Preview Image" class="img-thumbnail" style="width: 400px; height: 400;">`;
 
 			var statusValue = hasil[0].status;
-				if (statusValue === "1") {
-					$("#blm").prop("checked", true);
-					$("#belum").removeAttr("checked");
-					$("#terpenuhi").removeAttr("checked");
-					$("#sudah").removeAttr("checked");
-				} else if (statusValue === "2"){
-					$("#belum").prop("checked", true);
-					$("#blm").removeAttr("checked");
-					$("#terpenuhi").removeAttr("checked");
-					$("#sudah").removeAttr("checked");
-				} else if (statusValue === "3"){
-					$("#terpenuhi").prop("checked", true);
-					$("#blm").removeAttr("checked");
-					$("#belum").removeAttr("checked");
-					$("#sudah").removeAttr("checked");
-				} else if (statusValue === "4"){
-					$("#sudah").prop("checked", true);
-					$("#blm").removeAttr("checked");
-					$("#terpenuhi").removeAttr("checked");
-					$("#belum").removeAttr("checked");
-				}
-				
-			},
+			if (statusValue === "1") {
+				$("#blm").prop("checked", true);
+				$("#belum").removeAttr("checked");
+				$("#terpenuhi").removeAttr("checked");
+				$("#sudah").removeAttr("checked");
+			} else if (statusValue === "2") {
+				$("#belum").prop("checked", true);
+				$("#blm").removeAttr("checked");
+				$("#terpenuhi").removeAttr("checked");
+				$("#sudah").removeAttr("checked");
+			} else if (statusValue === "3") {
+				$("#terpenuhi").prop("checked", true);
+				$("#blm").removeAttr("checked");
+				$("#belum").removeAttr("checked");
+				$("#sudah").removeAttr("checked");
+			} else if (statusValue === "4") {
+				$("#sudah").prop("checked", true);
+				$("#blm").removeAttr("checked");
+				$("#terpenuhi").removeAttr("checked");
+				$("#belum").removeAttr("checked");
+			}
+		},
 	});
 	delete_form();
 	delete_error();
@@ -199,39 +204,39 @@ function detail(x) {
 			$("[name='letter']").val(hasil[0].name_letter);
 			$("[name='keterangan']").val(hasil[0].keterangan);
 			var namakk = hasil[0].kk;
-				imagePreviewKk.innerHTML = `<br><img src="${base_url}assets/image/administration/requirement/${namakk}" alt="Preview Image" class="img-thumbnail" style="width: 400px; height: 400;">`;
+			imagePreviewKk.innerHTML = `<br><img src="${base_url}assets/image/administration/requirement/${namakk}" alt="Preview Image" class="img-thumbnail" style="width: 400px; height: 400;">`;
 			var namaktp = hasil[0].ktp;
-				imagePreviewKtp.innerHTML = `<br><img src="${base_url}assets/image/administration/requirement/${namaktp}" alt="Preview Image" class="img-thumbnail" style="width: 400px; height: 400;">`;
+			imagePreviewKtp.innerHTML = `<br><img src="${base_url}assets/image/administration/requirement/${namaktp}" alt="Preview Image" class="img-thumbnail" style="width: 400px; height: 400;">`;
 			var namakia = hasil[0].kia;
-				imagePreviewKia.innerHTML = `<br><img src="${base_url}assets/image/administration/requirement/${namakia}" alt="Preview Image" class="img-thumbnail" style="width: 400px; height: 400;">`;
+			imagePreviewKia.innerHTML = `<br><img src="${base_url}assets/image/administration/requirement/${namakia}" alt="Preview Image" class="img-thumbnail" style="width: 400px; height: 400;">`;
 			var namaakta = hasil[0].akta;
-				imagePreviewAkta.innerHTML = `<br><img src="${base_url}assets/image/administration/requirement/${namaakta}" alt="Preview Image" class="img-thumbnail" style="width: 400px; height: 400;">`;
+			imagePreviewAkta.innerHTML = `<br><img src="${base_url}assets/image/administration/requirement/${namaakta}" alt="Preview Image" class="img-thumbnail" style="width: 400px; height: 400;">`;
 			var nama = hasil[0].pengantar_rt;
-				imagePreviewPengantarRt.innerHTML = `<br><img src="${base_url}assets/image/administration/requirement/${nama}" alt="Preview Image" class="img-thumbnail" style="width: 400px; height: 400;">`;
-			
+			imagePreviewPengantarRt.innerHTML = `<br><img src="${base_url}assets/image/administration/requirement/${nama}" alt="Preview Image" class="img-thumbnail" style="width: 400px; height: 400;">`;
+
 			var statusValue = hasil[0].status;
-				if (statusValue === "1") {
-					$("#blm1").prop("checked", true);
-					$("#belum1").removeAttr("checked");
-					$("#terpenuhi1").removeAttr("checked");
-					$("#sudah1").removeAttr("checked");
-				} else if (statusValue === "2"){
-					$("#belum1").prop("checked", true);
-					$("#blm1").removeAttr("checked");
-					$("#terpenuhi1").removeAttr("checked");
-					$("#sudah1").removeAttr("checked");
-				} else if (statusValue === "3"){
-					$("#terpenuhi1").prop("checked", true);
-					$("#blm1").removeAttr("checked");
-					$("#belum1").removeAttr("checked");
-					$("#sudah1").removeAttr("checked");
-				} else if (statusValue === "4"){
-					$("#sudah1").prop("checked", true);
-					$("#blm1").removeAttr("checked");
-					$("#terpenuhi1").removeAttr("checked");
-					$("#belum1").removeAttr("checked");
-				}
-			},
+			if (statusValue === "1") {
+				$("#blm1").prop("checked", true);
+				$("#belum1").removeAttr("checked");
+				$("#terpenuhi1").removeAttr("checked");
+				$("#sudah1").removeAttr("checked");
+			} else if (statusValue === "2") {
+				$("#belum1").prop("checked", true);
+				$("#blm1").removeAttr("checked");
+				$("#terpenuhi1").removeAttr("checked");
+				$("#sudah1").removeAttr("checked");
+			} else if (statusValue === "3") {
+				$("#terpenuhi1").prop("checked", true);
+				$("#blm1").removeAttr("checked");
+				$("#belum1").removeAttr("checked");
+				$("#sudah1").removeAttr("checked");
+			} else if (statusValue === "4") {
+				$("#sudah1").prop("checked", true);
+				$("#blm1").removeAttr("checked");
+				$("#terpenuhi1").removeAttr("checked");
+				$("#belum1").removeAttr("checked");
+			}
+		},
 	});
 	delete_form();
 	delete_error();
@@ -249,31 +254,30 @@ function arsip(x) {
 			$("[name='nama']").val(hasil[0].name);
 			$("[name='letter']").val(hasil[0].name_letter);
 			var statusValue = hasil[0].status;
-				if (statusValue === "1") {
-					$("#blm1").prop("checked", true);
-					$("#belum1").removeAttr("checked");
-					$("#terpenuhi1").removeAttr("checked");
-					$("#sudah1").removeAttr("checked");
-				} else if (statusValue === "2"){
-					$("#belum1").prop("checked", true);
-					$("#blm1").removeAttr("checked");
-					$("#terpenuhi1").removeAttr("checked");
-					$("#sudah1").removeAttr("checked");
-				} else if (statusValue === "3"){
-					$("#terpenuhi1").prop("checked", true);
-					$("#blm1").removeAttr("checked");
-					$("#belum1").removeAttr("checked");
-					$("#sudah1").removeAttr("checked");
-				} else if (statusValue === "4"){
-					$("#sudah1").prop("checked", true);
-					$("#blm1").removeAttr("checked");
-					$("#terpenuhi1").removeAttr("checked");
-					$("#belum1").removeAttr("checked");
-				}
+			if (statusValue === "1") {
+				$("#blm1").prop("checked", true);
+				$("#belum1").removeAttr("checked");
+				$("#terpenuhi1").removeAttr("checked");
+				$("#sudah1").removeAttr("checked");
+			} else if (statusValue === "2") {
+				$("#belum1").prop("checked", true);
+				$("#blm1").removeAttr("checked");
+				$("#terpenuhi1").removeAttr("checked");
+				$("#sudah1").removeAttr("checked");
+			} else if (statusValue === "3") {
+				$("#terpenuhi1").prop("checked", true);
+				$("#blm1").removeAttr("checked");
+				$("#belum1").removeAttr("checked");
+				$("#sudah1").removeAttr("checked");
+			} else if (statusValue === "4") {
+				$("#sudah1").prop("checked", true);
+				$("#blm1").removeAttr("checked");
+				$("#terpenuhi1").removeAttr("checked");
+				$("#belum1").removeAttr("checked");
+			}
 			var nama = hasil[0].file_name;
-				imagePreviewArsip.innerHTML = `<br><img src="${base_url}assets/image/administration/letter/${nama}" alt="Preview Image" class="img-thumbnail" style="width: 400px; height: 400;">`;
-			
-			},
+			imagePreviewArsip.innerHTML = `<br><img src="${base_url}assets/image/administration/letter/${nama}" alt="Preview Image" class="img-thumbnail" style="width: 400px; height: 400;">`;
+		},
 	});
 	delete_form();
 	delete_error();
@@ -292,21 +296,20 @@ function syarat(x) {
 			$("[name='letter']").val(hasil[0].name_letter);
 			$("[name='keterangan']").val(hasil[0].keterangan);
 			var namakk = hasil[0].kk;
-				imagePreviewKk1.innerHTML = `<br><img src="${base_url}assets/image/administration/requirement/${namakk}" alt="Preview Image" class="img-thumbnail" style="width: 400px; height: 400;">`;
+			imagePreviewKk1.innerHTML = `<br><img src="${base_url}assets/image/administration/requirement/${namakk}" alt="Preview Image" class="img-thumbnail" style="width: 400px; height: 400;">`;
 			var namaktp = hasil[0].ktp;
-				imagePreviewKtp1.innerHTML = `<br><img src="${base_url}assets/image/administration/requirement/${namaktp}" alt="Preview Image" class="img-thumbnail" style="width: 400px; height: 400;">`;
+			imagePreviewKtp1.innerHTML = `<br><img src="${base_url}assets/image/administration/requirement/${namaktp}" alt="Preview Image" class="img-thumbnail" style="width: 400px; height: 400;">`;
 			var namakia = hasil[0].kia;
-				imagePreviewKia1.innerHTML = `<br><img src="${base_url}assets/image/administration/requirement/${namakia}" alt="Preview Image" class="img-thumbnail" style="width: 400px; height: 400;">`;
+			imagePreviewKia1.innerHTML = `<br><img src="${base_url}assets/image/administration/requirement/${namakia}" alt="Preview Image" class="img-thumbnail" style="width: 400px; height: 400;">`;
 			var namaakta = hasil[0].akta;
-				imagePreviewAkta1.innerHTML = `<br><img src="${base_url}assets/image/administration/requirement/${namaakta}" alt="Preview Image" class="img-thumbnail" style="width: 400px; height: 400;">`;
+			imagePreviewAkta1.innerHTML = `<br><img src="${base_url}assets/image/administration/requirement/${namaakta}" alt="Preview Image" class="img-thumbnail" style="width: 400px; height: 400;">`;
 			var nama = hasil[0].pengantar_rt;
-				imagePreviewPengantarRt1.innerHTML = `<br><img src="${base_url}assets/image/administration/requirement/${nama}" alt="Preview Image" class="img-thumbnail" style="width: 400px; height: 400;">`;
-			},
+			imagePreviewPengantarRt1.innerHTML = `<br><img src="${base_url}assets/image/administration/requirement/${nama}" alt="Preview Image" class="img-thumbnail" style="width: 400px; height: 400;">`;
+		},
 	});
 	delete_form();
 	delete_error();
 }
-
 
 function update_data() {
 	var formData = new FormData();
@@ -315,14 +318,14 @@ function update_data() {
 	formData.append("status", $("[name='status']").val());
 
 	var selectedStatus = $("input[name='status']:checked").val();
-    if (selectedStatus === undefined) {
-        $("#error-status").text("Please select a status").show();
-        return;
-    } else {
-        $("#error-status").hide();
-        formData.append("status", selectedStatus);
-    }
-	
+	if (selectedStatus === undefined) {
+		$("#error-status").text("Please select a status").show();
+		return;
+	} else {
+		$("#error-status").hide();
+		formData.append("status", selectedStatus);
+	}
+
 	$.ajax({
 		type: "POST",
 		url: base_url + _controller + "/edit_data",
@@ -353,14 +356,14 @@ function update_status() {
 	formData.append("status", $("[name='status']").val());
 
 	var selectedStatus = $("input[name='status']:checked").val();
-    if (selectedStatus === undefined) {
-        $("#error-status").text("Please select a status").show();
-        return;
-    } else {
-        $("#error-status").hide();
-        formData.append("status", selectedStatus);
-    }
-	
+	if (selectedStatus === undefined) {
+		$("#error-status").text("Please select a status").show();
+		return;
+	} else {
+		$("#error-status").hide();
+		formData.append("status", selectedStatus);
+	}
+
 	$.ajax({
 		type: "POST",
 		url: base_url + _controller + "/edit_status",
@@ -418,4 +421,3 @@ function tambah_arsip() {
 		},
 	});
 }
-

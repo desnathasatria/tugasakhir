@@ -95,14 +95,14 @@ class Manage_category_gallery extends CI_Controller
 
     public function insert_data()
     {
-        $this->form_validation->set_rules('nama', 'Nama', 'required|trim|is_unique[gallery_category.name]');
+        $nama = $this->input->post('nama');
+        $this->form_validation->set_rules('nama', 'Nama', 'required|trim|callback_check_unique_title');
 
         if ($this->form_validation->run() == false) {
             $response['errors'] = $this->form_validation->error_array();
         } else {
             $where = array('email' => $this->session->userdata('email'));
             $data['user'] = $this->data->find('st_user', $where)->row_array();
-            $nama = $this->input->post('nama');
             $data = array(
                 'name' => $nama,
                 'created_by' => $data['user']['id'],
@@ -126,9 +126,31 @@ class Manage_category_gallery extends CI_Controller
         echo json_encode($response);
     }
 
+    public function check_unique_title($nama)
+    {
+        $this->db->where('name', $nama);
+        $this->db->where('is_deleted', '0');
+        $query = $this->db->get('gallery_category');
+
+        if ($query->num_rows() > 0) {
+            $this->form_validation->set_message('check_unique_title', 'Kolom {field} harus unik');
+            return FALSE;
+        } else {
+            return TRUE;
+        }
+    }
+
     public function edit_data()
     {
-        $this->form_validation->set_rules('nama', 'Nama', 'required|trim');
+        $id = $this->input->post('id');
+        $nama = $this->input->post('nama');
+        $category = $this->data->find('gallery_category', array('id' => $id, 'is_deleted' => '0'))->row_array();
+
+        if ($category['name'] !== $nama) {
+            $this->form_validation->set_rules('nama', 'Nama', 'required|trim|callback_check_unique_title');
+        } else {
+            $this->form_validation->set_rules('nama', 'Nama', 'required|trim');
+        }
 
         if ($this->form_validation->run() == false) {
             $response['errors'] = $this->form_validation->error_array();
@@ -136,8 +158,6 @@ class Manage_category_gallery extends CI_Controller
             $where = array('email' => $this->session->userdata('email'));
             $data['user'] = $this->data->find('st_user', $where)->row_array();
 
-            $id = $this->input->post('id');
-            $nama = $this->input->post('nama');
             $timestamp = $this->db->query("SELECT NOW() as timestamp")->row()->timestamp;
 
             $data = array(
