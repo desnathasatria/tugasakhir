@@ -172,9 +172,65 @@ class Front_page extends CI_Controller
 
     public function checkout_keranjang()
     {
-        $this->check_auth();
         $jumlah = $this->input->post('jumlah_1');
         $id_produk = $this->input->post('id_produk_1');
+
+        $product_ids = explode(',', $id_produk);
+        $jumlah_array = explode(',', $jumlah);
+
+        $this->app_data['jumlah'] = $jumlah_array;
+
+        $query = [
+            'select' => 'a.id, a.title, a.description, a.price, a.image, b.name, a.id_category_product, a.total_stok',
+            'from' => 'produk a',
+            'join' => [
+                'kategori_produk b, b.id = a.id_category_product',
+            ],
+            'where' => [
+                'a.is_deleted' => 0,
+            ]
+        ];
+
+        $where_in = [];
+        foreach ($product_ids as $id) {
+            $where_in[] = $id;
+        }
+
+        $query['where_in'] = ['a.id' => $where_in];
+
+        $products = $this->data->get($query)->result();
+
+        // Memeriksa stok untuk setiap produk yang diminta
+        $out_of_stock = [];
+        foreach ($products as $index => $product) {
+            // Mengambil jumlah yang diminta untuk produk ini
+            $requested_quantity = isset($jumlah_array[$index]) ? intval($jumlah_array[$index]) : 0;
+
+            // Memeriksa apakah jumlah yang diminta melebihi stok yang tersedia
+            if ($requested_quantity > $product->total_stok) {
+                // Menambahkan nama produk ke dalam daftar produk yang habis stok
+                $out_of_stock[] = $product->title . " stok: " . $product->total_stok;
+            }
+        }
+
+        // Jika ada produk yang kehabisan stok
+        if (!empty($out_of_stock)) {
+            // Menyimpan daftar produk yang habis stok ke dalam data aplikasi untuk digunakan di view
+            $this->app_data['out_of_stock'] = $out_of_stock;
+            $response['error'] = $out_of_stock;
+        } else {
+            $response['success'] = "berhasil";
+            $response['id_produk'] = $id_produk;
+            $response['jumlah'] = $jumlah;
+        }
+        echo json_encode($response);
+    }
+
+    public function checkout_keranjang_1()
+    {
+        $this->check_auth();
+        $jumlah = $this->input->get('jumlah');
+        $id_produk = $this->input->get('id_produk');
         $product_ids = explode(',', $id_produk);
 
         $jumlah_array = explode(',', $jumlah);

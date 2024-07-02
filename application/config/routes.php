@@ -76,5 +76,6 @@ $route['cek-ongkir'] = 'RajaongkirController/index';
 $route['payments'] = 'MidtransController/notification';
 $route['provinces'] = 'RajaongkirController/provinces';
 $route['export-pdf-history'] = 'Manage_history/export_pdf';
+$route['checkout_keranjang'] = 'Front_page/checkout_keranjange';
 //$route['cities/(:num)'] = 'RajaongkirController/cities/$1';
 //$route['cost'] = 'RajaongkirController/cost';
