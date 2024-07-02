@@ -13,41 +13,6 @@
             padding: 0;
         }
 
-        .header {
-            color: #000000;
-            padding: 20px;
-            text-align: center;
-            border-bottom: 2px solid #000000;
-            background-color: #ffffff;
-        }
-
-        .header img {
-            max-width: 150px;
-            vertical-align: middle;
-        }
-
-        .header div {
-            display: inline-block;
-            vertical-align: middle;
-            text-align: center;
-            margin-left: 10px;
-        }
-
-        .header h1 {
-            margin: 0;
-            font-size: 20px;
-        }
-
-        .header h2 {
-            margin: 0;
-            font-size: 18px;
-        }
-
-        .header p {
-            margin: 0;
-            font-size: 14px;
-        }
-
         .content {
             margin: 20px;
         }
@@ -106,24 +71,11 @@
 </head>
 
 <body>
-    <div class="header">
-        <link href="<?= base_url('assets/image/logo-umkm.png') ?>" rel="icon">
-        <div>
-            <h1>KEMENTERIAN PENDIDIKAN, KEBUDAYAAN</h1>
-            <h1>RISET, DAN TEKNOLOGI</h1>
-            <h2>POLITEKNIK NEGERI MALANG</h2>
-            <p>PSDKU POLITEKNIK NEGERI MALANG DI KOTA KEDIRI</p>
-            <p>PROGRAM STUDI D-III MANAJEMEN INFORMATIKA</p>
-            <p>Kampus 1: Jl. Mayor Bismo No. 27 Kota Kediri</p>
-            <p>Kampus 2: Jl. Lingkar Maskumambang Kota Kediri</p>
-            <p>Telp. (0354) 683128 – Fax. (0354) 683128</p>
-            <p>Website: www.polinema.ac.id – E-mail: info@polinema.ac.id</p>
-        </div>
-    </div>
     <div class=" content">
         <center>
             <h3>Data History Pembelian</h3>
         </center>
+        <hr>
         <table>
             <tr>
                 <th width="5%">No</th>
