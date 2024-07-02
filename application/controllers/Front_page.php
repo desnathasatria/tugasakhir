@@ -119,6 +119,7 @@ class Front_page extends CI_Controller
         $this->app_data['location'] = $this->data->get_all('company_profile')->result();
         $this->load->view('front_page/location', $this->app_data);
         $this->footer();
+        $this->load->view('js-custom', $this->app_data);
     }
 
     public function get_umkm()
@@ -385,20 +386,34 @@ class Front_page extends CI_Controller
         $this->load->view('front_page/gallery', $this->app_data);
         $this->footer();
     }
+
+    public function get_data_message()
+    {
+        $query = [
+            'select' => 'a.name, a.email, a.message, a.date_send, a.status, b.message as balasan, b.date_send as tgl_balasan',
+            'from' => 'message_user a',
+            'join' => [
+                'reply_message b, b.id_message = a.id, left'
+            ]
+        ];
+        $result = $this->data->get($query)->result();
+        echo json_encode($result);
+    }
+
     public function insert_message()
     {
 
         if ($this->session->userdata('logged_in_user')) {
-            $this->form_validation->set_rules('nama', 'Nama', 'required|trim');
-            $this->form_validation->set_rules('email', 'Email', 'required|trim|valid_email');
-            $this->form_validation->set_rules('pesan', 'pesan', 'required|trim');
+            $this->form_validation->set_rules('nama_pengirim', 'Nama', 'required|trim');
+            $this->form_validation->set_rules('email_pengirim', 'Email', 'required|trim|valid_email');
+            $this->form_validation->set_rules('pesan', 'Pesan', 'required|trim');
 
 
             if ($this->form_validation->run() == false) {
                 $response['errors'] = $this->form_validation->error_array();
             } else {
-                $nama = $this->input->post('nama');
-                $email = $this->input->post('email');
+                $nama = $this->input->post('nama_pengirim');
+                $email = $this->input->post('email_pengirim');
                 $pesan = $this->input->post('pesan');
 
                 $data = array(

@@ -50,12 +50,12 @@
                     </div>
                     <div class="col-lg-7">
                         <b class="text-danger pl-1 mb-1" id="error-login"></b>
-                        <input type="text" class="w-100 form-control border-0 py-3 mb-1" name="nama" id="nama"
-                            placeholder="Your Name">
-                        <small class="text-danger pl-1 mb-1" id="error-nama"></small>
-                        <input type="email" class="w-100 form-control border-0 py-3 mb-1" name="email" id="email"
-                            placeholder="Enter Your Email">
-                        <small class="text-danger pl-1 mb-1" id="error-email"></small>
+                        <input type="text" class="w-100 form-control border-0 py-3 mb-1" name="nama_pengirim"
+                            id="nama_pengirim" placeholder="Your Name">
+                        <small class="text-danger pl-1 mb-1" id="error-nama_pengirim"></small>
+                        <input type="email" class="w-100 form-control border-0 py-3 mb-1" name="email_pengirim"
+                            id="email_pengirim" placeholder="Enter Your Email">
+                        <small class="text-danger pl-1 mb-1" id="error-email_pengirim"></small>
                         <textarea class="w-100 form-control border-0 mb-1" rows="5" cols="10" name="pesan" id="pesan"
                             placeholder="Your Message"></textarea>
                         <small class="text-danger pl-1 mb-1" id="error-pesan"></small>
@@ -89,6 +89,22 @@
             </div>
         </div>
     <?php endforeach; ?>
+    <div class="container py-5">
+        <div class="row">
+            <div class="col-12">
+                <h2 class="text-primary mb-4">Kritik dan Saran</h2>
+            </div>
+        </div>
+        <div class="row" id="data_kritik_saran">
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <center>
+                    <button type="button" class="btn btn-primary">Show All</button>
+                </center>
+            </div>
+        </div>
+    </div>
 </div>
 <!-- Contact End -->
 <script>
