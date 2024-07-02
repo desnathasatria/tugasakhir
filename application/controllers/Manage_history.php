@@ -1,6 +1,7 @@
 <?php
 
 use Dompdf\Dompdf;
+use Dompdf\Options;
 
 defined('BASEPATH') or exit('No direct script access allowed');
 
@@ -96,7 +97,8 @@ class Manage_history extends CI_Controller
                 'produk b, b.id = d.id_produk'
             ],
             'where' => [
-                'a.is_deleted' => '0'
+                'a.is_deleted' => '0',
+                'a.status_pengiriman' => 'Selesai'
             ],
             'order_by' => 'a.id',
             'group_by' => 'a.id, a.id_pelanggan, a.harga_transaksi, a.created_date, a.status_pembayaran, a.status_pengiriman, c.name'
@@ -136,8 +138,11 @@ class Manage_history extends CI_Controller
     }
     public function export_pdf()
     {
+        $date1 = $this->input->get('date1');
+        $date2 = $this->input->get('date2');
+
         $query = [
-            'select' => 'a.id, a.id_pelanggan, a.harga_transaksi, a.created_date, a.status_pembayaran, a.status_pengiriman, GROUP_CONCAT(b.title SEPARATOR ", ") as title, c.name  ',
+            'select' => 'a.id, a.id_pelanggan, a.harga_transaksi, a.created_date, a.status_pembayaran, a.status_pengiriman, GROUP_CONCAT(b.title SEPARATOR ", ") as title, c.name',
             'from' => 'transaksi a',
             'join' => [
                 'st_user c, c.id = a.id_pelanggan',
@@ -146,16 +151,29 @@ class Manage_history extends CI_Controller
             ],
             'where' => [
                 'a.is_deleted' => '0',
+                'a.status_pengiriman' => 'Selesai'
             ],
             'order_by' => 'a.id',
             'group_by' => 'a.id, a.id_pelanggan, a.harga_transaksi, a.created_date, a.status_pembayaran, a.status_pengiriman, c.name'
         ];
 
-        $data['history'] = $this->data->get($query)->result();
+        if (!empty($date1) && !empty($date2)) {
+            $query['where']["DATE(a.created_date) >="] = $date1;
+            $query['where']["DATE(a.created_date) <="] = $date2;
+        }
 
-        $html = $this->load->view('pdf_history', $data, TRUE);
+        $this->app_data['history'] = $this->data->get($query)->result();
 
-        $this->load->helper('dompdf_helper');
-        pdf_create($html, 'History_Transaksi');
+        $options = new Options();
+        $options->set('isHtml5ParserEnabled', true);
+        $options->set('isRemoteEnabled', true);
+
+        $dompdf = new Dompdf($options);
+        $html = $this->load->view('menu-admin/pdf_history', $this->app_data, true);
+
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A4', 'portrait');
+        $dompdf->render();
+        $dompdf->stream("Laporan-data-history.pdf", array("Attachment" => 0));
     }
 }

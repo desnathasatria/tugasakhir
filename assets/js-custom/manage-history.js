@@ -88,10 +88,6 @@ function get_data_filter() {
 	get_data(startDate, endDate);
 }
 
-function export_pdf() {
-	window.location.href = base_url + _controller + "/export_pdf";
-}
-
 function detail(x) {
 	$.ajax({
 		type: "POST",

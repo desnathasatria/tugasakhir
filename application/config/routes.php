@@ -1,5 +1,5 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /*
 | -------------------------------------------------------------------------
@@ -75,5 +75,6 @@ $route['history'] = 'Front_page/history';
 $route['cek-ongkir'] = 'RajaongkirController/index';
 $route['payments'] = 'MidtransController/notification';
 $route['provinces'] = 'RajaongkirController/provinces';
+$route['export-pdf-history'] = 'Manage_history/export_pdf';
 //$route['cities/(:num)'] = 'RajaongkirController/cities/$1';
 //$route['cost'] = 'RajaongkirController/cost';
