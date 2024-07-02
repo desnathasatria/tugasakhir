@@ -178,7 +178,7 @@
 
 
 <!-- modal untuk hapus data -->
-<div class="modal fade" id="hapusGaleri">
+<div class="modal fade" id="hapusPurchase">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-body">

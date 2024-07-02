@@ -28,10 +28,8 @@
                     <div class="row">
                         <div class="col-lg-2">
                             <div class="input-group date" id="reservationdate1" data-target-input="nearest">
-                                <input type="text" class="form-control datetimepicker-input"
-                                    data-target="#reservationdate1" id="date1" name="date1" />
-                                <div class="input-group-append" data-target="#reservationdate1"
-                                    data-toggle="datetimepicker">
+                                <input type="text" class="form-control datetimepicker-input" data-target="#reservationdate1" id="date1" name="date1" />
+                                <div class="input-group-append" data-target="#reservationdate1" data-toggle="datetimepicker">
                                     <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                                 </div>
                             </div>
@@ -39,16 +37,19 @@
                         <h3> - </h3>
                         <div class="col-lg-2">
                             <div class="input-group date" id="reservationdate2" data-target-input="nearest">
-                                <input type="text" class="form-control datetimepicker-input"
-                                    data-target="#reservationdate2" id="date2" name="date2" />
-                                <div class="input-group-append" data-target="#reservationdate2"
-                                    data-toggle="datetimepicker">
+                                <input type="text" class="form-control datetimepicker-input" data-target="#reservationdate2" id="date2" name="date2" />
+                                <div class="input-group-append" data-target="#reservationdate2" data-toggle="datetimepicker">
                                     <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                                 </div>
                             </div>
                         </div>
                         <div class="col-lg-2">
-                            <button class="btn btn-success" onclick="get_data_filter()">Cari data</button>
+                            <button type="button" class="btn btn-success" onclick="get_data_filter()">Cari data</button>
+                        </div>
+                        <div class="col">
+                            <div class="float-right">
+                                <button class="btn btn-danger" onclick="export_pdf()">Export to PDF</button>
+                            </div>
                         </div>
                     </div>
                 </form>
@@ -75,8 +76,10 @@
     </section>
 </div>
 
+
+
 <!-- modal untuk insert dan edit data -->
-<div class="modal fade" id="exampleModal">
+<div class="modal fade" id="detailHistory">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
@@ -93,7 +96,7 @@
                                 <label for="nama" class="col-lg-2 col-form-label">Nama Produk</label>
                                 <div class="col-lg-10">
                                     <input type="hidden" name="id" class="form-control">
-                                    <input type="text" name="judul" id="judul" class="form-control" placeholder="Masukkan Nama Produk">
+                                    <input type="text" name="judul" id="judul" class="form-control" placeholder="Masukkan Nama Produk" readonly>
                                     <small class="text-danger pl-1" id="error-judul"></small>
                                 </div>
                             </div>
@@ -103,7 +106,7 @@
                             <div class="row">
                                 <label for="pelanggan" class="col-lg-2 col-form-label">Nama Pelanggan</label>
                                 <div class="col-lg-10">
-                                    <input type="text" name="pelanggan" id="pelanggan" class="form-control" placeholder="Masukkan Pelanggan">
+                                    <input type="text" name="pelanggan" id="pelanggan" class="form-control" placeholder="Masukkan Pelanggan" readonly>
                                     <small class="text-danger pl-1" id="error-pelanggan"></small>
                                 </div>
                             </div>
@@ -113,7 +116,7 @@
                             <div class="row">
                                 <label for="harga" class="col-lg-2 col-form-label">Harga</label>
                                 <div class="col-lg-10">
-                                    <input type="text" name="harga" id="harga" class="form-control" placeholder="Masukkan Harga">
+                                    <input type="text" name="harga" id="harga" class="form-control" placeholder="Masukkan Harga" readonly>
                                     <small class="text-danger pl-1" id="error-harga"></small>
                                 </div>
                             </div>
@@ -123,7 +126,7 @@
                             <div class="row">
                                 <label for="tanggal" class="col-lg-2 col-form-label">Tanggal Pembelian</label>
                                 <div class="col-lg-10">
-                                    <input type="text" name="tanggal" id="tanggal" class="form-control" placeholder="Masukkan Tanggal">
+                                    <input type="text" name="tanggal" id="tanggal" class="form-control" placeholder="Masukkan Tanggal" readonly>
                                     <small class="text-danger pl-1" id="error-tanggal"></small>
                                 </div>
                             </div>
@@ -133,7 +136,7 @@
                             <div class="row">
                                 <label for="pembayaran" class="col-lg-2 col-form-label">Pembayaran</label>
                                 <div class="col-lg-10">
-                                    <input type="text" name="pembayaran" id="pembayaran" class="form-control" placeholder="Pembayaran">
+                                    <input type="text" name="pembayaran" id="pembayaran" class="form-control" placeholder="Pembayaran" readonly>
                                     <small class="text-danger pl-1" id="error-pembayaran"></small>
                                 </div>
                             </div>
@@ -166,26 +169,8 @@
                         <div class="col-lg-2">
                             <button class="btn btn-outline-primary btn-block" type="button" data-dismiss="modal">Cancel</button>
                         </div>
-                        <div class="col-lg-4">
-                            <button type="button" id="btn-status" onclick="update_status()" class="btn btn-outline-primary btn-block">Ubah Status</button>
-                        </div>
                     </div>
                 </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- modal untuk hapus data -->
-<div class="modal fade" id="hapusGaleri">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-body">
-                <h5>Klik hapus jika anda ingin menghapus data ini</h5>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                <button class="btn btn-warning" type="button" id="btn-hapus" data-dismiss="modal">Hapus</button>
             </div>
         </div>
     </div>

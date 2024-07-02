@@ -105,7 +105,14 @@
                             return item.id_produk;
                         });
                         var id_produk_string = id_produk_array.join(',');
-                        $("[name='id_produk']").val(id_produk_string);
+                        $("[name='id_produk_1']").val(id_produk_string);
+
+                        var jumlah_array = data.map(function(item) {
+                            return item.quantity;
+                        });
+                        var jumlah_string = jumlah_array.join(',');
+                        $("[name='jumlah_1']").val(jumlah_string);
+
                         // Process the data to remove "Rp. " and "."
                         data = data.map(function(item) {
                             item.price = item.price.replace("Rp. ", "").replace(/\./g, "");
@@ -213,6 +220,7 @@
                     },
                 });
             }
+            
         </script>
 
         </html>

@@ -25,10 +25,15 @@
                         </div>
                         <div class="col-lg-6">
                             <h4 class="fw-bold mb-3"><?= $pr->title ?></h4>
-                            <p class="mb-3">Category: <?= $pr->name ?></p>
+                            <p class="mb-3">Kategori : <?= $pr->name ?></p>
                             <h5 class="fw-bold mb-3"><?= $pr->price ?></h5>
                             <p class="mb-4"><?= $pr->description ?></p>
-                            <form method="post" action="<?= base_url("Front_page/checkout/$pr->id") ?>">
+                            <p class="mb-4">Stok : <?= $pr->total_stok ?></p>
+                            <form method="post" action="<?= base_url("Front_page/checkout") ?>">
+                                <input type="hidden" name="id_produk" id="id_produk" value="<?= $pr->id ?>">
+                                <?php if ($this->session->flashdata('error')) : ?>
+                                    <div class="alert alert-danger"><?= $this->session->flashdata('error') ?></div>
+                                <?php endif; ?>
                                 <div class="input-group quantity mb-5" style="width: 100px;">
                                     <div class="input-group-btn">
                                         <button type="button" class="btn btn-sm btn-minus rounded-circle bg-light border">
@@ -44,7 +49,7 @@
                                 </div>
                                 <button type="submit" class="btn border border-secondary rounded-pill px-4 py-2 mb-4 text-primary">Checkout</button>
                             </form>
-                            <button class="btn border border-secondary rounded-pill px-4 py-2 mb-4 text-primary"onclick="masukan_keranjang(<?= $pr->id ?>)"><i class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</button>
+                            <button class="btn border border-secondary rounded-pill px-4 py-2 mb-4 text-primary" onclick="masukan_keranjang(<?= $pr->id ?>)"><i class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</button>
                         </div>
                         <div class="col-lg-12">
                             <nav>
@@ -98,6 +103,6 @@
 </div>
 <!-- Single Product End -->
 <script>
-     var base_url = '<?php echo base_url() ?>';
-     var _controller = '<?= $this->router->fetch_class() ?>';
- </script>
+    var base_url = '<?php echo base_url() ?>';
+    var _controller = '<?= $this->router->fetch_class() ?>';
+</script>

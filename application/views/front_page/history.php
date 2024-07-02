@@ -36,7 +36,7 @@
                 <thead class="table-light">
                     <tr>
                         <th width="5%">No</th>
-                        <th width="20%">No Transaksi</th>
+                        <th width="20%">Nama Produk</th>
                         <th width="30%">Tanggal Transaksi</th>
                         <th width="20%">Status</th>
                         <th width="10%">Aksi</th>
@@ -56,7 +56,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">Detail history pengajuan</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -64,34 +64,22 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="form-group">
-                            <label for="nama">Nama</label>
+                            <label for="nama">Nama Produk</label>
                             <div class="input-group">
                                 <input type="hidden" class="form-control" id="id" name="id" readonly>
-                                <input type="text" class="form-control" id="nama" name="nama" readonly>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="letter">No Transaksi</label>
-                            <div class="input-group">
-                                <input type="text" class="form-control" id="letter" name="letter" readonly>
+                                <input type="text" class="form-control" id="title" name="title" readonly>
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="date1">Tanggal Transaksi</label>
                             <div class="input-group">
-                                <input type="text" class="form-control" id="date1" name="date1" readonly>
+                                <input type="text" class="form-control" id="tanggal" name="tanggal" readonly>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="date2">Tanggal Selesai</label>
+                            <label for="keterangan">Status</label>
                             <div class="input-group">
-                                <input type="text" class="form-control" id="date2" name="date2" readonly>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="keterangan">Keterangan</label>
-                            <div class="input-group">
-                                <input type="text" class="form-control" id="keterangan" name="keterangan" readonly>
+                                <input type="text" class="form-control" id="status" name="status" readonly>
                             </div>
                         </div>
                     </div>
@@ -99,7 +87,7 @@
             </div>
             <div class="modal-footer d-flex justify-content-start">
                 <div class="col-lg-2">
-                    <button type="button" id="btn-tambah" data-dismiss="modal"
+                    <button type="button" id="btn-tambah" data-bs-dismiss="modal"
                         class="btn btn-outline-primary btn-block">Tutup</button>
                 </div>
             </div>

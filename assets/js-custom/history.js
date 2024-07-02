@@ -27,29 +27,15 @@ function get_data() {
 							return meta.row + 1;
 						},
 					},
-					{ data: "letter_name" },
-					{ data: "submit_date" },
-					{
-						data: "status",
-						className: "text-center",
-						render: function (data, type, row) {
-							if (data == "1") {
-								return '<button type="button" class="btn btn-block btn-info">Belum dicek</button>';
-							} else if (data == "2") {
-								return '<button type="button" class="btn btn-block btn-danger">Tidak terpenuhi</button>';
-							} else if (data == "3") {
-								return '<button type="button" class="btn btn-block btn-primary">Terpenuhi</button>';
-							} else if (data == "4") {
-								return '<button type="button" class="btn btn-block btn-success">Dapat diambil</button>';
-							}
-						},
-					},
+					{ data: "title" },
+					{ data: "created_date" },
+					{ data: "status_pengiriman" },
 					{
 						data: null,
 						className: "text-center",
 						render: function (data, type, row) {
 							return (
-								'<button class="btn btn-dark" data-toggle="modal" data-target="#modalDetail" title="detail" onclick="submit(' +
+								'<button class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#modalDetail" title="detail" onclick="submit(' +
 								row.id +
 								')"><i class="fa-solid fa-eye"></i></button> '
 							);
@@ -76,11 +62,9 @@ function submit(x) {
 		dataType: "json",
 		success: function (hasil) {
 			$("[name='id']").val(hasil[0].id);
-			$("[name='nama']").val(hasil[0].name);
-			$("[name='letter']").val(hasil[0].letter_name);
-			$("[name='date1']").val(hasil[0].submit_date);
-			$("[name='date2']").val(hasil[0].finish_date);
-			$("[name='keterangan']").val(hasil[0].keterangan);
+			$("[name='title']").val(hasil[0].title);
+			$("[name='tanggal']").val(hasil[0].created_date);
+			$("[name='status']").val(hasil[0].status_pengiriman);
 		},
 	});
 	delete_form();

@@ -205,7 +205,7 @@ class Manage_supplier extends CI_Controller
 
             $data_update = array( // Mengubah variabel $data menjadi $data_update untuk menghindari konflik
                 'id_produk' => $judul, // Mengubah 'title' menjadi 'judul'
-                'nama_supplierk' => $nama_supplier, // Mengubah 'title' menjadi 'judul'
+                'nama_supplier' => $nama_supplier, // Mengubah 'title' menjadi 'judul'
                 'stok' => $stok,
                 'updated_date' => $timestamp,
                 'updated_by' => $data['user']['id'],

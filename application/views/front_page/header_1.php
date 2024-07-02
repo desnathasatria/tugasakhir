@@ -127,8 +127,11 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <input type="hidden" name="id_produk" id="id_produk">
-                <button type="button" class="btn btn-primary" onclick="insert_data_keranjang()">Checkout</button>
+                <form method="post" action="<?= base_url("Front_page/checkout_keranjang") ?>">
+                <input type="hidden" name="id_produk_1" id="id_produk_1">
+                <input type="hidden" name="jumlah_1" id="jumlah_1">
+                <button type="submit" class="btn btn-primary" onclick="masuk_checkout()">Checkout</button>
+                </form>
             </div>
         </div>
     </div>

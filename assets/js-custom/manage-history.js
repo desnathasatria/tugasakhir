@@ -23,71 +23,14 @@ $(".filter").on("change", function () {
 	filterData();
 });
 
-function get_data_filter() {
-	var date1 = $("#date1").val() + " 10:00:00";
-	var date2 = $("#date2").val() + " 23:59:00";
-	$.ajax({
-		url: base_url + _controller + "/get_data_filter",
-		method: "POST",
-		data: {
-			date1: date1,
-			date2: date2,
-		},
-		dataType: "json",
-		success: function (data) {
-			console.log(date1);
-			console.log(date2);
-
-			// Destroy the existing DataTable if it exists
-			if ($.fn.DataTable.isDataTable("#example")) {
-				$("#example").DataTable().destroy();
-			}
-
-			var table = $("#example").DataTable({
-				data: data,
-				columns: [
-					{
-						data: null,
-						className: "text-center",
-						render: function (data, type, row, meta) {
-							return meta.row + 1;
-						},
-					},
-					{ data: "name", className: "text-center" },
-					{ data: "letter_name", className: "text-center" },
-					{ data: "submit_date", className: "text-center" },
-					{ data: "finish_date", className: "text-center" },
-					{
-						data: null,
-						className: "text-center",
-						render: function (data, type, row) {
-							return (
-								'<button class="btn btn-info" data-toggle="modal" data-target="#detailArsip" title="detail" onclick="detail(' +
-								row.id +
-								')"><i class="fa-solid fa-circle-info"></i></button> '
-							);
-						},
-					},
-				],
-				initComplete: function () {
-					$("th").css("text-align", "center");
-				},
-			});
-		},
-		error: function (xhr, textStatus, errorThrown) {
-			console.log(xhr.statusText);
-		},
-	});
-}
-
-function filterData() {
-	$("#example").DataTable().search($(".filter").val()).draw();
-}
-
-function get_data() {
+function get_data(startDate = null, endDate = null) {
 	$.ajax({
 		url: base_url + _controller + "/get_data",
 		method: "GET",
+		data: {
+			start_date: startDate,
+			end_date: endDate,
+		},
 		dataType: "json",
 		success: function (data) {
 			var table = $("#example").DataTable({
@@ -130,6 +73,16 @@ function get_data() {
 	});
 }
 
+function get_data_filter() {
+	let startDate = $("#date1").val();
+	let endDate = $("#date2").val();
+	get_data(startDate, endDate);
+}
+
+function export_pdf() {
+	window.location.href = base_url + _controller + "/export_pdf";
+}
+
 function detail(x) {
 	$.ajax({
 		type: "POST",
@@ -138,12 +91,16 @@ function detail(x) {
 		dataType: "json",
 		success: function (hasil) {
 			$("[name='id']").val(hasil[0].id);
-			$("[name='nama']").val(hasil[0].name);
-			$("[name='letter']").val(hasil[0].letter_name);
-			$("[name='date']").val(hasil[0].submit_date);
-			$("[name='date2']").val(hasil[0].finish_date);
-			var url = hasil[0].file_name;
-			$("embed").attr("src", base_url + "assets/file_letter/" + url);
+			$("[name='judul']").val(hasil[0].title);
+			$("[name='pelanggan']").val(hasil[0].name);
+			$("[name='harga']").val(hasil[0].harga_transaksi);
+			$("[name='tanggal']").val(hasil[0].created_date);
+			$("[name='pembayaran']").val(hasil[0].status_pembayaran);
+			var status_pengiriman_value = hasil[0].status_pengiriman;
+			$("input[name='status'][value='" + status_pengiriman_value + "']").prop(
+				"checked",
+				true
+			);
 		},
 	});
 }

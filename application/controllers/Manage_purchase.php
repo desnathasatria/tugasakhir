@@ -81,83 +81,56 @@ class Manage_purchase extends CI_Controller
 
     public function get_data()
     {
+        $date1 = $this->input->get('date1');
+        $date2 = $this->input->get('date2');
+
         $query = [
-            'select' => 'a.id, a.id_pelanggan, a.id_produk, a.harga_transaksi, a.created_date, a.status_pembayaran, a.status_pengiriman, b.title, c.name  ',
+            'select' => 'a.id, a.id_pelanggan, a.harga_transaksi, a.created_date, a.status_pembayaran, a.status_pengiriman, GROUP_CONCAT(b.title SEPARATOR ", ") as title, c.name',
             'from' => 'transaksi a',
             'join' => [
-                'produk b, b.id = a.id_produk',
-                'st_user c, c.id = a.id_pelanggan'
+                'st_user c, c.id = a.id_pelanggan',
+                'detail_transaksi d, d.id_transaksi = a.id',
+                'produk b, b.id = d.id_produk'
             ],
             'where' => [
                 'a.is_deleted' => '0',
             ],
-            'order_by' => 'a.id'
+            'order_by' => 'a.id',
+            'group_by' => 'a.id, a.id_pelanggan, a.harga_transaksi, a.created_date, a.status_pembayaran, a.status_pengiriman, c.name'
         ];
+
+        if (!empty($date1) && !empty($date2)) {
+            $query['where']['DATE(a.created_date) >='] = $date1;
+            $query['where']['DATE(a.created_date) <='] = $date2;
+        }
 
         $result = $this->data->get($query)->result();
         echo json_encode($result);
     }
+
 
     public function get_data_id()
     {
         $id = $this->input->post('id');
         $query = [
-            'select' => 'a.id, a.id_pelanggan, a.id_produk, a.harga_transaksi, a.created_date, a.status_pembayaran, a.status_pengiriman, b.title, c.name',
+            'select' => 'a.id, a.id_pelanggan, a.harga_transaksi, a.created_date, a.status_pembayaran, a.status_pengiriman, GROUP_CONCAT(b.title SEPARATOR ", ") as title, c.name  ',
             'from' => 'transaksi a',
             'join' => [
-                'produk b, b.id = a.id_produk',
-                'st_user c, c.id = a.id_pelanggan'
+                'st_user c, c.id = a.id_pelanggan',
+                'detail_transaksi d, d.id_transaksi = a.id',
+                'produk b, b.id = d.id_produk'
             ],
             'where' => [
                 'a.is_deleted' => '0',
                 'a.id' => $id
             ],
-            'order_by' => 'a.id'
+            'order_by' => 'a.id',
+            'group_by' => 'a.id, a.id_pelanggan, a.harga_transaksi, a.created_date, a.status_pembayaran, a.status_pengiriman, c.name'
         ];
 
         $result = $this->data->get($query)->result();
         echo json_encode($result);
     }
-    // private function cek_stok($id_barang, $jumlah)
-    // {
-    //     $query = [
-    //         'select' => 'stok',
-    //         'from' => 'supplier',
-    //         'where' => [
-    //             'id_barang' => $id_barang,
-    //             'is_deleted' => '0'
-    //         ]
-    //     ];
-
-    //     $result = $this->data->get($query)->row_array();
-    //     if ($result) {
-    //         return $result['stok'] >= $jumlah;
-    //     }
-
-    //     return false;
-    // }
-
-    // private function update_stok($id_barang, $jumlah, $operasi)
-    // {
-    //     $query = [
-    //         'select' => 'stok',
-    //         'from' => 'supplier',
-    //         'where' => [
-    //             'id_barang' => $id_barang,
-    //             'is_deleted' => '0'
-    //         ]
-    //     ];
-
-    //     $result = $this->data->get($query)->row_array();
-    //     if ($result) {
-    //         $stok_baru = ($operasi == 'kurang') ? $result['stok'] - $jumlah : $result['stok'] + $jumlah;
-    //         $data_update = array(
-    //             'stok' => $stok_baru
-    //         );
-    //         $where = array('id_barang' => $id_barang);
-    //         $this->data->update('supplier', $where, $data_update);
-    //     }
-    // }
     public function edit_data()
     {
         $this->form_validation->set_rules('status', 'Status', 'required|trim');
@@ -223,7 +196,7 @@ class Manage_purchase extends CI_Controller
 
                 Toast.fire({
                     icon: 'success',
-                    title: 'Anda telah melakukan aksi edit data Data berhasil diedit'
+                    title: 'Anda telah melakukan aksi hapus data Data berhasil dihapus'
                   })
               });</script>";
         }

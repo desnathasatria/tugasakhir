@@ -1,17 +1,20 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 /**
  * @property input $input
  * @property midtrans $midtrans
  */
-class MidtransController extends CI_Controller {
+class MidtransController extends CI_Controller
+{
 
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct();
         $this->load->library('Midtrans');
     }
 
-    public function create_payment() {
+    public function create_payment()
+    {
         $order_id = $this->input->post('order_id');
         $gross_amount = $this->input->post('gross_amount');
         $first_name = $this->input->post('first_name');
@@ -20,10 +23,9 @@ class MidtransController extends CI_Controller {
         $phone = $this->input->post('phone');
         $order_notes = $this->input->post('order_notes');
         $jumlah = $this->input->post('jumlah');
-    
+
         // Ambil id_produk dari session
-        $id_produk = $this->input->post('id_produk');
-    
+
         // Ambil id_pelanggan dari session dan join dengan tabel st_user
         $id_user = $this->session->userdata('id_user');
         $this->db->select('id');
@@ -32,13 +34,12 @@ class MidtransController extends CI_Controller {
         $query = $this->db->get();
         $row = $query->row();
         $id_pelanggan = $row->id;
-        
-    
+
+
         $harga_transaksi = $gross_amount;
-    
+
         // Simpan data transaksi ke dalam tabel transaksi
         $data_transaksi = [
-            'id_produk' => $id_produk,
             'id_pelanggan' => $id_pelanggan,
             'harga_transaksi' => $harga_transaksi,
             'jumlah' => $jumlah,
@@ -46,16 +47,28 @@ class MidtransController extends CI_Controller {
             'status_pengiriman' => 'Dikemas',
             'created_by' => $id_user
         ];
-    
-        $this->db->insert('transaksi', $data_transaksi);
-        $transaksi_id = $this->db->insert_id();
+
+        $inserted_id = $this->data->insert('transaksi', $data_transaksi);
+
+        $id_produk = $this->input->post('id_produk');
+        $id_produk_array = explode(',', $this->input->post('id_produk'));
+
+        foreach ($id_produk_array as $id_produk) {
+            $data_detail = [
+                'id_transaksi' => $inserted_id,
+                'id_produk' => trim($id_produk),
+            ];
+
+            $this->data->insert('detail_transaksi', $data_detail);
+        }
+
 
         $produk = $this->data->find('produk', array('id' => $id_produk))->row_array();
         $total = $produk['total_stok'] - $jumlah;
 
 
-       $this->data->update('produk', array('id' => $id_produk),  array('total_stok' => $total));
-    
+        $this->data->update('produk', array('id' => $id_produk),  array('total_stok' => $total));
+
         // Lanjutkan dengan membuat permintaan pembayaran ke Midtrans
         $data = [
             'transaction_details' => [
@@ -69,10 +82,10 @@ class MidtransController extends CI_Controller {
                 'phone' => $phone,
             ],
         ];
-    
+
         try {
             $response = $this->midtrans->create_payment_link($data);
-        
+
             if (isset($response->error)) {
                 echo 'Error: ' . $response->error;
             } else {
@@ -83,17 +96,18 @@ class MidtransController extends CI_Controller {
         }
     }
 
-    public function notification() {
+    public function notification()
+    {
         $notificationBody = $this->input->raw_input_stream;
         $notification = json_decode($notificationBody);
-    
+
         $order_id = $notification->order_id;
         $transaction_status = $notification->transaction_status;
-    
+
         // Update status pembayaran berdasarkan transaction_status
         $this->db->where('id', $order_id);
         $this->db->update('transaksi', ['status_pembayaran' => $transaction_status]);
-    
+
         // Kirim respons ke Midtrans
         $this->output->set_status_header(200);
     }

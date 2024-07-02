@@ -127,10 +127,53 @@ class Front_page extends CI_Controller
         echo json_encode($result);
     }
 
-    public function checkout($x)
+    public function checkout()
     {
         $this->check_auth();
         $jumlah = $this->input->post('jumlah');
+        $id_produk = $this->input->post('id_produk');
+
+        // First, get the product details including the total_stok
+        $query = [
+            'select' => 'a.id, a.title, a.description, a.price, a.image, b.name, a.id_category_product, a.total_stok',
+            'from' => 'produk a',
+            'join' => [
+                'kategori_produk b, b.id = a.id_category_product',
+            ],
+            'where' => [
+                'a.is_deleted' => 0,
+                'a.id' => $id_produk
+            ]
+        ];
+
+        $product = $this->data->get($query)->row();
+
+        // Check if the requested quantity exceeds the available stock
+        if ($jumlah > $product->total_stok) {
+            // If it exceeds, set an error message and redirect back
+            $this->session->set_flashdata('error', 'Jumlah melebihi stok yang tersedia. Stok tersedia: ' . $product->total_stok);
+            redirect('Front_page/product_detail/' . $id_produk); // Assuming you have a product detail page
+        } else {
+            // If stock is sufficient, proceed with checkout
+            $this->app_data['jumlah'] = $jumlah;
+            $this->app_data['produk'] = [$product]; // We already have the product, no need for another query
+            $this->app_data['location'] = $this->data->get_all('company_profile')->result();
+            $this->load->view('front_page/checkout', $this->app_data);
+            $this->footer();
+            $this->load->view('js-custom', $this->app_data);
+        }
+    }
+
+    public function checkout_keranjang()
+    {
+        $this->check_auth();
+        $jumlah = $this->input->post('jumlah_1');
+        $id_produk = $this->input->post('id_produk_1');
+        $product_ids = explode(',', $id_produk);
+
+        $jumlah_array = explode(',', $jumlah);
+        $this->app_data['jumlah'] = $jumlah_array;
+
         $query = [
             'select' => 'a.id, a.title, a.description, a.price, a.image, b.name, a.id_category_product',
             'from' => 'produk a',
@@ -139,10 +182,16 @@ class Front_page extends CI_Controller
             ],
             'where' => [
                 'a.is_deleted' => 0,
-                'a.id' => $x
             ]
         ];
-        $this->app_data['jumlah'] = $jumlah;
+
+        // Create the WHERE clause for multiple product IDs
+        $where_in = [];
+        foreach ($product_ids as $id) {
+            $where_in[] = $id;
+        }
+
+        $query['where_in'] = ['a.id' => $where_in];
         $this->app_data['produk'] = $this->data->get($query)->result();
         $this->app_data['location'] = $this->data->get_all('company_profile')->result();
         $this->load->view('front_page/checkout', $this->app_data);
@@ -216,11 +265,11 @@ class Front_page extends CI_Controller
         $data['user'] = $this->data->find('st_user', $where)->row_array();
         $id_transaksi = $this->input->post('id_transaksi');
         $id_produk = $this->input->post('id_produk');
-        $produk_array = explode(',',$id_produk);
+        $produk_array = explode(',', $id_produk);
         $jml_produk = count($produk_array);
 
-        for ($i = 0; $i < $jml_produk; $i++){
-            ${"id_produk" . ($i +1)} = $produk_array[$i];
+        for ($i = 0; $i < $jml_produk; $i++) {
+            ${"id_produk" . ($i + 1)} = $produk_array[$i];
 
             $data_gabung = array(
                 'id_produk' => ${"id_produk" . ($i + 1)}
@@ -300,13 +349,34 @@ class Front_page extends CI_Controller
         $where = array('email' => $this->session->userdata('email_user'));
         $data['user'] = $this->data->find('st_user', $where)->row_array();
         $query = [
-            'select' => 'a.id, a.id_produk, b.name, a.harga_transaksi, a.status ',
+            'select' => 'a.id, GROUP_CONCAT(b.title SEPARATOR ", ") as title, a.harga_transaksi, a.status_pengiriman, a.created_date',
             'from' => 'transaksi a',
             'join' => [
-                'st_user b, b.id = a.id_pelanggan'
+                'detail_transaksi c, c.id_transaksi = a.id',
+                'produk b, b.id = c.id_produk'
             ],
             'where' => [
                 'a.id_pelanggan' => $data['user']['id'],
+            ],
+            'group_by' => 'a.id'
+        ];
+        $result = $this->data->get($query)->result();
+        echo json_encode($result);
+    }
+    public function get_data_id()
+    {
+        $id = $this->input->post('id');
+        $where = array('email' => $this->session->userdata('email_user'));
+        $data['user'] = $this->data->find('st_user', $where)->row_array();
+        $query = [
+            'select' => 'a.id, GROUP_CONCAT(b.title SEPARATOR ", ") as title, a.harga_transaksi, a.status_pengiriman, a.created_date',
+            'from' => 'transaksi a',
+            'join' => [
+                'detail_transaksi c, c.id_transaksi = a.id',
+                'produk b, b.id = c.id_produk'
+            ],
+            'where' => [
+                'a.id' => $id,
             ]
         ];
         $result = $this->data->get($query)->result();
