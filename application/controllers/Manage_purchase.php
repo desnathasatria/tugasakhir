@@ -124,7 +124,6 @@ class Manage_purchase extends CI_Controller
                 'a.is_deleted' => '0',
                 'a.id' => $id
             ],
-            'order_by' => 'a.id',
             'group_by' => 'a.id, a.id_pelanggan, a.harga_transaksi, a.created_date, a.status_pembayaran, a.status_pengiriman, c.name'
         ];
 

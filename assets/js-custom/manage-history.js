@@ -62,6 +62,7 @@ function get_data(startDate = null, endDate = null) {
 						},
 					},
 				],
+				order: [[4, "desc"]],
 				initComplete: function () {
 					$("th").css("text-align", "center");
 				},

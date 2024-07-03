@@ -75,6 +75,7 @@ function get_data(date1 = "", date2 = "") {
 						},
 					},
 				],
+				order: [[4, "desc"]],
 				initComplete: function () {
 					$("th").css("text-align", "center");
 				},
