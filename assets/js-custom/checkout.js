@@ -229,36 +229,3 @@ function createPayment(id, jumlah) {
 		},
 	});
 }
-
-function masuk_checkout() {
-	var formData = new FormData();
-	formData.append("id_produk_1", $("[name='id_produk_1']").val());
-	formData.append("jumlah_1", $("[name='jumlah_1']").val());
-
-	$.ajax({
-		type: "POST",
-		url: base_url + "/" + _controller + "/checkout_keranjang",
-		data: formData,
-		dataType: "json",
-		processData: false,
-		contentType: false,
-		success: function (response) {
-			if (response.success) {
-				alertify.success(response.success);
-				window.location.href =
-					base_url +
-					"Front_page/checkout_keranjang_1?id_produk=" +
-					response.id_produk +
-					"&jumlah=" +
-					response.jumlah;
-				checkout_keranjang();
-			} else if (response.error) {
-				var productsOutOfStock = response.error.join(", ");
-				alertify.error("Produk berikut melebihi stok: " + productsOutOfStock);
-			}
-		},
-		error: function (xhr, status, error) {
-			console.error("AJAX Error: " + error);
-		},
-	});
-}
