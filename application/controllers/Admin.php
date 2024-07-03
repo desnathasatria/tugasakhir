@@ -63,6 +63,7 @@ class Admin extends CI_Controller
                     ];
                     $this->session->set_userdata($data);
                     $this->session->set_userdata('logged_in', TRUE);
+
                     redirect('dashboard');
                 } else {
                     $this->session->set_flashdata('message', '<div class="alert alert-danger alert-dismissible fade show" role="alert">

@@ -69,6 +69,63 @@ class Dashboard_admin extends CI_Controller
 		$this->app_data['get_dropdown'] = $this->data->get($query_dropdown)->result();
 		$this->app_data['get_child'] = $this->data->get($query_child)->result();
 		$this->app_data['user'] = $this->data->get($user)->row_array();
+		$query_produk = [
+			'select' => 'count(*) as jumlah',
+			'from' => 'produk',
+			'where' => [
+				'is_deleted' => '0',
+			]
+		];
+		$this->app_data['produk'] = $this->data->get($query_produk)->row_array();
+		$query_kategori = [
+			'select' => 'count(*) as jumlah',
+			'from' => 'kategori_produk',
+			'where' => [
+				'is_deleted' => '0',
+			]
+		];
+		$this->app_data['kategori'] = $this->data->get($query_kategori)->row_array();
+		$query_transaksi = [
+			'select' => 'count(*) as jumlah',
+			'from' => 'transaksi',
+			'where' => [
+				'is_deleted' => '0',
+				'status_pengiriman' => 'Selesai'
+			]
+		];
+		$this->app_data['transaksi'] = $this->data->get($query_transaksi)->row_array();
+
+		$query_user = [
+			'select' => 'count(*) as jumlah',
+			'from' => 'st_user',
+			'where' => [
+				'is_deleted' => '0'
+			]
+		];
+		$this->app_data['jml_user'] = $this->data->get($query_user)->row_array();
+
+		$query_total = [
+			'select' => 'count(*) as jumlah',
+			'from' => 'transaksi',
+			'where' => [
+				'is_deleted' => '0'
+			]
+		];
+		$this->app_data['total_transaksi'] = $this->data->get($query_total)->row_array();
+
+		$query_grafik = [
+			'select' => 'a.title, count(b.id) as jumlah_transaksi',
+			'from' => 'produk a',
+			'join' => [
+				'detail_transaksi b, b.id_produk = a.id, left'
+			],
+			'where' => [
+				'a.is_deleted' => '0',
+			],
+			'group_by' => 'a.id, a.title',
+			'order by jumlah_transaksi'
+		];
+		$this->app_data['grafik'] = $this->data->get($query_grafik)->result();
 
 		$this->app_data['title'] = 'Dashboard';
 
@@ -78,11 +135,5 @@ class Dashboard_admin extends CI_Controller
 		$this->load->view('template-admin/footer');
 		$this->load->view('template-admin/end');
 		$this->load->view('js-custom', $this->app_data);
-	}
-
-	public function get_data()
-	{
-		$result = $this->data->get($query)->result();
-		echo json_encode($result);
 	}
 }
