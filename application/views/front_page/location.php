@@ -100,7 +100,7 @@
         <div class="row">
             <div class="col-lg-12">
                 <center>
-                    <button type="button" class="btn btn-primary">Show All</button>
+                    <button type="button" id="btn_tampil_data" class="btn btn-primary">Show More</button>
                 </center>
             </div>
         </div>

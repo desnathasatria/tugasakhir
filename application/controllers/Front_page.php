@@ -425,7 +425,8 @@ class Front_page extends CI_Controller
             'from' => 'message_user a',
             'join' => [
                 'reply_message b, b.id_message = a.id, left'
-            ]
+            ],
+            'order_by' => 'a.id, DESC'
         ];
         $result = $this->data->get($query)->result();
         echo json_encode($result);

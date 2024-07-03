@@ -17,11 +17,13 @@ var maxToShow = 5;
 $(document).ready(function () {
 	get_data();
 
-	$("button.btn-primary").click(function () {
+	$("#btn_tampil_data").click(function () {
 		if (maxToShow === 5) {
 			maxToShow = 999;
+			$(this).text("Show Less");
 		} else {
 			maxToShow = 5;
+			$(this).text("Show More");
 		}
 		get_data();
 	});
