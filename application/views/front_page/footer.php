@@ -165,10 +165,17 @@
                         className: "text-center",
                         render: function (data, type, row) {
                             return (
+                                '<button class="btn btn-dark rounded-circle" title="minus" onclick="ubah_jumlah(' +
+                                row.id +
+                                ', \'minus\')"><i class="fa-solid fa-minus"></i></button> ' +
                                 '<button class="btn btn-warning hapusKeranjang" title="hapus" data-id="' +
                                 row.id +
-                                '"><i class="fa-solid fa-trash-can"></i></button>'
+                                '"><i class="fa-solid fa-trash-can"></i></button>' +
+                                ' <button class="btn btn-dark rounded-circle" title="plus" onclick="ubah_jumlah(' +
+                                row.id +
+                                ', \'plus\')"><i class="fa-solid fa-plus"></i></button> '
                             );
+
                         },
                     },
                     ],
@@ -230,6 +237,33 @@
                 } else if (response.success) {
                     $("#exampleModal").modal("hide");
                     $("body").append(response.success);
+                    get_keranjang();
+                }
+            },
+            error: function (xhr, status, error) {
+                console.error("AJAX Error: " + error);
+            },
+        });
+    }
+
+    function ubah_jumlah(id, status) {
+        var formData = new FormData();
+        formData.append("id", id);
+        formData.append("status", status);
+
+        $.ajax({
+            type: "POST",
+            url: base_url + "/" + _controller + "/ubah_jumlah",
+            data: formData,
+            dataType: "json",
+            processData: false,
+            contentType: false,
+            success: function (response) {
+                delete_error();
+                if (response.error) {
+                    alertify.error(response.error);
+                } else if (response.success) {
+                    alertify.success("Berhasil menambah jumlah");
                     get_keranjang();
                 }
             },

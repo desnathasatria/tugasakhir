@@ -314,6 +314,37 @@ class Front_page extends CI_Controller
         $result = $this->data->get($query)->result();
         echo json_encode($result);
     }
+
+    public function ubah_jumlah()
+    {
+        $id = $this->input->post('id');
+        $status = $this->input->post('status');
+        $keranjang = $this->data->find('shopping_cart', array('id' => $id))->row_array();
+
+        if ($status == 'plus') {
+            $jumlah = $keranjang['quantity'] + 1;
+            $data = array(
+                'quantity' => $jumlah,
+            );
+            $where = array('id' => $id);
+            $this->data->update('shopping_cart', $where, $data);
+            $response['success'] = "Berhasil";
+        } else if ($status == 'minus') {
+            if ($keranjang['quantity'] == 1) {
+                $response['error'] = "Data tidak dapat berkurang lagi";
+            } else {
+                $jumlah = $keranjang['quantity'] - 1;
+                $data = array(
+                    'quantity' => $jumlah,
+                );
+                $where = array('id' => $id);
+                $this->data->update('shopping_cart', $where, $data);
+                $response['success'] = "Berhasil";
+            }
+        }
+        echo json_encode($response);
+    }
+
     public function delete_data_keranjang()
     {
         $id = $this->input->post('id');
