@@ -197,8 +197,10 @@
             data: {
                 id: itemId
             },
+            dataType: "json",
             success: function (response) {
                 // Reload the cart data
+                alertify.success("Berhasil menghapus data keranjang");
                 get_keranjang();
             },
             error: function (xhr, textStatus, errorThrown) {

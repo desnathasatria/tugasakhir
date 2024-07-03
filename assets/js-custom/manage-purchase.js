@@ -153,6 +153,17 @@ function submit(x) {
 					"checked",
 					true
 				);
+				if (hasil[0].status_pengiriman == "Dikirim") {
+					$("#kemas").hide();
+				}
+
+				if (hasil[0].status_pengiriman == "Selesai") {
+					$("#status_pengiriman").hide();
+				}
+				if (hasil[0].status_pengiriman == "Dikemas") {
+					$("#kemas").show();
+					$("#status_pengiriman").show();
+				}
 			},
 		});
 	}

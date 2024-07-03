@@ -469,6 +469,26 @@ class Front_page extends CI_Controller
         $result = $this->data->get($query)->result();
         echo json_encode($result);
     }
+
+    public function konfirmasi_pemesanan()
+    {
+        $where = array('email' => $this->session->userdata('email'));
+        $data = $this->data->find('st_user', $where)->row_array();
+        $id = $this->input->post('id');
+        $timestamp = $this->db->query("SELECT NOW() as timestamp")->row()->timestamp;
+
+        $data = array(
+            'status_pengiriman' => 'Selesai',
+            'updated_date' => $timestamp,
+            'updated_by' => $data['id'],
+        );
+
+        $where = array('id' => $id);
+        $this->data->update('transaksi', $where, $data);
+        $response['success'] = "Berhasil";
+        echo json_encode($response);
+    }
+
     public function profile()
     {
         if (!$this->is_logged_in()) {
