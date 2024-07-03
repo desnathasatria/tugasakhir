@@ -116,120 +116,21 @@
              <p>Beberapa Produk Unggulan dari GTT Pusat Oleh - Oleh Kediri</p>
          </div>
          <div class="row g-4">
+         <?php foreach ($produk as $pr): ?>
              <div class="col-lg-6 col-xl-4">
                  <div class="p-4 rounded bg-light">
                      <div class="row align-items-center">
                          <div class="col-6">
-                             <img src="<?= base_url() ?>assets/template-user/img/best-product-1.jpg" class="img-fluid rounded-circle w-100" alt="">
+                             <img src="<?= base_url('assets/image/product/') . $pr->image ?>" class="img-fluid rounded-circle w-100" alt="">
                          </div>
                          <div class="col-6">
-                             <a href="#" class="h5">Organic Tomato</a>
-                             <h4 class="mb-3">3.12 $</h4>
+                             <a href="#" class="h5"><?= $pr->title ?></a>
+                             <h4 class="mb-3"><?= $pr->price ?></h4>
                          </div>
                      </div>
                  </div>
              </div>
-             <div class="col-lg-6 col-xl-4">
-                 <div class="p-4 rounded bg-light">
-                     <div class="row align-items-center">
-                         <div class="col-6">
-                             <img src="<?= base_url() ?>assets/template-user/img/best-product-2.jpg" class="img-fluid rounded-circle w-100" alt="">
-                         </div>
-                         <div class="col-6">
-                             <a href="#" class="h5">Organic Tomato</a>
-                             <h4 class="mb-3">3.12 $</h4>
-                         </div>
-                     </div>
-                 </div>
-             </div>
-             <div class="col-lg-6 col-xl-4">
-                 <div class="p-4 rounded bg-light">
-                     <div class="row align-items-center">
-                         <div class="col-6">
-                             <img src="<?= base_url() ?>assets/template-user/img/best-product-3.jpg" class="img-fluid rounded-circle w-100" alt="">
-                         </div>
-                         <div class="col-6">
-                             <a href="#" class="h5">Organic Tomato</a>
-                             <h4 class="mb-3">3.12 $</h4>
-                         </div>
-                     </div>
-                 </div>
-             </div>
-             <div class="col-lg-6 col-xl-4">
-                 <div class="p-4 rounded bg-light">
-                     <div class="row align-items-center">
-                         <div class="col-6">
-                             <img src="<?= base_url() ?>assets/template-user/img/best-product-4.jpg" class="img-fluid rounded-circle w-100" alt="">
-                         </div>
-                         <div class="col-6">
-                             <a href="#" class="h5">Organic Tomato</a>
-                             <h4 class="mb-3">3.12 $</h4>
-                         </div>
-                     </div>
-                 </div>
-             </div>
-             <div class="col-lg-6 col-xl-4">
-                 <div class="p-4 rounded bg-light">
-                     <div class="row align-items-center">
-                         <div class="col-6">
-                             <img src="<?= base_url() ?>assets/template-user/img/best-product-5.jpg" class="img-fluid rounded-circle w-100" alt="">
-                         </div>
-                         <div class="col-6">
-                             <a href="#" class="h5">Organic Tomato</a>
-                             <h4 class="mb-3">3.12 $</h4>
-                         </div>
-                     </div>
-                 </div>
-             </div>
-             <div class="col-lg-6 col-xl-4">
-                 <div class="p-4 rounded bg-light">
-                     <div class="row align-items-center">
-                         <div class="col-6">
-                             <img src="<?= base_url() ?>assets/template-user/img/best-product-6.jpg" class="img-fluid rounded-circle w-100" alt="">
-                         </div>
-                         <div class="col-6">
-                             <a href="#" class="h5">Organic Tomato</a>
-                             <h4 class="mb-3">3.12 $</h4>
-                         </div>
-                     </div>
-                 </div>
-             </div>
-             <div class="col-md-6 col-lg-6 col-xl-3">
-                 <div class="text-center">
-                     <img src="<?= base_url() ?>assets/template-user/img/fruite-item-1.jpg" class="img-fluid rounded" alt="">
-                     <div class="py-4">
-                         <a href="#" class="h5">Organic Tomato</a>
-                         <h4 class="mb-3">3.12 $</h4>
-                     </div>
-                 </div>
-             </div>
-             <div class="col-md-6 col-lg-6 col-xl-3">
-                 <div class="text-center">
-                     <img src="<?= base_url() ?>assets/template-user/img/fruite-item-2.jpg" class="img-fluid rounded" alt="">
-                     <div class="py-4">
-                         <a href="#" class="h5">Organic Tomato</a>
-                         <h4 class="mb-3">3.12 $</h4>
-                     </div>
-                 </div>
-             </div>
-             <div class="col-md-6 col-lg-6 col-xl-3">
-                 <div class="text-center">
-                     <img src="<?= base_url() ?>assets/template-user/img/fruite-item-3.jpg" class="img-fluid rounded" alt="">
-                     <div class="py-4">
-                         <a href="#" class="h5">Organic Tomato</a>
-                         <h4 class="mb-3">3.12 $</h4>
-                     </div>
-                 </div>
-             </div>
-             <div class="col-md-6 col-lg-6 col-xl-3">
-                 <div class="text-center">
-                     <img src="<?= base_url() ?>assets/template-user/img/fruite-item-4.jpg" class="img-fluid rounded" alt="">
-                     <div class="py-2">
-                         <a href="#" class="h5">Organic Tomato</a>
-                         <h4 class="mb-3">3.12 $</h4>
-                     </div>
-                 </div>
-             </div>
+             <?php endforeach; ?>
          </div>
      </div>
  </div>

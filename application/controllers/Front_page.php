@@ -66,6 +66,18 @@ class Front_page extends CI_Controller
     public function index()
     {
         $this->check_auth();
+        $query = [
+            'select' => 'a.id, a.title, a.description, a.price, a.image, b.name, a.id_category_product, a.weight, a.total_stok',
+            'from' => 'produk a',
+            'join' => [
+                'kategori_produk b, b.id = a.id_category_product',
+            ],
+            'where' => [
+                'a.is_deleted' => 0
+            ]
+        ];
+
+        $this->app_data['produk'] = $this->data->get($query)->result();
         $where = array('is_deleted' => '0');
         $this->app_data['carousel'] = $this->data->find('carousel_menu', $where)->result();
         $this->app_data['location'] = $this->data->get_all('company_profile')->result();
