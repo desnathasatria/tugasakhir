@@ -134,6 +134,7 @@ class Dashboard_admin extends CI_Controller
 		$this->load->view('menu-admin/dashboard', $this->app_data);
 		$this->load->view('template-admin/footer');
 		$this->load->view('template-admin/end');
+		$this->load->view('template-admin/dashboard_js.php');
 		$this->load->view('js-custom', $this->app_data);
 	}
 }

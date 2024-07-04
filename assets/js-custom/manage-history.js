@@ -55,9 +55,9 @@ function get_data(startDate = null, endDate = null) {
 						className: "text-center",
 						render: function (data, type, row) {
 							return (
-								'<button class="btn btn-info" data-toggle="modal" data-target="#detailHistory" title="detail" onclick="detail(' +
+								'<button class="btn btn-info" data-toggle="modal" data-target="#detailHistory" title="detail" onclick="detail(\'' +
 								row.id +
-								')"><i class="fa-solid fa-circle-info"></i></button> '
+								'\')"><i class="fa-solid fa-circle-info"></i></button> '
 							);
 						},
 					},

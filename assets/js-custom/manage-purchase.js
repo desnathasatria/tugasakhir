@@ -65,12 +65,12 @@ function get_data(date1 = "", date2 = "") {
 						className: "text-center",
 						render: function (data, type, row) {
 							return (
-								'<button class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" title="edit" onclick="submit(' +
+								'<button class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" title="edit" onclick="submit(\'' +
 								row.id +
-								')"><i class="fa-solid fa-pen-to-square"></i></button> ' +
-								'<button class="btn btn-warning" data-toggle="modal" data-target="#hapusPurchase" title="hapus" data-id="' +
+								'\')"><i class="fa-solid fa-pen-to-square"></i></button> ' +
+								'<button class="btn btn-warning" data-toggle="modal" data-target="#hapusPurchase" title="hapus" data-id="\'' +
 								row.id +
-								'"><i class="fa-solid fa-trash-can"></i></button>'
+								'\'"><i class="fa-solid fa-trash-can"></i></button>'
 							);
 						},
 					},

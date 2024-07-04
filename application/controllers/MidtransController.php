@@ -40,6 +40,7 @@ class MidtransController extends CI_Controller
 
         // Simpan data transaksi ke dalam tabel transaksi
         $data_transaksi = [
+            'id' => $order_id,
             'id_pelanggan' => $id_pelanggan,
             'harga_transaksi' => $harga_transaksi,
             'jumlah' => $jumlah,
@@ -48,14 +49,14 @@ class MidtransController extends CI_Controller
             'created_by' => $id_user
         ];
 
-        $inserted_id = $this->data->insert('transaksi', $data_transaksi);
+        $this->data->insert('transaksi', $data_transaksi);
 
         $id_produk = $this->input->post('id_produk');
         $id_produk_array = explode(',', $this->input->post('id_produk'));
 
         foreach ($id_produk_array as $id_produk) {
             $data_detail = [
-                'id_transaksi' => $inserted_id,
+                'id_transaksi' => $order_id,
                 'id_produk' => trim($id_produk),
             ];
 
@@ -67,7 +68,7 @@ class MidtransController extends CI_Controller
         $total = $produk['total_stok'] - $jumlah;
 
 
-        $this->data->update('produk', array('id' => $id_produk),  array('total_stok' => $total));
+        $this->data->update('produk', array('id' => $id_produk), array('total_stok' => $total));
 
         // Lanjutkan dengan membuat permintaan pembayaran ke Midtrans
         $data = [
@@ -92,23 +93,41 @@ class MidtransController extends CI_Controller
                 echo json_encode($response);
             }
         } catch (Exception $e) {
-            echo 'Caught exception: ',  $e->getMessage(), "\n";
+            echo 'Caught exception: ', $e->getMessage(), "\n";
         }
     }
 
+    // public function notification()
+    // {
+    //     $notificationBody = $this->input->raw_input_stream;
+    //     $notification = json_decode($notificationBody);
+
+    //     $order_id = $notification->order_id;
+    //     $transaction_status = $notification->transaction_status;
+
+    //     $this->data->update('transaksi', array('id' => $order_id), array('status_pembayaran' => 'Telah Dibayar'));
+    //     // Update status pembayaran berdasarkan transaction_status
+    //     // $this->db->where('id', $order_id);
+    //     // $this->db->update('transaksi', ['status_pembayaran' => $transaction_status]);
+
+
+    //     // Kirim respons ke Midtrans
+    //     $this->output->set_status_header(200);
+    // }
+
     public function notification()
     {
-        $notificationBody = $this->input->raw_input_stream;
-        $notification = json_decode($notificationBody);
+        $order_id = $this->input->get('order_id');
+        $status_code = $this->input->get('status_code');
+        $transaction_status = $this->input->get('transaction_status');
 
-        $order_id = $notification->order_id;
-        $transaction_status = $notification->transaction_status;
+        // Menyiapkan data untuk ditampilkan di view
+        $data['order_id'] = $order_id;
+        $data['status_code'] = $status_code;
+        $data['transaction_status'] = $transaction_status;
 
-        // Update status pembayaran berdasarkan transaction_status
-        $this->db->where('id', $order_id);
-        $this->db->update('transaksi', ['status_pembayaran' => $transaction_status]);
+        $this->data->update('transaksi', array('id' => $order_id), array('status_pembayaran' => 'Telah Dibayar'));
 
-        // Kirim respons ke Midtrans
-        $this->output->set_status_header(200);
+        $this->load->view('front_page/payment_status', $data);
     }
 }

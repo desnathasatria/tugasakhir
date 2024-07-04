@@ -24,6 +24,5 @@
 <script
     src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.39.0/js/tempusdominus-bootstrap-4.min.js"></script>
 <script src="<?= base_url() ?>assets/template-admin/plugins/chart.js/Chart.min.js"></script>
-  <!-- AdminLTE for demo purposes -->
+<!-- AdminLTE for demo purposes -->
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-<script src="<?= base_url() ?>assets/template-admin/dist/js/pages/dashboard3.js"></script>

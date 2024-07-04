@@ -43,18 +43,18 @@ function get_data_history() {
 						render: function (data, type, row) {
 							if (row.status_pengiriman !== "Dikirim") {
 								return (
-									'<button class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#modalDetail" title="detail" onclick="submit(' +
+									'<button class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#modalDetail" title="detail" onclick="submit(\'' +
 									row.id +
-									')"><i class="fa-solid fa-eye"></i></button> '
+									'\')"><i class="fa-solid fa-eye"></i></button> '
 								);
 							} else {
 								return (
-									'<button class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#modalDetail" title="detail" onclick="submit(' +
+									'<button class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#modalDetail" title="detail" onclick="submit(\'' +
 									row.id +
-									')"><i class="fa-solid fa-eye"></i></button> ' +
-									'<button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#modalKonfirmasi" title="hapus" data-id="' +
+									'\')"><i class="fa-solid fa-eye"></i></button> ' +
+									'<button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#modalKonfirmasi" title="hapus" data-id="\'' +
 									row.id +
-									'"><i class="fa-solid fa-check-to-slot"></i></button>'
+									'\'"><i class="fa-solid fa-check-to-slot"></i></button>'
 								);
 							}
 						},

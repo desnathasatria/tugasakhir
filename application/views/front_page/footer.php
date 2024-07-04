@@ -259,7 +259,6 @@
             processData: false,
             contentType: false,
             success: function (response) {
-                delete_error();
                 if (response.error) {
                     alertify.error(response.error);
                 } else if (response.success) {
