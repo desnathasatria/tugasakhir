@@ -488,6 +488,7 @@ class Front_page extends CI_Controller
             ],
             'where' => [
                 'a.id_pelanggan' => $data['user']['id'],
+                'a.is_deleted' => '0'
             ],
             'group_by' => 'a.id'
         ];

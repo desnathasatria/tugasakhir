@@ -117,10 +117,12 @@ class Dashboard_admin extends CI_Controller
 			'select' => 'a.title, count(b.id) as jumlah_transaksi',
 			'from' => 'produk a',
 			'join' => [
-				'detail_transaksi b, b.id_produk = a.id, left'
+				'detail_transaksi b, b.id_produk = a.id, left',
+              	'transaksi c, c.id = b.id_transaksi'
 			],
 			'where' => [
-				'a.is_deleted' => '0',
+				'c.is_deleted' => '0',
+              	'c.status_pengiriman' => 'selesai'
 			],
 			'group_by' => 'a.id, a.title',
 			'order by jumlah_transaksi'
