@@ -126,7 +126,13 @@ class MidtransController extends CI_Controller
         $data['status_code'] = $status_code;
         $data['transaction_status'] = $transaction_status;
 
-        $this->data->update('transaksi', array('id' => $order_id), array('status_pembayaran' => 'Telah Dibayar'));
+        if($data['transaction_status'] == 'settlement'){
+            $status_pembayaran = 'Telah Dibayar';
+        } else {
+            $status_pembayaran = 'Menunggu Pembayaran';
+        }
+
+        $this->data->update('transaksi', array('id' => $order_id), array('status_pembayaran' => $status_pembayaran));
 
         $this->load->view('front_page/payment_status', $data);
     }

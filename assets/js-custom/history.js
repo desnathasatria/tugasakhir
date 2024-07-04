@@ -52,7 +52,7 @@ function get_data_history() {
 									'<button class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#modalDetail" title="detail" onclick="submit(\'' +
 									row.id +
 									'\')"><i class="fa-solid fa-eye"></i></button> ' +
-									'<button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#modalKonfirmasi" title="hapus" data-id="\'' +
+									'<button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#modalKonfirmasi" title="konfirmasi" data-id="\'' +
 									row.id +
 									'\'"><i class="fa-solid fa-check-to-slot"></i></button>'
 								);

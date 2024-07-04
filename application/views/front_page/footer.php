@@ -261,8 +261,11 @@
             success: function (response) {
                 if (response.error) {
                     alertify.error(response.error);
-                } else if (response.success) {
-                    alertify.success("Berhasil menambah jumlah");
+                } else if (response.tambah) {
+                    alertify.success(response.tambah);
+                    get_keranjang();
+                } else if (response.kurang) {
+                    alertify.error(response.kurang);
                     get_keranjang();
                 }
             },

@@ -340,7 +340,7 @@ class Front_page extends CI_Controller
             );
             $where = array('id' => $id);
             $this->data->update('shopping_cart', $where, $data);
-            $response['success'] = "Berhasil";
+            $response['tambah'] = "Berhasil menambah data";
         } else if ($status == 'minus') {
             if ($keranjang['quantity'] == 1) {
                 $response['error'] = "Data tidak dapat berkurang lagi";
@@ -351,7 +351,7 @@ class Front_page extends CI_Controller
                 );
                 $where = array('id' => $id);
                 $this->data->update('shopping_cart', $where, $data);
-                $response['success'] = "Berhasil";
+                $response['kurang'] = "Berhasil mengurangi data";
             }
         }
         echo json_encode($response);
