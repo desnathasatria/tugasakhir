@@ -47,7 +47,11 @@
     <div class="container">
         <h1>Status Pembayaran</h1>
         <p><strong>Order ID:</strong> <span class="status"><?php echo $order_id; ?></span></p>
-        <p><strong>Status Pembayaran:</strong> <span class="status"><?php echo $transaction_status; ?></span></p>
+      	<?php if ($transaction_status == 'capture' || $transaction_status == 'settlement'): ?>
+        	<p><strong>Status Pembayaran:</strong> <span class="status">berhasil</span></p>
+      	<?php else: ?>
+            <p><strong>Status Pembayaran:</strong> <span class="status"><?php echo $transaction_status; ?></span></p>
+      	<?php endif; ?>
 
         <?php if ($transaction_status == 'capture' || $transaction_status == 'settlement'): ?>
             <p>Pembayaran berhasil.</p>
