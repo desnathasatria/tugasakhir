@@ -197,6 +197,7 @@ function update_status() {
 				delete_form();
 				delete_error();
 				$("#exampleModal").modal("hide");
+				$("body").append(response.success);
 				get_data();
 			}
 		},

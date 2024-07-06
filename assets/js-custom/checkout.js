@@ -62,6 +62,7 @@ function masukan_keranjang(id) {
 				$("body").append(response.success);
 				$("[name='jumlah']").val(1);
 				get_keranjang();
+				alertify.success("Berhasil menambah produk ke keranjang");
 			} else if (response.error) {
 				alertify.error(response.error);
 			}

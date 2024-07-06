@@ -163,7 +163,7 @@ class Manage_purchase extends CI_Controller
 
                 Toast.fire({
                     icon: 'success',
-                    title: 'Anda telah melakukan aksi edit data Data berhasil diedit'
+                    title: 'Anda telah melakukan ubah data status'
                   })
               });</script>";
         }

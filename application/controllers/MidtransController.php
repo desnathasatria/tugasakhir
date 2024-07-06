@@ -61,6 +61,10 @@ class MidtransController extends CI_Controller
             ];
 
             $this->data->insert('detail_transaksi', $data_detail);
+            $cek_keranjang = $this->data->find('shopping_cart', array('product_id' => trim($id_produk), 'user_id' => $this->session->userdata('id_user')))->row_array();
+            if (isset($cek_keranjang)) {
+                $this->data->delete('shopping_cart', array('product_id' => trim($id_produk), 'user_id' => $this->session->userdata('id_user')));
+            }
         }
 
 
@@ -126,7 +130,7 @@ class MidtransController extends CI_Controller
         $data['status_code'] = $status_code;
         $data['transaction_status'] = $transaction_status;
 
-        if($data['transaction_status'] == 'settlement'){
+        if ($data['transaction_status'] == 'settlement') {
             $status_pembayaran = 'Telah Dibayar';
         } else {
             $status_pembayaran = 'Menunggu Pembayaran';

@@ -160,15 +160,18 @@
                             <div class="row">
                                 <label for="status" class="col-lg-3 col-form-label">Pengiriman</label>
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="status" id="dikemas1" value="2">
+                                    <input class="form-check-input" type="radio" name="status" id="dikemas1"
+                                        value="Dikemas" disabled>
                                     <label class="form-check-label" for="belum">Dikemas</label>
                                 </div>
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="status" id="dikirim1" value="3">
+                                    <input class="form-check-input" type="radio" name="status" id="dikirim1"
+                                        value="Dikirim" disabled>
                                     <label class="form-check-label" for="terpenuhi">Dikirim</label>
                                 </div>
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="status" id="sudah1" value="4">
+                                    <input class="form-check-input" type="radio" name="status" id="sudah1"
+                                        value="Selesai" disabled>
                                     <label class="form-check-label" for="non-halal">Selesai</label>
                                 </div>
                                 <small class="text-danger pl-3" id="error-status"></small>
