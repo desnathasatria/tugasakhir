@@ -45,7 +45,7 @@ class MidtransController extends CI_Controller
             'harga_transaksi' => $harga_transaksi,
             'jumlah' => $jumlah,
             'status_pembayaran' => 'Menunggu Pembayaran', // Set status awal
-            'status_pengiriman' => 'Dikemas',
+            'status_pengiriman' => '-',
             'created_by' => $id_user
         ];
 
@@ -132,11 +132,13 @@ class MidtransController extends CI_Controller
 
         if ($data['transaction_status'] == 'settlement') {
             $status_pembayaran = 'Telah Dibayar';
+            $status_pengiriman = 'Dikemas';
         } else {
             $status_pembayaran = 'Menunggu Pembayaran';
+            $status_pengiriman = 'Menunggu Pembayaran';
         }
 
-        $this->data->update('transaksi', array('id' => $order_id), array('status_pembayaran' => $status_pembayaran));
+        $this->data->update('transaksi', array('id' => $order_id), array('status_pembayaran' => $status_pembayaran, 'status_pengiriman' => $status_pengiriman));
 
         $this->load->view('front_page/payment_status', $data);
     }

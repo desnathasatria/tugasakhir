@@ -301,6 +301,9 @@
                     var productsOutOfStock = response.error.join(", ");
                     alertify.error("Produk berikut melebihi stok: " + productsOutOfStock);
                 }
+                else if (response.empty) {
+                    alertify.error(response.empty);
+                }
             },
             error: function (xhr, status, error) {
                 console.error("AJAX Error: " + error);

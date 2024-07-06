@@ -226,8 +226,11 @@ class Front_page extends CI_Controller
             }
         }
 
+        if ($id_produk == "") {
+            $response['empty'] = "Tidak ada produk dalam keranjang";
+        }
         // Jika ada produk yang kehabisan stok
-        if (!empty($out_of_stock)) {
+        else if (!empty($out_of_stock)) {
             // Menyimpan daftar produk yang habis stok ke dalam data aplikasi untuk digunakan di view
             $this->app_data['out_of_stock'] = $out_of_stock;
             $response['error'] = $out_of_stock;
