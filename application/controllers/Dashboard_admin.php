@@ -109,21 +109,24 @@ class Dashboard_admin extends CI_Controller
 			'from' => 'transaksi',
 			'where' => [
 				'is_deleted' => '0',
-              	'status_pengiriman' => 'selesai'
+				'status_pengiriman' => 'selesai'
 			]
 		];
 		$this->app_data['total_transaksi'] = $this->data->get($query_total)->row_array();
 
 		$query_grafik = [
-            'select' => 'a.title, count(b.id) as jumlah_transaksi',
-            'from' => 'produk a',
-            'join' => [
-                'detail_transaksi b, b.id_produk = a.id, left',
-                'transaksi c, c.id = b.id_transaksi AND c.is_deleted = "0" AND c.status_pengiriman = "selesai", left'
-            ],
-            'group_by' => 'a.id, a.title',
-            'order by' => 'jumlah_transaksi'
-        ];
+			'select' => 'a.title, COUNT(CASE WHEN c.status_pengiriman = "Selesai" AND c.is_deleted = 0 THEN b.id ELSE NULL END) AS jumlah_transaksi',
+			'from' => 'produk a',
+			'join' => [
+				'detail_transaksi b, b.id_produk = a.id, left',
+				'transaksi c, c.id = b.id_transaksi, left'
+			],
+			'where' => [
+				'a.is_deleted' => 0
+			],
+			'group_by' => 'a.title',
+			'order by' => 'jumlah_transaksi'
+		];
 
 
 		$this->app_data['grafik'] = $this->data->get($query_grafik)->result();
