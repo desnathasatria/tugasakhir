@@ -53,6 +53,7 @@
                                             $sub_total = 0;
                                             $jumlah_total = 0;
                                             $total_id = '';
+                                            $total_jumlah = '';
                                             foreach ($produk as $index => $pr) : ?>
                                              <?php
                                                 $hargaTanpaRpTitik = str_replace("Rp. ", "", $pr->price);
@@ -63,11 +64,11 @@
                                                 } else {
                                                     $jumlah = $this->app_data['jumlah'];
                                                 }
-
                                                 $total_per_item = $hargaTanpaRpTitik * $jumlah;
                                                 $sub_total += $total_per_item;
                                                 $jumlah_total += $jumlah;
                                                 $total_id .= ($total_id ? ',' : '') . $pr->id;
+                                                $total_jumlah .= ($total_jumlah ? ',' : '') . $jumlah;
                                                 ?>
                                              <tr>
                                                  <td>
@@ -130,7 +131,7 @@
                              </div>
 
                              <div class="row g-4 text-center align-items-center justify-content-center pt-4">
-                                 <button type="button" class="btn border-secondary py-3 px-4 text-uppercase w-100 text-primary" onclick="createPayment('<?= $total_id ?>', <?= $jumlah_total ?>)">Place Order</button>
+                                 <button type="button" class="btn border-secondary py-3 px-4 text-uppercase w-100 text-primary" onclick="createPayment('<?= $total_id ?>', <?= $jumlah_total ?>, '<?= $total_jumlah ?>')">Place Order</button>
                              </div>
                          </div>
                      </div>

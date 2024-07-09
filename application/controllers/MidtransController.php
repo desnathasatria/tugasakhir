@@ -23,6 +23,7 @@ class MidtransController extends CI_Controller
         $phone = $this->input->post('phone');
         $order_notes = $this->input->post('order_notes');
         $jumlah = $this->input->post('jumlah');
+        $jumlah_produk = $this->input->post('jumlah_produk');
 
         // Ambil id_produk dari session
 
@@ -53,11 +54,13 @@ class MidtransController extends CI_Controller
 
         $id_produk = $this->input->post('id_produk');
         $id_produk_array = explode(',', $this->input->post('id_produk'));
+        $jumlah_array = explode(',', $jumlah_produk);
 
-        foreach ($id_produk_array as $id_produk) {
+        foreach ($id_produk_array as $index => $id_produk) {
             $data_detail = [
                 'id_transaksi' => $order_id,
                 'id_produk' => trim($id_produk),
+                'jumlah' => trim($jumlah_array[$index]),
             ];
 
             $this->data->insert('detail_transaksi', $data_detail);

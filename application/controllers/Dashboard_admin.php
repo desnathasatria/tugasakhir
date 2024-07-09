@@ -115,7 +115,7 @@ class Dashboard_admin extends CI_Controller
 		$this->app_data['total_transaksi'] = $this->data->get($query_total)->row_array();
 
 		$query_grafik = [
-			'select' => 'a.title, COUNT(CASE WHEN c.status_pengiriman = "Selesai" AND c.is_deleted = 0 THEN b.id ELSE NULL END) AS jumlah_transaksi',
+			'select' => 'a.title, SUM(CASE WHEN c.status_pengiriman = "Selesai" AND c.is_deleted = 0 THEN b.jumlah ELSE NULL END) AS jumlah_transaksi',
 			'from' => 'produk a',
 			'join' => [
 				'detail_transaksi b, b.id_produk = a.id, left',

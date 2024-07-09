@@ -189,7 +189,7 @@ $("#courierService").on("change", function () {
 	}
 });
 
-function createPayment(id, jumlah) {
+function createPayment(id, total, jumlah) {
 	var timestamp = new Date().getTime();
 	var random_number = Math.floor(Math.random() * 1000);
 	var order_id = "order-" + timestamp + "-" + random_number;
@@ -201,7 +201,8 @@ function createPayment(id, jumlah) {
 		last_name: last_name,
 		email: email,
 		phone: phone,
-		jumlah: jumlah,
+		jumlah: total,
+		jumlah_produk: jumlah,
 	};
 
 	// console.log(data);
@@ -217,7 +218,8 @@ function createPayment(id, jumlah) {
 			last_name: last_name,
 			email: email,
 			phone: phone,
-			jumlah: jumlah,
+			jumlah: total,
+			jumlah_produk: jumlah,
 		},
 		success: function (response) {
 			var data = JSON.parse(response).redirect_url;
