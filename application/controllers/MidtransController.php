@@ -45,7 +45,7 @@ class MidtransController extends CI_Controller
             'harga_transaksi' => $harga_transaksi,
             'jumlah' => $jumlah,
             'status_pembayaran' => 'Menunggu Pembayaran', // Set status awal
-            'status_pengiriman' => '-',
+            'status_pengiriman' => 'Menunggu Pembayaran',
             'created_by' => $id_user
         ];
 
