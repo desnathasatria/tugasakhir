@@ -92,7 +92,7 @@ class Manage_supplier extends CI_Controller
             'where' => [
                 'a.is_deleted' => '0',
             ],
-            'order_by' => 'a.id'
+            'order_by' => 'a.created_date, DESC'
         ];
 
         $result = $this->data->get($query)->result();
