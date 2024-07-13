@@ -20,10 +20,10 @@ $(document).ready(function () {
 	$("#btn_tampil_data").click(function () {
 		if (maxToShow === 5) {
 			maxToShow = 999;
-			$(this).text("Show Less");
+			$(this).text("Tampilkan lebih sedikit");
 		} else {
 			maxToShow = 5;
-			$(this).text("Show More");
+			$(this).text("Tampilkan lebih banyak");
 		}
 		get_data();
 	});

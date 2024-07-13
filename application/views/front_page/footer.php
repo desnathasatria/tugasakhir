@@ -11,27 +11,23 @@
                 </div>
                 <div class="col-lg-9">
                     <div class="d-flex justify-content-end pt-3">
-                        <a class="btn  btn-outline-secondary me-2 btn-md-square rounded-circle" href=""><i
-                                class="fab fa-twitter"></i></a>
-                        <a class="btn btn-outline-secondary me-2 btn-md-square rounded-circle" href=""><i
-                                class="fab fa-facebook-f"></i></a>
-                        <a class="btn btn-outline-secondary me-2 btn-md-square rounded-circle" href=""><i
-                                class="fab fa-youtube"></i></a>
-                        <a class="btn btn-outline-secondary btn-md-square rounded-circle" href=""><i
-                                class="fab fa-linkedin-in"></i></a>
+                        <a class="btn  btn-outline-secondary me-2 btn-md-square rounded-circle" href=""><i class="fab fa-twitter"></i></a>
+                        <a class="btn btn-outline-secondary me-2 btn-md-square rounded-circle" href=""><i class="fab fa-facebook-f"></i></a>
+                        <a class="btn btn-outline-secondary me-2 btn-md-square rounded-circle" href=""><i class="fab fa-youtube"></i></a>
+                        <a class="btn btn-outline-secondary btn-md-square rounded-circle" href=""><i class="fab fa-linkedin-in"></i></a>
                     </div>
                 </div>
             </div>
         </div>
         <div class="row g-5">
-            <?php foreach ($profile as $loc): ?>
+            <?php foreach ($profile as $loc) : ?>
                 <div class="col-lg-6 col-md-9">
                     <div class="footer-item">
-                        <h4 class="text-light mb-3">Contact</h4>
-                        <p>Address: <?= $loc->address ?></p>
+                        <h4 class="text-light mb-3">Kontak</h4>
+                        <p>Alamat: <?= $loc->address ?></p>
                         <p>Email: <?= $loc->email ?></p>
-                        <p>Phone: <?= $loc->phone_number ?></p>
-                        <p>Payment Accepted</p>
+                        <p>Telepon: <?= $loc->phone_number ?></p>
+                        <p>Penerima Pembayaran</p>
                         <img src="<?= base_url() ?>assets/template-user/img/payment.png" class="img-fluid" alt="">
                     </div>
                 </div>
@@ -60,8 +56,7 @@
 
 
 <!-- Back to Top -->
-<a href="#" class="btn btn-primary border-3 border-primary rounded-circle back-to-top"><i
-        class="fa fa-arrow-up"></i></a>
+<a href="#" class="btn btn-primary border-3 border-primary rounded-circle back-to-top"><i class="fa fa-arrow-up"></i></a>
 
 
 <!-- JavaScript Libraries -->
@@ -73,10 +68,8 @@
 <script src="<?= base_url() ?>assets/template-user/lib/owlcarousel/owl.carousel.min.js"></script>
 <script src="<?= base_url() ?>assets/template-admin/plugins/datatables/jquery.dataTables.min.js"></script>
 <script src="<?= base_url() ?>assets/template-admin/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
-<script
-    src="<?= base_url() ?>assets/template-admin/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
-<script
-    src="<?= base_url() ?>assets/template-admin/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+<script src="<?= base_url() ?>assets/template-admin/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+<script src="<?= base_url() ?>assets/template-admin/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
 <script src="<?= base_url() ?>assets/template-admin/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
 <script src="<?= base_url() ?>assets/template-admin/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
 <script src="<?= base_url() ?>assets/template-admin/plugins/jszip/jszip.min.js"></script>
@@ -100,7 +93,22 @@
 <script src="<?php echo base_url('assets/template-user/js/gallery_filter.js') ?>"></script>
 </body>
 <script>
-    $(document).ready(function () {
+    var alamat = '<?= $user['address'] ?>';
+    var currentUrl = window.location.href;
+
+    if (typeof alamat !== 'undefined' && alamat == '' && !currentUrl.includes(base_url + 'profile')) {
+        alertify.alert()
+            .setting({
+                'title': 'GTT | Warning',
+                'message': 'Lengkapi data profil dahulu!',
+                'onok': function() {
+                    window.location.href = base_url + 'profile';
+                }
+            }).show();
+    }
+
+
+    $(document).ready(function() {
         get_keranjang();
     });
 
@@ -116,21 +124,21 @@
             url: base_url + _controller + "/get_data_keranjang",
             method: "GET",
             dataType: "json",
-            success: function (data) {
-                var id_produk_array = data.map(function (item) {
+            success: function(data) {
+                var id_produk_array = data.map(function(item) {
                     return item.id_produk;
                 });
                 var id_produk_string = id_produk_array.join(',');
                 $("[name='id_produk_1']").val(id_produk_string);
 
-                var jumlah_array = data.map(function (item) {
+                var jumlah_array = data.map(function(item) {
                     return item.quantity;
                 });
                 var jumlah_string = jumlah_array.join(',');
                 $("[name='jumlah_1']").val(jumlah_string);
 
                 // Process the data to remove "Rp. " and "."
-                data = data.map(function (item) {
+                data = data.map(function(item) {
                     item.price = item.price.replace("Rp. ", "").replace(/\./g, "");
                     return item;
                 });
@@ -144,54 +152,54 @@
                     paging: false,
                     data: data,
                     columns: [{
-                        data: "title"
-                    },
-                    {
-                        data: "price"
-                    },
-                    {
-                        data: "quantity"
-                    },
-                    {
-                        data: null,
-                        className: "text-center",
-                        render: function (data, type, row) {
-                            var total = row.price * row.quantity;
-                            return total;
+                            data: "title"
                         },
-                    },
-                    {
-                        data: null,
-                        className: "text-center",
-                        render: function (data, type, row) {
-                            return (
-                                '<button class="btn btn-dark rounded-circle" title="minus" onclick="ubah_jumlah(' +
-                                row.id +
-                                ', \'minus\')"><i class="fa-solid fa-minus"></i></button> ' +
-                                '<button class="btn btn-warning hapusKeranjang" title="hapus" data-id="' +
-                                row.id +
-                                '"><i class="fa-solid fa-trash-can"></i></button>' +
-                                ' <button class="btn btn-dark rounded-circle" title="plus" onclick="ubah_jumlah(' +
-                                row.id +
-                                ', \'plus\')"><i class="fa-solid fa-plus"></i></button> '
-                            );
+                        {
+                            data: "price"
+                        },
+                        {
+                            data: "quantity"
+                        },
+                        {
+                            data: null,
+                            className: "text-center",
+                            render: function(data, type, row) {
+                                var total = row.price * row.quantity;
+                                return total;
+                            },
+                        },
+                        {
+                            data: null,
+                            className: "text-center",
+                            render: function(data, type, row) {
+                                return (
+                                    '<button class="btn btn-dark rounded-circle" title="minus" onclick="ubah_jumlah(' +
+                                    row.id +
+                                    ', \'minus\')"><i class="fa-solid fa-minus"></i></button> ' +
+                                    '<button class="btn btn-warning hapusKeranjang" title="hapus" data-id="' +
+                                    row.id +
+                                    '"><i class="fa-solid fa-trash-can"></i></button>' +
+                                    ' <button class="btn btn-dark rounded-circle" title="plus" onclick="ubah_jumlah(' +
+                                    row.id +
+                                    ', \'plus\')"><i class="fa-solid fa-plus"></i></button> '
+                                );
 
+                            },
                         },
-                    },
                     ],
-                    initComplete: function () {
+                    initComplete: function() {
                         // Set column titles alignment to center
                         $("th").css("text-align", "center");
                     },
                 });
 
                 // Add click event listener for delete buttons
-                $('.hapusKeranjang').on('click', function () {
+                $('.hapusKeranjang').on('click', function() {
                     var itemId = $(this).data('id');
                     delete_keranjang(itemId);
                 });
             },
-            error: function (xhr, textStatus, errorThrown) {
+            error: function(xhr, textStatus, errorThrown) {
                 console.log(xhr.statusText);
             },
         });
@@ -205,12 +213,12 @@
                 id: itemId
             },
             dataType: "json",
-            success: function (response) {
+            success: function(response) {
                 // Reload the cart data
                 alertify.success("Berhasil menghapus data keranjang");
                 get_keranjang();
             },
-            error: function (xhr, textStatus, errorThrown) {
+            error: function(xhr, textStatus, errorThrown) {
                 console.log(xhr.statusText);
             },
         });
@@ -227,7 +235,7 @@
             dataType: "json",
             processData: false,
             contentType: false,
-            success: function (response) {
+            success: function(response) {
                 delete_error();
                 if (response.errors) {
                     for (var fieldName in response.errors) {
@@ -240,7 +248,7 @@
                     get_keranjang();
                 }
             },
-            error: function (xhr, status, error) {
+            error: function(xhr, status, error) {
                 console.error("AJAX Error: " + error);
             },
         });
@@ -258,7 +266,7 @@
             dataType: "json",
             processData: false,
             contentType: false,
-            success: function (response) {
+            success: function(response) {
                 if (response.error) {
                     alertify.error(response.error);
                 } else if (response.tambah) {
@@ -269,7 +277,7 @@
                     get_keranjang();
                 }
             },
-            error: function (xhr, status, error) {
+            error: function(xhr, status, error) {
                 console.error("AJAX Error: " + error);
             },
         });
@@ -287,7 +295,7 @@
             dataType: "json",
             processData: false,
             contentType: false,
-            success: function (response) {
+            success: function(response) {
                 if (response.success) {
                     alertify.success(response.success);
                     window.location.href =
@@ -300,17 +308,15 @@
                 } else if (response.error) {
                     var productsOutOfStock = response.error.join(", ");
                     alertify.error("Produk berikut melebihi stok: " + productsOutOfStock);
-                }
-                else if (response.empty) {
+                } else if (response.empty) {
                     alertify.error(response.empty);
                 }
             },
-            error: function (xhr, status, error) {
+            error: function(xhr, status, error) {
                 console.error("AJAX Error: " + error);
             },
         });
     }
-
 </script>
 
 </html>

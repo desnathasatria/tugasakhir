@@ -50,7 +50,7 @@ class Front_page extends CI_Controller
     {
         $where = array('id_company' => '1');
         $this->app_data['profile'] = $this->data->find('company_profile', $where)->result();
-        $session = array('email' => $this->session->userdata('email_user'));
+        $session = array('id' => $this->session->userdata('id_user'));
         $data = $this->data->find('st_user', $session)->row_array();
 
         $kondisi = array('id' => $data['id']);
@@ -550,7 +550,7 @@ class Front_page extends CI_Controller
     }
     public function get_profile()
     {
-        $where = array('email' => $this->session->userdata('email_user'));
+        $where = array('id' => $this->session->userdata('id_user'));
         $data['user'] = $this->data->find('st_user', $where)->row_array();
 
         $where = array('id' => $data['user']['id']);

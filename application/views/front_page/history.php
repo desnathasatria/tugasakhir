@@ -8,8 +8,7 @@
             </div>
             <div class="modal-body d-flex align-items-center">
                 <div class="input-group w-75 mx-auto d-flex">
-                    <input type="search" class="form-control p-3" placeholder="keywords"
-                        aria-describedby="search-icon-1">
+                    <input type="search" class="form-control p-3" placeholder="keywords" aria-describedby="search-icon-1">
                     <span id="search-icon-1" class="input-group-text p-3"><i class="fa fa-search"></i></span>
                 </div>
             </div>
@@ -21,16 +20,16 @@
 
 <!-- Single Page Header start -->
 <div class="container-fluid page-header py-5">
-    <h1 class="text-center text-white display-6">History</h1>
+    <h1 class="text-center text-white display-6">Histori</h1>
     <ol class="breadcrumb justify-content-center mb-0">
         <li class="breadcrumb-item"><a href="<?php echo base_url(); ?>">Home</a></li>
-        <li class="breadcrumb-item active text-white">History</li>
+        <li class="breadcrumb-item active text-white">Histori</li>
     </ol>
 </div>
 <!-- Single Page Header End -->
 <div class="container mt-4">
     <div class="card">
-        <h5 class="card-header">Data history transaksi</h5>
+        <h5 class="card-header">Data histori transaksi</h5>
         <div class="card-body">
             <hr>
             <table id="example" class="table table-hover table-bordered" style="width:100%">
@@ -88,8 +87,7 @@
             </div>
             <div class="modal-footer d-flex justify-content-start">
                 <div class="col-lg-2">
-                    <button type="button" id="btn-tambah" data-bs-dismiss="modal"
-                        class="btn btn-outline-primary btn-block">Tutup</button>
+                    <button type="button" id="btn-tambah" data-bs-dismiss="modal" class="btn btn-outline-primary btn-block">Tutup</button>
                 </div>
             </div>
         </div>
@@ -105,8 +103,7 @@
             </div>
             <div class="modal-footer">
                 <button class="btn btn-danger" type="button" data-bs-dismiss="modal">Cancel</button>
-                <button class="btn btn-success" type="button" id="btn-konfirmasi"
-                    data-bs-dismiss="modal">Konfirmasi</button>
+                <button class="btn btn-success" type="button" id="btn-konfirmasi" data-bs-dismiss="modal">Konfirmasi</button>
             </div>
         </div>
     </div>

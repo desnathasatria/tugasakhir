@@ -11,7 +11,7 @@
 
 <!-- Single Product Start -->
 <div class="container-fluid py-5 mt-5">
-    <?php foreach ($produk as $pr): ?>
+    <?php foreach ($produk as $pr) : ?>
         <div class="container py-5">
             <div class="row g-4 mb-5">
                 <div class="col-lg-8 col-xl-9">
@@ -19,8 +19,7 @@
                         <div class="col-lg-6">
                             <div class="border rounded">
                                 <a href="#">
-                                    <img src="<?= base_url('assets/image/product/') . $pr->image ?>"
-                                        class="img-fluid rounded" alt="Image">
+                                    <img src="<?= base_url('assets/image/product/') . $pr->image ?>" class="img-fluid rounded" alt="Image">
                                 </a>
                             </div>
                         </div>
@@ -32,10 +31,10 @@
                             <p class="mb-4">Stok : <?= $pr->total_stok ?></p>
                             <form method="post" action="<?= base_url("Front_page/checkout") ?>">
                                 <input type="hidden" name="id_produk" id="id_produk" value="<?= $pr->id ?>">
-                                <?php if ($this->session->flashdata('error_login')): ?>
+                                <?php if ($this->session->flashdata('error_login')) : ?>
                                     <div class="alert alert-danger"><?= $this->session->flashdata('error_login') ?></div>
                                 <?php endif; ?>
-                                <?php if ($this->session->flashdata('error')): ?>
+                                <?php if ($this->session->flashdata('error')) : ?>
                                     <div class="alert alert-danger"><?= $this->session->flashdata('error') ?></div>
                                 <?php endif; ?>
                                 <div class="input-group quantity mb-5" style="width: 100px;">
@@ -44,27 +43,21 @@
                                             <i class="fa fa-minus"></i>
                                         </button>
                                     </div>
-                                    <input type="text" name="jumlah"
-                                        class="form-control form-control-sm text-center border-0" value="1">
+                                    <input type="text" name="jumlah" class="form-control form-control-sm text-center border-0" value="1">
                                     <div class="input-group-btn">
                                         <button type="button" class="btn btn-sm btn-plus rounded-circle bg-light border">
                                             <i class="fa fa-plus"></i>
                                         </button>
                                     </div>
                                 </div>
-                                <button type="submit"
-                                    class="btn border border-secondary rounded-pill px-4 py-2 mb-4 text-primary">Checkout</button>
+                                <button type="submit" class="btn border border-secondary rounded-pill px-4 py-2 mb-4 text-primary">Checkout</button>
                             </form>
-                            <button class="btn border border-secondary rounded-pill px-4 py-2 mb-4 text-primary"
-                                onclick="masukan_keranjang(<?= $pr->id ?>)"><i
-                                    class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</button>
+                            <button class="btn border border-secondary rounded-pill px-4 py-2 mb-4 text-primary" onclick="masukan_keranjang(<?= $pr->id ?>)"><i class="fa fa-shopping-bag me-2 text-primary"></i> Tambah keranjang</button>
                         </div>
                         <div class="col-lg-12">
                             <nav>
                                 <div class="nav nav-tabs mb-3">
-                                    <button class="nav-link active border-white border-bottom-0" type="button" role="tab"
-                                        id="nav-about-tab" data-bs-toggle="tab" data-bs-target="#nav-about"
-                                        aria-controls="nav-about" aria-selected="true">Description</button>
+                                    <button class="nav-link active border-white border-bottom-0" type="button" role="tab" id="nav-about-tab" data-bs-toggle="tab" data-bs-target="#nav-about" aria-controls="nav-about" aria-selected="true">Deskripsi</button>
                                 </div>
                             </nav>
                             <div class="tab-content mb-5">
@@ -73,8 +66,7 @@
                                     <div class="px-2">
                                         <div class="row g-4">
                                             <div class="col-6">
-                                                <div
-                                                    class="row bg-light align-items-center text-center justify-content-center py-2">
+                                                <div class="row bg-light align-items-center text-center justify-content-center py-2">
                                                     <div class="col-6">
                                                         <p class="mb-0">Berat</p>
                                                     </div>

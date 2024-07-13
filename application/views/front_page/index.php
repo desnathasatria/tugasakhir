@@ -98,7 +98,7 @@
                          <i class="fa fa-phone-alt fa-3x text-white"></i>
                      </div>
                      <div class="featurs-content text-center">
-                         <h5>Contact</h5>
+                         <h5>Kontak</h5>
                          <p class="mb-0">Hubungi kami jika ada pertanyaan</p>
                      </div>
                  </div>
@@ -112,24 +112,24 @@
  <div class="container-fluid py-5">
      <div class="container py-5">
          <div class="text-center mx-auto mb-5" style="max-width: 700px;">
-             <h1 class="display-4">Bestseller Produk GTT</h1>
+             <h1 class="display-4">Penjualan Terbaik Produk GTT</h1>
              <p>Beberapa Produk Unggulan dari GTT Pusat Oleh - Oleh Kediri</p>
          </div>
          <div class="row g-4">
-         <?php foreach ($produk as $pr): ?>
-             <div class="col-lg-6 col-xl-4">
-                 <div class="p-4 rounded bg-light">
-                     <div class="row align-items-center">
-                         <div class="col-6">
-                             <img src="<?= base_url('assets/image/product/') . $pr->image ?>" class="img-fluid rounded-circle w-100" alt="">
-                         </div>
-                         <div class="col-6">
-                             <a href="#" class="h5"><?= $pr->title ?></a>
-                             <h4 class="mb-3"><?= $pr->price ?></h4>
+             <?php foreach ($produk as $pr) : ?>
+                 <div class="col-lg-6 col-xl-4">
+                     <div class="p-4 rounded bg-light">
+                         <div class="row align-items-center">
+                             <div class="col-6">
+                                 <img src="<?= base_url('assets/image/product/') . $pr->image ?>" class="img-fluid rounded-circle w-100" alt="">
+                             </div>
+                             <div class="col-6">
+                                 <a href="#" class="h5"><?= $pr->title ?></a>
+                                 <h4 class="mb-3"><?= $pr->price ?></h4>
+                             </div>
                          </div>
                      </div>
                  </div>
-             </div>
              <?php endforeach; ?>
          </div>
      </div>
