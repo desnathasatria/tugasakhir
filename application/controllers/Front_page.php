@@ -710,9 +710,6 @@ class Front_page extends CI_Controller
             $nama = $this->input->post('nama');
             $email = $this->input->post('email');
             $telepon = $this->input->post('telepon');
-            $alamat = $this->input->post('alamat');
-            $provinsi = $this->input->post('provinsi');
-            $kota = $this->input->post('kota');
             $username = $this->input->post('username');
             $password = $this->input->post('password1');
             $hash = hash("sha256", $password . config_item('encryption_key'));
@@ -722,9 +719,6 @@ class Front_page extends CI_Controller
                 'name' => $nama,
                 'email' => $email,
                 'phone_number' => $telepon,
-                'address' => $alamat,
-                'province' => $provinsi,
-                'city' => $kota,
                 'username' => $username,
                 'updated_date' => $timestamp,
                 'updated_by' => $data['user']['id'],

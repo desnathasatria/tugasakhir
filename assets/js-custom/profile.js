@@ -99,9 +99,6 @@ function edit_profil() {
 	formData.append("nama", $("[name='nama']").val());
 	formData.append("email", $("[name='email']").val());
 	formData.append("telepon", $("[name='telepon']").val());
-	formData.append("alamat", $("[name='alamat']").val());
-	formData.append("provinsi", $("[name='provinsi']").val());
-	formData.append("kota", $("[name='kota']").val());
 	formData.append("username", $("[name='username']").val());
 	formData.append("password1", $("[name='password1']").val());
 
