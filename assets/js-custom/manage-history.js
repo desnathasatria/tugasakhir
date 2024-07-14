@@ -102,11 +102,20 @@ function detail(x) {
 			$("[name='harga']").val(hasil[0].harga_transaksi);
 			$("[name='tanggal']").val(hasil[0].created_date);
 			$("[name='pembayaran']").val(hasil[0].status_pembayaran);
+			$("[name='keterangan1']").val(hasil[0].keterangan);
 			var status_pengiriman_value = hasil[0].status_pengiriman;
 			$("input[name='status'][value='" + status_pengiriman_value + "']").prop(
 				"checked",
 				true
 			);
+			const stars = document.querySelectorAll(".rating-star1");
+			stars.forEach((star) => {
+				star.classList.remove("active");
+			});
+
+			for (let i = 0; i < hasil[0].rating; i++) {
+				stars[i].classList.add("active");
+			}
 		},
 	});
 }

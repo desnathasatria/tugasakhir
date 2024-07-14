@@ -1,3 +1,25 @@
+<style>
+    .rating-star {
+        font-size: 24px;
+        cursor: pointer;
+        color: #ccc;
+    }
+
+    .rating-star1 {
+        font-size: 24px;
+        color: #ccc;
+    }
+
+    .rating-star1.active {
+        color: #ffc107;
+    }
+
+    .rating-star:hover,
+    .rating-star.active {
+        color: #ffc107;
+    }
+</style>
+
 <!-- Modal Search Start -->
 <div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-fullscreen">
@@ -82,12 +104,74 @@
                                 <input type="text" class="form-control" id="status" name="status" readonly>
                             </div>
                         </div>
+                        <div class="form-group">
+                            <label for="keterangan">Keterangan</label>
+                            <div class="input-group">
+                                <input type="hidden" class="form-control" id="id" name="id" readonly>
+                                <textarea class="form-control" id="keterangan1" name="keterangan1" readonly></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="rating">Rating</label>
+                            <div class="input-group">
+                                <span class="rating-star1" data-rating="1"><i class="bi bi-star"></i></span>
+                                <span class="rating-star1" data-rating="2"><i class="bi bi-star"></i></span>
+                                <span class="rating-star1" data-rating="3"><i class="bi bi-star"></i></span>
+                                <span class="rating-star1" data-rating="4"><i class="bi bi-star"></i></span>
+                                <span class="rating-star1" data-rating="5"><i class="bi bi-star"></i></span>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
             <div class="modal-footer d-flex justify-content-start">
                 <div class="col-lg-2">
                     <button type="button" id="btn-tambah" data-bs-dismiss="modal" class="btn btn-outline-primary btn-block">Tutup</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalRating">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Penilaian</h4>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="form-group">
+                            <label for="keterangan">Keterangan</label>
+                            <div class="input-group">
+                                <input type="hidden" class="form-control" id="id" name="id" readonly>
+                                <textarea class="form-control" placeholder="Berikan penilaianmu..." id="keterangan" name="keterangan"></textarea>
+                            </div>
+                            <small class="text-danger pl-1" id="error-keterangan"></small><br>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="rating">Rating</label>
+                            <div class="input-group">
+                                <input type="hidden" id="rating" name="rating">
+                                <span class="rating-star" data-rating="1"><i class="bi bi-star"></i></span>
+                                <span class="rating-star" data-rating="2"><i class="bi bi-star"></i></span>
+                                <span class="rating-star" data-rating="3"><i class="bi bi-star"></i></span>
+                                <span class="rating-star" data-rating="4"><i class="bi bi-star"></i></span>
+                                <span class="rating-star" data-rating="5"><i class="bi bi-star"></i></span>
+                            </div>
+                            <small class="text-danger pl-1" id="error-rating"></small><br>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer d-flex justify-content-start">
+                <div class="col-lg-2">
+                    <button type="button" id="btn-tambah" onclick="kirim_rating()" class=" btn btn-outline-primary btn-block">Kirim</button>
                 </div>
             </div>
         </div>

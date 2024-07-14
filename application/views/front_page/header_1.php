@@ -27,7 +27,6 @@
     <link rel="stylesheet" href="<?= base_url() ?>assets/template-admin/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
     <link rel="stylesheet" href="<?= base_url() ?>assets/template-admin/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
     <link rel="stylesheet" href="<?= base_url() ?>assets/template-admin/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
-
     <!-- Template Stylesheet -->
     <link href="<?= base_url() ?>assets/template-user/css/style.css" rel="stylesheet">
 
@@ -77,6 +76,7 @@
                             <a href="<?php echo base_url("Front_page/gallery"); ?>" class="nav-item nav-link <?php echo $this->uri->segment(1) == 'Front_page' && $this->uri->segment(2) == 'gallery' ? 'active' : ''; ?>">Galeri</a>
                             <a href="<?php echo base_url("Front_page/location"); ?>" class="nav-item nav-link <?php echo $this->uri->segment(1) == 'Front_page' && $this->uri->segment(2) == 'location' ? 'active' : ''; ?>">Lokasi
                                 & Kontak</a>
+                            <a href="<?php echo base_url("history"); ?>" class="nav-item nav-link <?php echo $this->uri->segment(1) == 'history'  ? 'active' : ''; ?>">History</a>
                         </div>
                         <div class="d-flex m-3 me-0">
                             <a href="#" data-bs-toggle="modal" data-bs-target="#shoppingCartModal" class="position-relative me-4 my-auto">
@@ -89,7 +89,6 @@
                                 </a>
                                 <ul class="dropdown-menu">
                                     <li><a class="dropdown-item" href="<?= base_url('profile') ?>">Profil</a></li>
-                                    <li><a class="dropdown-item" href="<?= base_url('history') ?>">Histori</a></li>
                                     <li><a class="dropdown-item" href="<?= base_url('logout_1') ?>">Logout</a></li>
                                 </ul>
                             </div>

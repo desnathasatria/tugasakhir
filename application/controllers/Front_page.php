@@ -499,7 +499,7 @@ class Front_page extends CI_Controller
         $where = array('email' => $this->session->userdata('email_user'));
         $data['user'] = $this->data->find('st_user', $where)->row_array();
         $query = [
-            'select' => 'a.id, GROUP_CONCAT(b.title SEPARATOR ", ") as title, a.harga_transaksi, a.status_pengiriman, a.created_date',
+            'select' => 'a.id, GROUP_CONCAT(b.title SEPARATOR ", ") as title, a.harga_transaksi, a.status_pengiriman, a.created_date, a.keterangan',
             'from' => 'transaksi a',
             'join' => [
                 'detail_transaksi c, c.id_transaksi = a.id',
@@ -520,7 +520,7 @@ class Front_page extends CI_Controller
         $where = array('email' => $this->session->userdata('email_user'));
         $data['user'] = $this->data->find('st_user', $where)->row_array();
         $query = [
-            'select' => 'a.id, GROUP_CONCAT(b.title SEPARATOR ", ") as title, a.harga_transaksi, a.status_pengiriman, a.created_date',
+            'select' => 'a.id, GROUP_CONCAT(b.title SEPARATOR ", ") as title, a.harga_transaksi, a.status_pengiriman, a.created_date, a.rating, a.keterangan',
             'from' => 'transaksi a',
             'join' => [
                 'detail_transaksi c, c.id_transaksi = a.id',
@@ -794,5 +794,28 @@ class Front_page extends CI_Controller
         $this->load->view('front_page/history');
         $this->footer();
         $this->load->view('js-custom', $this->app_data);
+    }
+
+    public function insert_rating()
+    {
+        $id = $this->input->post('id');
+        $keterangan = $this->input->post('keterangan');
+        $rating = $this->input->post('rating');
+        $this->form_validation->set_rules('keterangan', 'Keterangan', 'required|trim');
+        $this->form_validation->set_rules('rating', 'Rating', 'required|trim');
+
+        if ($this->form_validation->run() == false) {
+            $response['errors'] = $this->form_validation->error_array();
+        } else {
+            $data = array(
+                'rating' => $rating,
+                'keterangan' => $keterangan,
+            );
+            $where = array('id' => $id);
+            $this->data->update('transaksi', $where, $data);
+
+            $response['success'] = "sukses";
+        }
+        echo json_encode($response);
     }
 }

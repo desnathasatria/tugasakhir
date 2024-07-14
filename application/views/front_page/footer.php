@@ -86,6 +86,27 @@
 <!-- Alertify JS -->
 <script src="https://cdn.jsdelivr.net/npm/alertifyjs/build/alertify.min.js"></script>
 
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const stars = document.querySelectorAll(".rating-star");
+        const ratingInput = document.getElementById("rating");
+
+        stars.forEach(star => {
+            star.addEventListener("click", function() {
+                const ratingValue = this.getAttribute("data-rating");
+
+                ratingInput.value = ratingValue;
+
+                stars.forEach(s => s.classList.remove("active"));
+
+                for (let i = 0; i < ratingValue; i++) {
+                    stars[i].classList.add("active");
+                }
+            });
+        });
+    });
+</script>
+
 
 <!-- Template Javascript -->
 <script src="<?= base_url() ?>assets/template-user/js/main.js"></script>

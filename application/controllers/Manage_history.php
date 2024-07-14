@@ -118,7 +118,7 @@ class Manage_history extends CI_Controller
     {
         $id = $this->input->post('id');
         $query = [
-            'select' => 'a.id, a.id_pelanggan, a.harga_transaksi, a.created_date, a.status_pembayaran, a.status_pengiriman, GROUP_CONCAT(b.title SEPARATOR ", ") as title, c.name  ',
+            'select' => 'a.id, a.id_pelanggan, a.harga_transaksi, a.rating, a.keterangan, a.created_date, a.status_pembayaran, a.status_pengiriman, GROUP_CONCAT(b.title SEPARATOR ", ") as title, c.name  ',
             'from' => 'transaksi a',
             'join' => [
                 'st_user c, c.id = a.id_pelanggan',
