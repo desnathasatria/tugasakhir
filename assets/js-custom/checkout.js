@@ -77,7 +77,7 @@ function Pilih_alamat(x) {
 		url: base_url + _controller + "/edit_status_address",
 		success: function (response) {
 			if (response.success) {
-				get_address();
+				get_data_address();
 				get_profil();
 				get_umkm();
 				$("#courierName").val("").trigger("change");
