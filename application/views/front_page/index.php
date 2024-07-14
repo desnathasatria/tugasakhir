@@ -126,10 +126,12 @@
                              <div class="col-6">
                                  <a href="#" class="h5"><?= $pr->title ?></a>
                                  <h4 class="mb-3"><?= $pr->price ?></h4>
+                                 <p class="mb-0">Total terjual: <?= $pr->total_terjual ?></p>
                              </div>
                          </div>
                      </div>
                  </div>
+
              <?php endforeach; ?>
          </div>
      </div>

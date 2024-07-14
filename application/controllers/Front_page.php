@@ -76,14 +76,17 @@ class Front_page extends CI_Controller
     {
         $this->check_auth();
         $query = [
-            'select' => 'a.id, a.title, a.description, a.price, a.image, b.name, a.id_category_product, a.weight, a.total_stok',
+            'select' => 'a.image, a.title, a.price, COALESCE(SUM(b.jumlah), 0) AS total_terjual',
             'from' => 'produk a',
             'join' => [
-                'kategori_produk b, b.id = a.id_category_product',
+                'detail_transaksi b, b.id_produk = a.id, left'
             ],
             'where' => [
                 'a.is_deleted' => 0
-            ]
+            ],
+            'group_by' => 'a.id, a.image, a.title, a.price',
+            'order_by' => 'total_terjual DESC',
+            'limit' => 5
         ];
 
         $this->app_data['produk'] = $this->data->get($query)->result();
