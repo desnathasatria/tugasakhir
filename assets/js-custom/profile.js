@@ -321,7 +321,7 @@ function delete_address(x) {
 				get_address();
 				alertify.success("Berhasil menghapus alamat");
 			} else if (response.error) {
-				alertify.error("Gagal menghapus alamat");
+				alertify.error(response.error);
 			}
 		},
 		error: function (xhr, status, error) {

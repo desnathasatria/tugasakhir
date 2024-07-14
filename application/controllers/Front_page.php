@@ -50,11 +50,20 @@ class Front_page extends CI_Controller
     {
         $where = array('id_company' => '1');
         $this->app_data['profile'] = $this->data->find('company_profile', $where)->result();
-        $session = array('id' => $this->session->userdata('id_user'));
-        $data = $this->data->find('st_user', $session)->row_array();
 
-        $kondisi = array('id' => $data['id']);
-        $this->app_data['user'] = $this->data->find('st_user', $kondisi)->row_array();
+        $query = [
+            'select' => 'a.id, id_credential, name, email, phone_number, image, username, password, b.address, b.province, b.city',
+            'from' => 'st_user a',
+            'join' => [
+                'address_user b, b.id_user = a.id AND b.is_active = 1, left',
+            ],
+            'where' => [
+                'a.id' => $this->session->userdata('id_user')
+            ]
+        ];
+        $this->app_data['user'] = $this->data->get($query)->row_array();
+
+
         $this->load->view('front_page/header_1', $this->app_data);
     }
     public function footer()
@@ -575,7 +584,8 @@ class Front_page extends CI_Controller
             'from' => 'address_user',
             'where' => [
                 'id_user' => $this->session->userdata('id_user')
-            ]
+            ],
+            'order_by' => 'id'
         ];
         $result = $this->data->get($query)->result();
         echo json_encode($result);
@@ -680,12 +690,21 @@ class Front_page extends CI_Controller
     public function delete_address()
     {
         $id = $this->input->post('id');
-        $deleted_address = $this->data->delete('address_user', array('id' => $id));
-        if ($deleted_address) {
-            $response['success'] = "Data berhasil dihapus";
+        $where = array('id' => $id);
+        $data_alamat = $this->data->find('address_user', $where)->row_array();
+
+        if ($data_alamat['is_active'] == '1') {
+            $response['error'] = "Gagal, dikarenakan alamat utama";
         } else {
-            $response['error'] = "Gagal menghapus data mahasiswa";
+            $deleted_address = $this->data->delete('address_user', array('id' => $id));
+            if ($deleted_address) {
+                $response['success'] = "Data berhasil dihapus";
+            } else {
+                $response['error'] = "Gagal menghapus data mahasiswa";
+            }
         }
+
+
         echo json_encode($response);
     }
 
