@@ -145,7 +145,7 @@ class Front_page extends CI_Controller
     public function get_data_rating($x)
     {
         $query = [
-            'select' => 'keterangan, rating, name',
+            'select' => 'a.id, keterangan, rating, name',
             'from' => 'transaksi a',
             'join' => [
                 'st_user b, b.id = a.id_pelanggan',
