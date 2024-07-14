@@ -54,10 +54,11 @@ class Manage_user extends CI_Controller
         ];
 
         $user = [
-            'select' => 'a.id, a.name, a.email, a.image, a.phone_number, a.address, a.id_credential, b.name as akses',
+            'select' => 'a.id, a.id_credential, a.name, a.email, a.image, a.phone_number, c.address, b.name as akses',
             'from' => 'st_user a',
             'join' => [
-                'app_credential b, b.id = a.id_credential'
+                'app_credential b, b.id = a.id_credential',
+                'address_user c, c.id_user = a.id AND c.is_active = 1, left',
             ],
             'where' => [
                 'a.is_deleted' => '0',
@@ -85,10 +86,11 @@ class Manage_user extends CI_Controller
     public function get_data()
     {
         $query = [
-            'select' => 'a.id, a.name, a.email, a.image, a.phone_number, a.address, a.username, a.password, a.last_login, b.name as akses',
+            'select' => 'a.id, a.name, a.email, a.image, a.phone_number, c.address, a.username, a.password, a.last_login, b.name as akses',
             'from' => 'st_user a',
             'join' => [
-                'app_credential b, b.id = a.id_credential'
+                'app_credential b, b.id = a.id_credential',
+                'address_user c, c.id_user = a.id AND c.is_active = 1, left',
             ],
             'where' => [
                 'a.is_deleted' => '0'
@@ -101,10 +103,11 @@ class Manage_user extends CI_Controller
     public function get_profil()
     {
         $query = [
-            'select' => 'a.id, a.name, a.email, a.image, a.phone_number, a.address, a.username, a.password, a.id_credential, b.name as akses',
+            'select' => 'a.id, a.name, a.email, a.image, a.phone_number, c.address, a.username, a.password, a.id_credential, b.name as akses',
             'from' => 'st_user a',
             'join' => [
-                'app_credential b, b.id = a.id_credential'
+                'app_credential b, b.id = a.id_credential',
+                'address_user c, c.id_user = a.id AND c.is_active = 1, left',
             ],
             'where' => [
                 'a.is_deleted' => '0',
@@ -119,8 +122,11 @@ class Manage_user extends CI_Controller
     {
         $id = $this->input->post('id');
         $query = [
-            'select' => 'a.id, a.name, a.email, a.image, a.phone_number, a.address, a.username, a.password, a.last_login, a.id_credential',
+            'select' => 'a.id, a.name, a.email, a.image, a.phone_number, c.address, c.id as id_alamat, a.username, a.password, a.last_login, a.id_credential',
             'from' => 'st_user a',
+            'join' => [
+                'address_user c, c.id_user = a.id AND c.is_active = 1, left',
+            ],
             'where' => [
                 'a.is_deleted' => '0',
                 'a.id' => $id
@@ -176,7 +182,6 @@ class Manage_user extends CI_Controller
                         'name' => $nama,
                         'email' => $email,
                         'phone_number' => $telepon,
-                        'address' => $alamat,
                         'id_credential' => $akses,
                         'username' => $username,
                         'password' => $hash,
@@ -216,7 +221,8 @@ class Manage_user extends CI_Controller
                                     $response['errors']['card'] = strip_tags($this->upload->display_errors());
                                 }
                             }
-                            $this->data->insert('st_user', $data);
+                            $inserted_id = $this->data->insert('st_user', $data);
+                            $this->data->insert('address_user', array('address' => $alamat, 'id_user' => $inserted_id, 'is_active' => '1'));
                         }
                     }
                     $response['success'] = "<script>$(document).ready(function () {
@@ -255,6 +261,7 @@ class Manage_user extends CI_Controller
     public function edit_data()
     {
         $id = $this->input->post('id');
+        $id_alamat = $this->input->post('id_alamat');
         $nama = $this->input->post('nama');
         $email = $this->input->post('email');
         $telepon = $this->input->post('telepon');
@@ -296,7 +303,6 @@ class Manage_user extends CI_Controller
                     'name' => $nama,
                     'email' => $email,
                     'phone_number' => $telepon,
-                    'address' => $alamat,
                     'id_credential' => $akses,
                     'username' => $username,
                     'updated_date' => $timestamp,
@@ -309,6 +315,8 @@ class Manage_user extends CI_Controller
 
                 $where = array('id' => $id);
                 $updated = $this->data->update('st_user', $where, $data);
+
+                $this->data->update('address_user', array('id' => $id_alamat), array('address' => $alamat));
 
                 if (!$updated) {
                     $response['errors']['database'] = "Failed to update data in the database.";

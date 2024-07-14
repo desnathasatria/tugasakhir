@@ -20,8 +20,7 @@
         <div class="card">
             <h5 class="card-header">Kelola Admin</h5>
             <div class="card-body">
-                <button class="btn btn-primary" data-toggle="modal" data-target="#exampleModal"
-                    onclick="submit('tambah')"><i class="fa-solid fa-circle-plus"></i> Input data</button>
+                <button class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" onclick="submit('tambah')"><i class="fa-solid fa-circle-plus"></i> Input data</button>
                 <hr>
                 <div class="row">
                     <div class="col-lg-4">
@@ -75,8 +74,8 @@
                                 <label for="nama" class="col-lg-2 col-form-label">Nama</label>
                                 <div class="col-lg-10">
                                     <input type="hidden" name="id" class="form-control">
-                                    <input type="text" name="nama" id="nama" class="form-control"
-                                        placeholder="Masukkan nama">
+                                    <input type="hidden" name="id_alamat" class="form-control">
+                                    <input type="text" name="nama" id="nama" class="form-control" placeholder="Masukkan nama">
                                     <small class="text-danger pl-1" id="error-nama"></small>
                                 </div>
                             </div>
@@ -86,8 +85,7 @@
                             <div class="row">
                                 <label for="email" class="col-lg-2 col-form-label">Email</label>
                                 <div class="col-lg-10">
-                                    <input type="text" name="email" id="email" class="form-control"
-                                        placeholder="Masukkan Email">
+                                    <input type="text" name="email" id="email" class="form-control" placeholder="Masukkan Email">
                                     <small class="text-danger pl-1" id="error-email"></small>
                                 </div>
                             </div>
@@ -98,8 +96,7 @@
                                 <label for="telepon" class="col-lg-2 col-form-label">No
                                     HP</label>
                                 <div class="col-lg-10">
-                                    <input type="number" name="telepon" id="telepon" class="form-control"
-                                        placeholder="Masukkan No HP">
+                                    <input type="number" name="telepon" id="telepon" class="form-control" placeholder="Masukkan No HP">
                                     <small class="text-danger pl-1" id="error-telepon"></small>
                                 </div>
                             </div>
@@ -110,8 +107,7 @@
                                 <label for="akses" class="col-lg-2 col-form-label">Role
                                     Akses</label>
                                 <div class="col-lg-10">
-                                    <select class="form-control" aria-label="Default select example" id="akses"
-                                        name="akses[]">
+                                    <select class="form-control" aria-label="Default select example" id="akses" name="akses[]">
                                         <option value="">Pilih Role Akses</option>
                                         <option value="1">Admin</option>
                                         <option value="2">Super Admin</option>
@@ -125,8 +121,7 @@
                             <div class="row">
                                 <label for="alamat" class="col-lg-2 col-form-label">Alamat</label>
                                 <div class="col-lg-10">
-                                    <input type="text" name="alamat" id="alamat" class="form-control"
-                                        placeholder="Masukkan Alamat">
+                                    <input type="text" name="alamat" id="alamat" class="form-control" placeholder="Masukkan Alamat">
                                     <small class="text-danger pl-1" id="error-alamat"></small>
                                 </div>
                             </div>
@@ -138,8 +133,7 @@
                                 <div class="col-lg-10">
                                     <div class="input-group">
                                         <div class="custom-file">
-                                            <input type="file" class="custom-file-input" name="image" id="image"
-                                                onchange="previewImage(event)">
+                                            <input type="file" class="custom-file-input" name="image" id="image" onchange="previewImage(event)">
                                             <label class="custom-file-label" for="image">Pilih file</label>
                                         </div>
                                     </div>
@@ -157,27 +151,22 @@
                             <div class="row">
                                 <label for="username" class="col-lg-2 col-form-label">Username</label>
                                 <div class="col-lg-10">
-                                    <input type="text" name="username" id="username" class="form-control"
-                                        placeholder="Masukkan Username">
+                                    <input type="text" name="username" id="username" class="form-control" placeholder="Masukkan Username">
                                     <small class="text-danger pl-1" id="error-username"></small><br>
                                 </div>
                             </div>
 
                             <div class="form-group">
                                 <div class="row">
-                                    <label for="password" class="col-lg-2 col-form-label"
-                                        id="passwordLabel">Password</label>
+                                    <label for="password" class="col-lg-2 col-form-label" id="passwordLabel">Password</label>
                                     <div class="col-lg-4">
-                                        <input type="password" name="password" id="password" class="form-control"
-                                            placeholder="Masukkan Password">
+                                        <input type="password" name="password" id="password" class="form-control" placeholder="Masukkan Password">
                                         <small class="text-danger pl-1" id="error-password"></small>
                                     </div>
 
-                                    <label for="password1" class="col-lg-2 col-form-label"
-                                        id="passwordLabel1">Ulangi</label>
+                                    <label for="password1" class="col-lg-2 col-form-label" id="passwordLabel1">Ulangi</label>
                                     <div class="col-lg-4">
-                                        <input type="password" name="password1" id="password1" class="form-control"
-                                            placeholder="Ulangi Password">
+                                        <input type="password" name="password1" id="password1" class="form-control" placeholder="Ulangi Password">
                                         <small class="text-danger pl-1" id="error-password1"></small>
                                     </div>
                                 </div>
@@ -195,12 +184,10 @@
             </div>
             <div class="modal-footer d-flex justify-content-start">
                 <div class="col-lg-2">
-                    <button type="button" id="btn-tambah" onclick="insert_data()"
-                        class="btn btn-outline-primary btn-block">Tambah</button>
+                    <button type="button" id="btn-tambah" onclick="insert_data()" class="btn btn-outline-primary btn-block">Tambah</button>
                 </div>
                 <div class="col-lg-2">
-                    <button type="button" id="btn-ubah" onclick="edit_data()"
-                        class="btn btn-outline-primary btn-block">Edit</button>
+                    <button type="button" id="btn-ubah" onclick="edit_data()" class="btn btn-outline-primary btn-block">Edit</button>
                 </div>
             </div>
 

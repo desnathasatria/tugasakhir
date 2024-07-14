@@ -54,10 +54,11 @@ class Manage_carousel extends CI_Controller
         ];
 
         $user = [
-            'select' => 'a.id, a.name, a.email, a.image, a.phone_number, a.address, b.name as akses',
+            'select' => 'a.id, a.name, a.email, a.image, a.phone_number, c.address, b.name as akses',
             'from' => 'st_user a',
             'join' => [
-                'app_credential b, b.id = a.id_credential'
+                'app_credential b, b.id = a.id_credential',
+                'address_user c, c.id_user = a.id AND c.is_active = 1, left',
             ],
             'where' => [
                 'a.is_deleted' => '0',
@@ -153,7 +154,6 @@ class Manage_carousel extends CI_Controller
                             $this->image_lib->resize();
 
                             $data['image'] = $config['file_name'] . $uploaded_data['file_ext'];
-
                         } else {
                             $data['image'] = $uploaded_data['file_name'];
                         }
@@ -208,7 +208,6 @@ class Manage_carousel extends CI_Controller
 
         if ($this->form_validation->run() == false) {
             $response['errors'] = $this->form_validation->error_array();
-
         } else {
             $where = array('email' => $this->session->userdata('email'));
             $data['user'] = $this->data->find('st_user', $where)->row_array();

@@ -54,10 +54,11 @@ class Manage_message extends CI_Controller
         ];
 
         $user = [
-            'select' => 'a.id, a.name, a.email, a.image, a.phone_number, a.address, b.name as akses',
+            'select' => 'a.id, a.name, a.email, a.image, a.phone_number, c.address, b.name as akses',
             'from' => 'st_user a',
             'join' => [
-                'app_credential b, b.id = a.id_credential'
+                'app_credential b, b.id = a.id_credential',
+                'address_user c, c.id_user = a.id AND c.is_active = 1, left',
             ],
             'where' => [
                 'a.is_deleted' => '0',
@@ -108,7 +109,6 @@ class Manage_message extends CI_Controller
                   })
               });</script>";
             echo json_encode($response);
-
         }
     }
     public function get_data_id()

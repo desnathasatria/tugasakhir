@@ -184,6 +184,7 @@ function submit(x) {
 			dataType: "json",
 			success: function (hasil) {
 				$("[name='id']").val(hasil[0].id);
+				$("[name='id_alamat']").val(hasil[0].id_alamat);
 				$("[name='nama']").val(hasil[0].name);
 				$("[name='email']").val(hasil[0].email);
 				$("[name='telepon']").val(hasil[0].phone_number);
@@ -245,6 +246,7 @@ function insert_data() {
 function edit_data() {
 	var formData = new FormData();
 	formData.append("id", $("[name='id']").val());
+	formData.append("id_alamat", $("[name='id_alamat']").val());
 	formData.append("nama", $("[name='nama']").val());
 	formData.append("email", $("[name='email']").val());
 	formData.append("telepon", $("[name='telepon']").val());
