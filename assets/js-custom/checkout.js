@@ -1,10 +1,10 @@
 if (currentUrl.includes(base_url + "Front_page/checkout")) {
-	get_address();
+	get_data_address();
 	get_profil();
 	get_umkm();
 }
 
-function get_address() {
+function get_data_address() {
 	$.ajax({
 		url: base_url + _controller + "/get_data_address",
 		method: "GET",
@@ -44,7 +44,7 @@ function get_address() {
 							} else {
 								var status_alamat = "";
 							}
-							var list = `<div class="col-lg-6">
+							var list = `<div class="col-lg-4">
                                         <div class="card mb-2">
                                             <div class="card-body">
                                                 <h5 class="card-title">Alamat ${no} ${status_alamat}</h5>
