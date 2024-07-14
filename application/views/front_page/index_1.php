@@ -23,7 +23,6 @@
      <div class="container py-5">
          <div class="row g-5 align-items-center">
              <div class="col-md-12 col-lg-7">
-                 <h4 class="mb-3 text-secondary">Selamat Datang <?= $user['name'] ?></h4>
                  <h4 class="mb-3 text-secondary">100% Olahan Alami</h4>
                  <h1 class="mb-5 display-3 text-primary">GTT Pusat Oleh - Oleh Kediri</h1>
              </div>
@@ -49,10 +48,11 @@
                      </button>
                  </div>
              </div>
+
          </div>
      </div>
  </div>
-
+ <!-- Hero End -->
 
 
  <!-- Featurs Section Start -->

@@ -281,45 +281,50 @@ $("#courierService").on("change", function () {
 });
 
 function createPayment(id, total, jumlah) {
-	var timestamp = new Date().getTime();
-	var random_number = Math.floor(Math.random() * 1000);
-	var order_id = "order-" + timestamp + "-" + random_number;
+	alertify.confirm(
+		"Apakah anda yakin melanjutkan proses pembayaran?",
+		function () {
+			var timestamp = new Date().getTime();
+			var random_number = Math.floor(Math.random() * 1000);
+			var order_id = "order-" + timestamp + "-" + random_number;
 
-	var data = {
-		order_id: order_id,
-		gross_amount: totalPrice,
-		first_name: first_name,
-		last_name: last_name,
-		email: email,
-		phone: phone,
-		jumlah: total,
-		jumlah_produk: jumlah,
-	};
+			var data = {
+				order_id: order_id,
+				gross_amount: totalPrice,
+				first_name: first_name,
+				last_name: last_name,
+				email: email,
+				phone: phone,
+				jumlah: total,
+				jumlah_produk: jumlah,
+			};
 
-	// console.log(data);
+			// console.log(data);
 
-	$.ajax({
-		url: base_url + "MidtransController/create_payment",
-		method: "POST",
-		data: {
-			id_produk: id,
-			order_id: order_id,
-			gross_amount: totalPrice,
-			first_name: first_name,
-			last_name: last_name,
-			email: email,
-			phone: phone,
-			jumlah: total,
-			jumlah_produk: jumlah,
-		},
-		success: function (response) {
-			var data = JSON.parse(response).redirect_url;
-			console.log(data);
-			// window.location.redirect =
-			window.location.href = data;
-		},
-		error: function (xhr, status, error) {
-			console.error("Error:", status, error);
-		},
-	});
+			$.ajax({
+				url: base_url + "MidtransController/create_payment",
+				method: "POST",
+				data: {
+					id_produk: id,
+					order_id: order_id,
+					gross_amount: totalPrice,
+					first_name: first_name,
+					last_name: last_name,
+					email: email,
+					phone: phone,
+					jumlah: total,
+					jumlah_produk: jumlah,
+				},
+				success: function (response) {
+					var data = JSON.parse(response).redirect_url;
+					console.log(data);
+					// window.location.redirect =
+					window.location.href = data;
+				},
+				error: function (xhr, status, error) {
+					console.error("Error:", status, error);
+				},
+			});
+		}
+	);
 }

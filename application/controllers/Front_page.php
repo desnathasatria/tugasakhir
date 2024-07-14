@@ -94,7 +94,11 @@ class Front_page extends CI_Controller
         $this->app_data['carousel'] = $this->data->find('carousel_menu', $where)->result();
         $this->app_data['location'] = $this->data->get_all('company_profile')->result();
 
-        $this->load->view('front_page/index', $this->app_data);
+        if (!$this->is_logged_in()) {
+            $this->load->view('front_page/index_1', $this->app_data);
+        } else {
+            $this->load->view('front_page/index', $this->app_data);
+        }
         $this->footer();
     }
     public function product()
