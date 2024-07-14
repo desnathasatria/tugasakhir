@@ -550,12 +550,143 @@ class Front_page extends CI_Controller
     }
     public function get_profile()
     {
-        $where = array('id' => $this->session->userdata('id_user'));
-        $data['user'] = $this->data->find('st_user', $where)->row_array();
+        // $where = array('id' => $this->session->userdata('id_user'));
+        // $result = $this->data->find('st_user', $where)->result();
 
-        $where = array('id' => $data['user']['id']);
-        $result = $this->data->find('st_user', $where)->result();
+        $query = [
+            'select' => 'a.id, id_credential, name, email, phone_number, image, username, password, b.address, b.province, b.city',
+            'from' => 'st_user a',
+            'join' => [
+                'address_user b, b.id_user = a.id AND b.is_active = 1, left',
+            ],
+            'where' => [
+                'a.id' => $this->session->userdata('id_user')
+            ]
+        ];
+        $result = $this->data->get($query)->result();
+
         echo json_encode($result);
+    }
+
+    public function get_data_address()
+    {
+        $query = [
+            'select' => 'id, address, province, city, is_active',
+            'from' => 'address_user',
+            'where' => [
+                'id_user' => $this->session->userdata('id_user')
+            ]
+        ];
+        $result = $this->data->get($query)->result();
+        echo json_encode($result);
+    }
+
+    public function get_address_id()
+    {
+        $id = $this->input->post('id');
+        $query = [
+            'select' => 'id, address, province, city, is_active',
+            'from' => 'address_user',
+            'where' => [
+                'id' => $id
+            ]
+        ];
+        $result = $this->data->get($query)->result();
+        echo json_encode($result);
+    }
+
+    public function insert_address()
+    {
+        $alamat1 = $this->input->post('alamat1');
+        $provinsi = $this->input->post('provinsi');
+        $kota = $this->input->post('kota');
+        $this->form_validation->set_rules('alamat1', 'Alamat', 'required|trim');
+        $this->form_validation->set_rules('provinsi', 'Provinsi', 'required|trim');
+        $this->form_validation->set_rules('kota', 'Kota', 'required|trim');
+
+        $where = array('id_user' => $this->session->userdata('id_user'), 'is_active' => '1');
+        $data_alamat = $this->data->find('address_user', $where)->row_array();
+
+        if (isset($data_alamat)) {
+            $status_alamat = '0';
+        } else {
+            $status_alamat = '1';
+        }
+
+        if ($this->form_validation->run() == false) {
+            $response['errors'] = $this->form_validation->error_array();
+        } else {
+            $data = array(
+                'id_user' => $this->session->userdata('id_user'),
+                'address' => $alamat1,
+                'province' => $provinsi,
+                'city' => $kota,
+                'is_active' => $status_alamat
+            );
+            $this->data->insert('address_user', $data);
+
+            $response['success'] = "sukses";
+        }
+        echo json_encode($response);
+    }
+
+    public function edit_address()
+    {
+        $id_alamat = $this->input->post('id_alamat');
+        $alamat1 = $this->input->post('alamat1');
+        $provinsi = $this->input->post('provinsi');
+        $kota = $this->input->post('kota');
+
+        $this->form_validation->set_rules('alamat1', 'Alamat', 'required|trim');
+        $this->form_validation->set_rules('provinsi', 'Provinsi', 'required|trim');
+        $this->form_validation->set_rules('kota', 'Kota', 'required|trim');
+
+        if ($this->form_validation->run() == false) {
+            $response['errors'] = $this->form_validation->error_array();
+        } else {
+            $data = array(
+                'address' => $alamat1,
+                'province' => $provinsi,
+                'city' => $kota,
+            );
+            $where = array('id' => $id_alamat);
+            $this->data->update('address_user', $where, $data);
+
+            $response['success'] = "sukses";
+        }
+        echo json_encode($response);
+    }
+
+    public function edit_status_address()
+    {
+        $id = $this->input->post('id');
+        $where = array('id_user' => $this->session->userdata('id_user'));
+        $updated = $this->data->update('address_user', $where, array(
+            'is_active' => '0',
+        ));
+
+        if ($updated) {
+            $where1 = array('id' => $id);
+            $updated = $this->data->update('address_user', $where1, array(
+                'is_active' => '1',
+            ));
+            $response['success'] = "Data berhasil dihapus";
+        } else {
+            $response['error'] = "Gagal menghapus data mahasiswa";
+        }
+        echo json_encode($response);
+    }
+
+    public function delete_address()
+    {
+        $id = $this->input->post('id');
+        $deleted_address = $this->data->delete('address_user', array('id' => $id));
+        if ($deleted_address) {
+            $response['success'] = "Data berhasil dihapus";
+        } else {
+            $response['error'] = "Gagal menghapus data mahasiswa";
+        }
+        echo json_encode($response);
     }
 
     public function edit_profile()
@@ -572,7 +703,7 @@ class Front_page extends CI_Controller
         if ($this->form_validation->run() == false) {
             $response['errors'] = $this->form_validation->error_array();
         } else {
-            $where = array('email' => $this->session->userdata('email_user'));
+            $where = array('id' => $this->session->userdata('id_user'));
             $data['user'] = $this->data->find('st_user', $where)->row_array();
 
             $id = $this->input->post('id');
@@ -599,14 +730,16 @@ class Front_page extends CI_Controller
                 'updated_by' => $data['user']['id'],
             );
 
-            if (!empty($password)) {
-                $data1 = array('password' => $hash);
-                $where = array('id' => $id);
-                $update = $this->data->update('st_user', $where, $data1);
-            }
+            // if (!empty($password)) {
+            //     $data1 = array('password' => $hash);
+            //     $where = array('id' => $id);
+            //     $update = $this->data->update('st_user', $where, $data1);
+            // }
 
             $where = array('id' => $id);
             $updated = $this->data->update('st_user', $where, $data);
+
+
 
             if (!$updated) {
                 $response['errors']['database'] = "Failed to update data in the database.";

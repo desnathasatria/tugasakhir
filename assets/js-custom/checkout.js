@@ -1,5 +1,7 @@
-get_profil();
-get_umkm();
+if (currentUrl.includes(base_url + "Front_page/checkout")) {
+	get_profil();
+	get_umkm();
+}
 
 var destinationId, originId, wightProduct, courierName, totalPrice;
 function get_profil() {

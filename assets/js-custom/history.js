@@ -1,4 +1,6 @@
-get_data_history();
+if (currentUrl.includes(base_url + "history")) {
+	get_data_history();
+}
 
 function delete_form() {
 	$("[name='id']").val("");

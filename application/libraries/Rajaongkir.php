@@ -1,17 +1,20 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
-class RajaOngkir {
+class RajaOngkir
+{
     private $api_key;
     private $base_url;
 
-    public function __construct() {
+    public function __construct()
+    {
         // Set your API key
         $this->api_key = 'bfc73a5ac233d6ea88fb80d6b59baeab';
         $this->base_url = 'https://api.rajaongkir.com/starter/';
     }
 
-    private function request($method, $endpoint, $params = []) {
+    private function request($method, $endpoint, $params = [])
+    {
         $url = $this->base_url . $endpoint;
 
         $headers = [
@@ -52,20 +55,49 @@ class RajaOngkir {
         return json_decode($response, true);
     }
 
-    public function getProvinces() {
+    public function getProvinces()
+    {
         return $this->request('GET', 'province');
     }
 
-    public function getCities($province_id) {
+    public function getCities($province_id)
+    {
         return $this->request('GET', 'city', ['province' => $province_id]);
     }
 
-    public function getCost($origin, $destination, $weight, $courier) {
+    public function getCost($origin, $destination, $weight, $courier)
+    {
         return $this->request('POST', 'cost', [
             'origin' => $origin,
             'destination' => $destination,
             'weight' => $weight,
             'courier' => $courier,
         ]);
+    }
+
+    public function getProvinceName($province_id)
+    {
+        $provinces = $this->getProvinces();
+
+        foreach ($provinces['rajaongkir']['results'] as $province) {
+            if ($province['province_id'] == $province_id) {
+                return $province['province'];
+            }
+        }
+
+        return null;
+    }
+
+    public function getCityName($city_id, $province_id)
+    {
+        $cities = $this->getCities($province_id);
+
+        foreach ($cities['rajaongkir']['results'] as $city) {
+            if ($city['city_id'] == $city_id) {
+                return $city['city_name'];
+            }
+        }
+
+        return null;
     }
 }

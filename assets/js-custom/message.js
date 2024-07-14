@@ -11,23 +11,25 @@ function delete_error() {
 	$("#error-subjek_pengirim").html("");
 	$("#error-pesan").text("");
 }
-get_data();
-var maxToShow = 5;
 
-$(document).ready(function () {
-	get_data();
+if (currentUrl.includes(base_url + "Front_page/location")) {
+	var maxToShow = 5;
 
-	$("#btn_tampil_data").click(function () {
-		if (maxToShow === 5) {
-			maxToShow = 999;
-			$(this).text("Tampilkan lebih sedikit");
-		} else {
-			maxToShow = 5;
-			$(this).text("Tampilkan lebih banyak");
-		}
+	$(document).ready(function () {
 		get_data();
+
+		$("#btn_tampil_data").click(function () {
+			if (maxToShow === 5) {
+				maxToShow = 999;
+				$(this).text("Tampilkan lebih sedikit");
+			} else {
+				maxToShow = 5;
+				$(this).text("Tampilkan lebih banyak");
+			}
+			get_data();
+		});
 	});
-});
+}
 
 function get_data() {
 	delete_form();
