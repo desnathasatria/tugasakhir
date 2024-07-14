@@ -1,6 +1,95 @@
 if (currentUrl.includes(base_url + "Front_page/checkout")) {
+	get_address();
 	get_profil();
 	get_umkm();
+}
+
+function get_address() {
+	$.ajax({
+		url: base_url + _controller + "/get_data_address",
+		method: "GET",
+		dataType: "json",
+		success: function (data) {
+			var no = 1;
+			$("#data_alamat").empty();
+			if (Object.keys(data).length === 0) {
+				var html = "<b class='mb-1 mt-1'>Belum ada alamat</b>";
+				$("#data_alamat").html(html);
+			} else {
+				data.forEach(function (item) {
+					var provinceRequest = $.ajax({
+						url:
+							base_url + "RajaongkirController/province_name/" + item.province,
+						method: "GET",
+						dataType: "json",
+					});
+
+					var cityRequest = $.ajax({
+						url:
+							base_url +
+							"RajaongkirController/city_name/" +
+							item.city +
+							"/" +
+							item.province,
+						method: "GET",
+						dataType: "json",
+					});
+
+					$.when(provinceRequest, cityRequest)
+						.done(function (provinceResult, cityResult) {
+							var province_name = provinceResult[0].nama_provinsi;
+							var city_name = cityResult[0].nama_kota;
+							if (item.is_active == 1) {
+								var status_alamat = " - (Alamat utama)";
+							} else {
+								var status_alamat = "";
+							}
+							var list = `<div class="col-lg-6">
+                                        <div class="card mb-2">
+                                            <div class="card-body">
+                                                <h5 class="card-title">Alamat ${no} ${status_alamat}</h5>
+                                                <h6 class="card-subtitle mb-2 text-body-secondary">${item.address}</h6>
+                                                <p class="card-text">${city_name}, ${province_name}</p>
+                                                <a href="#" class="card-link" onclick="Pilih_alamat(${item.id})">Pilih menjadi alamat utama</a>
+                                            </div>
+                                        </div>
+                                    </div>`;
+							$("#data_alamat").append(list);
+							no++;
+						})
+						.fail(function (xhr, textStatus, errorThrown) {
+							console.log(xhr.statusText);
+						});
+				});
+			}
+		},
+		error: function (xhr, textStatus, errorThrown) {
+			console.log(xhr.statusText);
+		},
+	});
+}
+
+function Pilih_alamat(x) {
+	$.ajax({
+		type: "POST",
+		data: "id=" + x,
+		dataType: "json",
+		url: base_url + _controller + "/edit_status_address",
+		success: function (response) {
+			if (response.success) {
+				get_address();
+				get_profil();
+				get_umkm();
+				$("#courierName").val("").trigger("change");
+				alertify.success("Berhasil mengatur alamat");
+			} else if (response.error) {
+				alertify.error("Gagal mengatur alamat");
+			}
+		},
+		error: function (xhr, status, error) {
+			console.error("AJAX Error: " + error);
+		},
+	});
 }
 
 var destinationId, originId, wightProduct, courierName, totalPrice;

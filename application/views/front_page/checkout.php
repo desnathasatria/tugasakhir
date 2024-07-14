@@ -32,7 +32,19 @@
          <!-- Checkout Page Start -->
          <div class="container-fluid py-5">
              <div class="container py-5">
-                 <h1 class="mb-4">Billing details</h1>
+                 <h1 class="mb-4">Detail Pembayaran</h1>
+                 <div class="accordion" id="accordionExample">
+                     <button class="btn btn-primary collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                         Pilih Alamat
+                     </button>
+                     <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                         <div class="accordion-body">
+                             <div class="row" id="data_alamat">
+
+                             </div>
+                         </div>
+                     </div>
+                 </div><br>
                  <form action="#">
                      <div class="row g-5">
                          <div class="col-md-12 col-lg-12 col-xl-12 mx-auto"> <!-- Center content in medium and larger screens -->
