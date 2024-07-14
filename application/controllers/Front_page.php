@@ -141,6 +141,25 @@ class Front_page extends CI_Controller
         $this->footer();
         $this->load->view('js-custom', $this->app_data);
     }
+
+    public function get_data_rating($x)
+    {
+        $query = [
+            'select' => 'keterangan, rating, name',
+            'from' => 'transaksi a',
+            'join' => [
+                'st_user b, b.id = a.id_pelanggan',
+                'detail_transaksi c, c.id_transaksi = a.id',
+            ],
+            'where' => [
+                'a.keterangan !=' => null,
+                'c.id_produk' => $x
+            ]
+        ];
+        $result = $this->data->get($query)->result();
+        echo json_encode($result);
+    }
+
     public function location()
     {
         $this->check_auth();

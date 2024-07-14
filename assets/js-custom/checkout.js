@@ -1,3 +1,55 @@
+if (currentUrl.includes(base_url + "Front_page/product_detail")) {
+	get_data_rating();
+}
+
+function get_data_rating() {
+	$.ajax({
+		url: base_url + _controller + "/get_data_rating/" + id_produk_detail,
+		method: "GET",
+		dataType: "json",
+		success: function (data) {
+			$("#data_penilaian").empty();
+			if (Object.keys(data).length === 0) {
+				var html = `<div class="col-lg-3"><b>Belum ada penilaian</b></div>`;
+				$("#data_penilaian").html(html);
+			} else {
+				data.forEach(function (item) {
+					var list = `<div class="col-lg-3">
+								<div style="font-family: Arial, sans-serif; max-width: 400px; border: 1px solid #e0e0e0; border-radius: 8px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+									<div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 5px;">
+										<div style="display: flex; align-items: center;">
+											<span style="font-weight: bold;">${item.name}</span>
+										</div>
+									</div>
+									<div class="input-group">
+										<span class="rating-star1" data-rating="1"><i class="bi bi-star"></i></span>
+										<span class="rating-star1" data-rating="2"><i class="bi bi-star"></i></span>
+										<span class="rating-star1" data-rating="3"><i class="bi bi-star"></i></span>
+										<span class="rating-star1" data-rating="4"><i class="bi bi-star"></i></span>
+										<span class="rating-star1" data-rating="5"><i class="bi bi-star"></i></span>
+									</div>
+									<div style="margin-bottom: 5px;">
+										<p style="margin: 5px 0;">Keterangan : ${item.keterangan}</p>
+									</div>
+								</div>
+							</div>`;
+
+					$("#data_penilaian").append(list); // Append list here
+
+					const stars = $("#data_penilaian").find(".rating-star1"); // Select stars inside appended list
+					stars.each(function (index, star) {
+						$(star).removeClass("active");
+					});
+
+					for (let i = 0; i < item.rating; i++) {
+						$(stars[i]).addClass("active");
+					}
+				});
+			}
+		},
+	});
+}
+
 if (currentUrl.includes(base_url + "Front_page/checkout")) {
 	get_data_address();
 	get_profil();
