@@ -41,11 +41,12 @@
                         <tr>
                             <th width="5%">No</th>
                             <th width="10%">Judul</th>
-                            <th width="15%">Kategori</th>
+                            <th width="5%">Kategori</th>
                             <th width="20%">Deskripsi</th>
                             <th width="15%">Harga Jual</th>
                             <th width="5%">Berat</th>
-                            <th width="15%">Foto</th>
+                            <th width="15%">Tgl Kadaluarsa</th>
+                            <th width="10%">Foto</th>
                             <th width="5%">Stok</th>
                             <th width="10%">Aksi</th>
                         </tr>
@@ -125,6 +126,20 @@
                                 <div class="col-lg-10">
                                     <input type="text" name="berat" id="berat" class="form-control" placeholder="Masukkan Berat">
                                     <small class="text-danger pl-1" id="error-berat"></small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <label for="berat" class="col-lg-2 col-form-label">Tanggal Kadaluarsa</label>
+                                <div class="col-lg-10">
+                                    <div class="input-group date" id="reservationdate1" data-target-input="nearest">
+                                        <input type="text" class="form-control datetimepicker-input" data-target="#reservationdate1" id="kadaluarsa" name="kadaluarsa" />
+                                        <div class="input-group-append" data-target="#reservationdate1" data-toggle="datetimepicker">
+                                            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                        </div>
+                                    </div>
+                                    <small class="text-danger pl-1" id="error-kadaluarsa"></small>
                                 </div>
                             </div>
                         </div>

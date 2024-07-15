@@ -6,6 +6,14 @@ $(".filter").select2({
 	theme: "bootstrap4",
 });
 
+$("#reservationdate1").datetimepicker({
+	format: "YYYY-MM-DD",
+});
+
+$("#reservationdate1").on("change.datetimepicker", function (e) {
+	$("#reservationdate1").datetimepicker("minDate", e.date);
+});
+
 get_data();
 
 $(function () {
@@ -46,6 +54,7 @@ function delete_form() {
 	$("[name='harga']").val("");
 	$("[name='berat']").val("");
 	$("[name='kategori']").val("");
+	$("[name='kadaluarsa']").val("");
 	$("[name='image']").val("");
 	imagePreview.innerHTML = "";
 }
@@ -57,6 +66,7 @@ function delete_error() {
 	$("#error-harga").hide();
 	$("#error-berat").hide();
 	$("#error-image").hide();
+	$("#error-kadaluarsa").hide();
 }
 
 $("#hapusGaleri").on("show.bs.modal", function (e) {
@@ -100,6 +110,7 @@ function get_data() {
 							return data + " grams";
 						},
 					},
+					{ data: "exp_date" },
 					{
 						data: "image",
 						className: "text-center",
@@ -194,6 +205,7 @@ function submit(x) {
 				$("[name='deskripsi']").val(hasil[0].description);
 				$("[name='harga']").val(hasil[0].price);
 				$("[name='berat']").val(hasil[0].weight);
+				$("[name='kadaluarsa']").val(hasil[0].exp_date);
 				$("#kategori").val(hasil[0].id_category_product).trigger("change");
 				var nama = hasil[0].image;
 				imagePreview.innerHTML = `<br><img src="${base_url}assets/image/product/${nama}" alt="Preview Image" class="img-thumbnail" style="width: 100px; height: auto;">`;
@@ -211,6 +223,7 @@ function insert_data() {
 	formData.append("harga", $("[name='harga']").val());
 	formData.append("berat", $("[name='berat']").val());
 	formData.append("kategori", $("#kategori").val());
+	formData.append("kadaluarsa", $("[name='kadaluarsa']").val());
 
 	var imageInput = $("[name='image']")[0];
 	if (imageInput.files.length > 0) {
@@ -251,6 +264,7 @@ function edit_data() {
 	formData.append("harga", $("[name='harga']").val());
 	formData.append("berat", $("[name='berat']").val());
 	formData.append("kategori", $("#kategori").val());
+	formData.append("kadaluarsa", $("[name='kadaluarsa']").val());
 
 	var imageInput = $("[name='image']")[0];
 	if (imageInput.files.length > 0) {

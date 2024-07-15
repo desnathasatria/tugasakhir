@@ -83,7 +83,7 @@ class Manage_product extends CI_Controller
     public function get_data()
     {
         $query = [
-            'select' => 'a.id, a.title, a.description, a.price, a.weight, a.image, b.name, a.id_category_product, a.total_stok',
+            'select' => 'a.id, a.title, a.description, a.price, a.weight, a.image, b.name, a.id_category_product, a.total_stok, a.exp_date',
             'from' => 'produk a',
             'join' => [
                 'kategori_produk b, b.id = a.id_category_product',
@@ -101,7 +101,7 @@ class Manage_product extends CI_Controller
     {
         $id = $this->input->post('id');
         $query = [
-            'select' => 'a.id, a.title, a.description, a.price, a.weight, a.image, b.name, a.id_category_product, a.total_stok',
+            'select' => 'a.id, a.title, a.description, a.price, a.weight, a.image, b.name, a.id_category_product, a.total_stok, a.exp_date',
             'from' => 'produk a',
             'join' => [
                 'kategori_produk b, b.id = a.id_category_product'
@@ -121,11 +121,13 @@ class Manage_product extends CI_Controller
         $deskripsi = $this->input->post('deskripsi');
         $harga = $this->input->post('harga');
         $berat = $this->input->post('berat');
+        $kadaluarsa = $this->input->post('kadaluarsa');
         $kategori_product = $this->input->post('kategori');
         $this->form_validation->set_rules('judul', 'Judul', 'required|trim|callback_check_unique_title');
         $this->form_validation->set_rules('deskripsi', 'Deskripsi', 'required|trim');
         $this->form_validation->set_rules('harga', 'Harga', 'required|trim');
         $this->form_validation->set_rules('berat', 'Berat', 'required|trim');
+        $this->form_validation->set_rules('kadaluarsa', 'Tanggal kadaluarsa', 'required|trim');
 
         if ($this->form_validation->run() == false) {
             $response['errors'] = $this->form_validation->error_array();
@@ -151,6 +153,7 @@ class Manage_product extends CI_Controller
                     'description' => $deskripsi,
                     'price' => $harga,
                     'weight' => $berat,
+                    'exp_date' => $kadaluarsa,
                     'id_category_product' => $kategori_product,
                     'created_by' => $data['user']['id'],
                 );
@@ -214,6 +217,7 @@ class Manage_product extends CI_Controller
         $harga = $this->input->post('harga');
         $berat = $this->input->post('berat');
         $kategori_product = $this->input->post('kategori');
+        $kadaluarsa = $this->input->post('kadaluarsa');
         $timestamp = $this->db->query("SELECT NOW() as timestamp")->row()->timestamp;
         $data_produk = $this->data->find('produk', array('id' => $id, 'is_deleted' => '0'))->row_array();
 
@@ -225,6 +229,7 @@ class Manage_product extends CI_Controller
         $this->form_validation->set_rules('deskripsi', 'Deskripsi', 'required|trim');
         $this->form_validation->set_rules('harga', 'Harga', 'required|trim');
         $this->form_validation->set_rules('berat', 'Berat', 'required|trim');
+        $this->form_validation->set_rules('kadaluarsa', 'Tanggal kadaluarsa', 'required|trim');
 
         if ($this->form_validation->run() == false) {
             $response['errors'] = $this->form_validation->error_array();
@@ -244,6 +249,7 @@ class Manage_product extends CI_Controller
                     'description' => $deskripsi,
                     'price' => $harga,
                     'weight' => $berat,
+                    'exp_date' => $kadaluarsa,
                     'id_category_product' => $kategori_product,
                     'updated_date' => $timestamp,
                     'updated_by' => $data['user']['id'],
