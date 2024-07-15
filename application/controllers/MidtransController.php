@@ -141,7 +141,7 @@ class MidtransController extends CI_Controller
             $status_pengiriman = 'Dikemas';
         } else {
             $status_pembayaran = 'Gagal';
-            $status_pengiriman = 'Menunggu Pembayaran';
+            $status_pengiriman = 'Gagal';
         }
 
         $this->data->update('transaksi', array('id' => $order_id), array('status_pembayaran' => $status_pembayaran, 'status_pengiriman' => $status_pengiriman));

@@ -85,7 +85,7 @@ class Manage_supplier extends CI_Controller
     public function get_data()
     {
         $query = [
-            'select' => 'a.id, a.id_produk, a.nama_supplier, a.stok, b.title, a.created_date ',
+            'select' => 'a.id, a.id_produk, a.nama_supplier, a.stok, b.title, a.created_date, a.harga_beli',
             'from' => 'supplier a',
             'join' => [
                 'produk b, b.id = a.id_produk'
@@ -104,7 +104,7 @@ class Manage_supplier extends CI_Controller
     {
         $id = $this->input->post('id');
         $query = [
-            'select' => 'a.id, a.id_produk, a.nama_supplier, a.stok, b.title, a.created_date ',
+            'select' => 'a.id, a.id_produk, a.nama_supplier, a.stok, b.title, a.created_date, a.harga_beli',
             'from' => 'supplier a',
             'join' => [
                 'produk b, b.id = a.id_produk'
@@ -146,6 +146,7 @@ class Manage_supplier extends CI_Controller
         $this->form_validation->set_rules('nama', 'Nama', 'required|trim');
         $this->form_validation->set_rules('nama_supplier', 'Nama Supplier', 'required|trim');
         $this->form_validation->set_rules('stok', 'stok', 'required|trim');
+        $this->form_validation->set_rules('harga', 'harga beli', 'required|trim');
 
         if ($this->form_validation->run() == false) {
             $response['errors'] = $this->form_validation->error_array();
@@ -155,12 +156,14 @@ class Manage_supplier extends CI_Controller
             $judul = $this->input->post('nama');
             $nama_supplier = $this->input->post('nama_supplier');
             $stok = $this->input->post('stok');
+            $harga_beli = $this->input->post('harga');
 
             $barang = $this->data->find('produk', array('id' => $judul))->row_array();
             $data_insert = array(
                 'id_produk' => $judul,
                 'nama_supplier' => $nama_supplier,
                 'stok' => $stok,
+                'harga_beli' => $harga_beli,
                 'created_by' => $data['user']['id'],
             );
             $this->data->insert('supplier', $data_insert); // Menggunakan $data_insert untuk memasukkan data
@@ -192,6 +195,7 @@ class Manage_supplier extends CI_Controller
         $this->form_validation->set_rules('nama', 'Nama', 'required|trim');
         $this->form_validation->set_rules('nama_supplier', 'Nama Supplier', 'required|trim');
         $this->form_validation->set_rules('stok', 'stok', 'required|trim');
+        $this->form_validation->set_rules('harga', 'harga beli', 'required|trim');
 
         if ($this->form_validation->run() == false) {
             $response['errors'] = $this->form_validation->error_array();
@@ -202,12 +206,14 @@ class Manage_supplier extends CI_Controller
             $judul = $this->input->post('nama');
             $nama_supplier = $this->input->post('nama_supplier');
             $stok = $this->input->post('stok');
+            $harga = $this->input->post('harga');
             $timestamp = $this->db->query("SELECT NOW() as timestamp")->row()->timestamp;
 
             $data_update = array( // Mengubah variabel $data menjadi $data_update untuk menghindari konflik
                 'id_produk' => $judul, // Mengubah 'title' menjadi 'judul'
                 'nama_supplier' => $nama_supplier, // Mengubah 'title' menjadi 'judul'
                 'stok' => $stok,
+                'harga_beli' => $harga,
                 'updated_date' => $timestamp,
                 'updated_by' => $data['user']['id'],
             );

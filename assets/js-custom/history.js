@@ -44,7 +44,7 @@ function get_data_history() {
 						data: null,
 						className: "text-center",
 						render: function (data, type, row) {
-							if (row.status_pengiriman !== "Dikirim") {
+							if (row.status_pengiriman == "Selesai") {
 								if (row.keterangan == null) {
 									return (
 										'<button class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#modalDetail" title="detail" onclick="submit(\'' +
@@ -61,7 +61,7 @@ function get_data_history() {
 										'\')"><i class="fa-solid fa-eye"></i></button> '
 									);
 								}
-							} else {
+							} else if (row.status_pengiriman == "Dikirim") {
 								return (
 									'<button class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#modalDetail" title="detail" onclick="submit(\'' +
 									row.id +
@@ -69,6 +69,12 @@ function get_data_history() {
 									'<button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#modalKonfirmasi" title="konfirmasi" data-id="\'' +
 									row.id +
 									'\'"><i class="fa-solid fa-check-to-slot"></i></button>'
+								);
+							} else {
+								return (
+									'<button class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#modalDetail" title="detail" onclick="submit(\'' +
+									row.id +
+									'\')"><i class="fa-solid fa-eye"></i></button> '
 								);
 							}
 						},

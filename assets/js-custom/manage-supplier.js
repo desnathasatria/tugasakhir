@@ -19,6 +19,27 @@ function filterData() {
 	$("#example").DataTable().search($(".akses").val()).draw();
 }
 
+function formatRupiah(angka) {
+	const numberString = angka.toString().replace(/[^,\d]/g, "");
+	const split = numberString.split(",");
+	const sisa = split[0].length % 3;
+	let rupiah = split[0].substr(0, sisa);
+	const ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+
+	if (ribuan) {
+		const separator = sisa ? "." : "";
+		rupiah += separator + ribuan.join(".");
+	}
+
+	rupiah = split[1] !== undefined ? rupiah + "," + split[1] : rupiah;
+	return "Rp. " + rupiah;
+}
+
+function formatRupiahInput(input) {
+	var value = input.value.replace(/[^,\d]/g, "");
+	input.value = formatRupiah(value);
+}
+
 $("#hapusSupplier").on("show.bs.modal", function (e) {
 	var button = $(e.relatedTarget);
 	var id = button.data("id");
@@ -27,17 +48,18 @@ $("#hapusSupplier").on("show.bs.modal", function (e) {
 });
 
 function delete_form() {
-	const imagePreview = document.getElementById("imagePreview");
 	$("[name='id']").val("");
 	$("#title").val("").trigger("change");
 	$("[name='stok']").val("");
 	$("[name='nama_supplier']").val("");
+	$("[name='harga']").val("");
 }
 
 function delete_error() {
-	$("#error-nama").html("");
-	$("#error-stok").html("");
-	$("#error-nama_supplier").html("");
+	$("#error-nama").hide();
+	$("#error-stok").hide();
+	$("#error-nama_supplier").hide();
+	$("#error-harga").hide();
 }
 
 function get_data() {
@@ -58,9 +80,15 @@ function get_data() {
 							return meta.row + 1;
 						},
 					},
-					{ data: "title" }, // Mengubah 'name' menjadi 'title'
-					{ data: "nama_supplier" }, // Mengubah 'name' menjadi 'title'
+					{ data: "title" },
+					{ data: "nama_supplier" },
 					{ data: "stok" },
+					{
+						data: "harga_beli",
+						render: function (data, type, row) {
+							return formatRupiah(data);
+						},
+					},
 					{
 						data: "created_date",
 						render: function (data) {
@@ -118,6 +146,7 @@ function submit(x) {
 				$("[name='id']").val(hasil[0].id);
 				$("[name='nama_supplier']").val(hasil[0].nama_supplier);
 				$("[name='stok']").val(hasil[0].stok);
+				$("[name='harga']").val(hasil[0].harga_beli);
 				$("#name_produk").val(hasil[0].id_produk).trigger("change");
 			},
 		});
@@ -131,6 +160,7 @@ function insert_data() {
 	formData.append("nama", $("#name_produk").val());
 	formData.append("nama_supplier", $("[name='nama_supplier']").val());
 	formData.append("stok", $("[name='stok']").val());
+	formData.append("harga", $("[name='harga']").val());
 
 	$.ajax({
 		type: "POST",
@@ -143,6 +173,7 @@ function insert_data() {
 			delete_error();
 			if (response.errors) {
 				for (var fieldName in response.errors) {
+					$("#error-" + fieldName).show();
 					$("#error-" + fieldName).html(response.errors[fieldName]);
 				}
 			} else if (response.success) {
@@ -163,6 +194,7 @@ function edit_data() {
 	formData.append("nama_supplier", $("[name='nama_supplier']").val());
 	formData.append("stok", $("[name='stok']").val());
 	formData.append("nama", $("#name_produk").val());
+	formData.append("harga", $("[name='harga']").val());
 
 	$.ajax({
 		type: "POST",

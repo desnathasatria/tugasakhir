@@ -19,8 +19,7 @@
         <div class="card">
             <h5 class="card-header">Data Produk</h5>
             <div class="card-body">
-                <button class="btn btn-primary" data-toggle="modal" data-target="#exampleModal"
-                    onclick="submit('tambah')"><i class="fa-solid fa-circle-plus"></i> Input data</button>
+                <button class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" onclick="submit('tambah')"><i class="fa-solid fa-circle-plus"></i> Input data</button>
                 <hr>
                 <div class="row">
                     <div class="col-lg-4">
@@ -28,7 +27,7 @@
                             <label>Filter kategori</label>
                             <select class="form-control filter" style="width: 100%;">
                                 <option value="">Semua kategori</option>
-                                <?php foreach ($select as $row): ?>
+                                <?php foreach ($select as $row) : ?>
                                     <option value="<?php echo $row->name; ?>">
                                         <?php echo $row->name; ?>
                                     </option>
@@ -44,7 +43,7 @@
                             <th width="10%">Judul</th>
                             <th width="15%">Kategori</th>
                             <th width="20%">Deskripsi</th>
-                            <th width="15%">Harga</th>
+                            <th width="15%">Harga Jual</th>
                             <th width="5%">Berat</th>
                             <th width="15%">Foto</th>
                             <th width="5%">Stok</th>
@@ -78,8 +77,7 @@
                                 <label for="nama" class="col-lg-2 col-form-label">Nama Produk</label>
                                 <div class="col-lg-10">
                                     <input type="hidden" name="id" class="form-control">
-                                    <input type="text" name="judul" id="judul" class="form-control"
-                                        placeholder="Masukkan nama produk">
+                                    <input type="text" name="judul" id="judul" class="form-control" placeholder="Masukkan nama produk">
                                     <small class="text-danger pl-1" id="error-judul"></small>
                                 </div>
                             </div>
@@ -89,10 +87,9 @@
                             <div class="row">
                                 <label for="kategori" class="col-lg-2 col-form-label">Kategori</label>
                                 <div class="col-lg-10">
-                                    <select id="kategori" name="kategori[]" class="form-control kategori"
-                                        style="width: 100%;">
+                                    <select id="kategori" name="kategori[]" class="form-control kategori" style="width: 100%;">
                                         <option value="">Pilih Kategori</option>
-                                        <?php foreach ($select as $row): ?>
+                                        <?php foreach ($select as $row) : ?>
                                             <option value="<?php echo $row->id; ?>">
                                                 <?php echo $row->name; ?>
                                             </option>
@@ -107,19 +104,17 @@
                             <div class="row">
                                 <label for="deskripsi" class="col-lg-2 col-form-label">Deskripsi</label>
                                 <div class="col-lg-10">
-                                    <input type="text" name="deskripsi" id="deskripsi" class="form-control"
-                                        placeholder="Masukkan Deskripsi produk">
+                                    <input type="text" name="deskripsi" id="deskripsi" class="form-control" placeholder="Masukkan Deskripsi produk">
                                     <small class="text-danger pl-1" id="error-deskripsi"></small>
                                 </div>
                             </div>
                         </div>
-                        
+
                         <div class="form-group">
                             <div class="row">
-                                <label for="harga" class="col-lg-2 col-form-label">Harga</label>
+                                <label for="harga" class="col-lg-2 col-form-label">Harga Jual</label>
                                 <div class="col-lg-10">
-                                    <input type="text" name="harga" id="harga" class="form-control"
-                                        placeholder="Masukkan Harga" oninput="formatRupiahInput(this)">
+                                    <input type="text" name="harga" id="harga" class="form-control" placeholder="Masukkan Harga" oninput="formatRupiahInput(this)">
                                     <small class="text-danger pl-1" id="error-harga"></small>
                                 </div>
                             </div>
@@ -128,8 +123,7 @@
                             <div class="row">
                                 <label for="berat" class="col-lg-2 col-form-label">Berat</label>
                                 <div class="col-lg-10">
-                                    <input type="text" name="berat" id="berat" class="form-control"
-                                        placeholder="Masukkan Berat">
+                                    <input type="text" name="berat" id="berat" class="form-control" placeholder="Masukkan Berat">
                                     <small class="text-danger pl-1" id="error-berat"></small>
                                 </div>
                             </div>
@@ -141,8 +135,7 @@
                                 <div class="col-lg-10">
                                     <div class="input-group">
                                         <div class="custom-file">
-                                            <input type="file" class="custom-file-input" name="image" id="image"
-                                                onchange="previewImage(event)">
+                                            <input type="file" class="custom-file-input" name="image" id="image" onchange="previewImage(event)">
                                             <label class="custom-file-label" for="image">Pilih file</label>
                                         </div>
                                     </div>
@@ -160,12 +153,10 @@
             </div>
             <div class="modal-footer d-flex justify-content-start">
                 <div class="col-lg-2">
-                    <button type="button" id="btn-tambah" onclick="insert_data()"
-                        class="btn btn-outline-primary btn-block">Tambah</button>
+                    <button type="button" id="btn-tambah" onclick="insert_data()" class="btn btn-outline-primary btn-block">Tambah</button>
                 </div>
                 <div class="col-lg-2">
-                    <button type="button" id="btn-ubah" onclick="edit_data()"
-                        class="btn btn-outline-primary btn-block">Edit</button>
+                    <button type="button" id="btn-ubah" onclick="edit_data()" class="btn btn-outline-primary btn-block">Edit</button>
                 </div>
             </div>
         </div>

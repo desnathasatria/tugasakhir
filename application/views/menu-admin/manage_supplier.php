@@ -19,8 +19,7 @@
         <div class="card">
             <h5 class="card-header">Kelola Supplier</h5>
             <div class="card-body">
-                <button class="btn btn-primary" data-toggle="modal" data-target="#exampleModal"
-                    onclick="submit('tambah')"><i class="fa-solid fa-circle-plus"></i> Input data</button>
+                <button class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" onclick="submit('tambah')"><i class="fa-solid fa-circle-plus"></i> Input data</button>
                 <hr>
                 <div class="row">
                     <div class="col-lg-4">
@@ -28,7 +27,7 @@
                             <label>Filter produk</label>
                             <select id="filter" name="filter[]" class="form-control akses" style="width: 100%;">
                                 <option value="">Semua Produk</option>
-                                <?php foreach ($select as $row): ?>
+                                <?php foreach ($select as $row) : ?>
                                     <option value="<?php echo $row->title; ?>">
                                         <?php echo $row->title; ?>
                                     </option>
@@ -44,6 +43,7 @@
                             <th width="15%">Nama Produk</th>
                             <th width="15%">Nama Supplier</th>
                             <th width="15%">Stok</th>
+                            <th width="15%">Harga Beli</th>
                             <th width="15%">Tanggal</th>
                             <th width="15%">Aksi</th>
                         </tr>
@@ -73,9 +73,9 @@
                             <div class="row">
                                 <label for="supplier" class="col-lg-2 col-form-label">Nama Produk</label>
                                 <div class="col-lg-10">
-                                    <select id="name_produk" name="nama[]" class="form-control supplier"
-                                        style="width: 100%;">
-                                        <?php foreach ($select as $row): ?>
+                                    <input type="hidden" name="id" id="id">
+                                    <select id="name_produk" name="nama[]" class="form-control supplier" style="width: 100%;">
+                                        <?php foreach ($select as $row) : ?>
                                             <option value="<?php echo $row->id; ?>">
                                                 <?php echo $row->title; ?>
                                             </option>
@@ -90,9 +90,7 @@
                             <div class="row">
                                 <label for="nama" class="col-lg-2 col-form-label">Nama Supplier</label>
                                 <div class="col-lg-10">
-                                    <input type="hidden" name="id" id="id">
-                                    <input type="text" name="nama_supplier" id="nama_supplier" class="form-control"
-                                        placeholder="Masukkan Nama Supplier">
+                                    <input type="text" name="nama_supplier" id="nama_supplier" class="form-control" placeholder="Masukkan Nama Supplier">
                                     <small class="text-danger pl-1" id="error-nama_supplier"></small>
                                 </div>
                             </div>
@@ -102,10 +100,18 @@
                             <div class="row">
                                 <label for="nama" class="col-lg-2 col-form-label">Stok</label>
                                 <div class="col-lg-10">
-                                    <input type="hidden" name="id" id="id">
-                                    <input type="number" name="stok" id="stok" class="form-control"
-                                        placeholder="Masukkan Stok">
+                                    <input type="number" name="stok" id="stok" class="form-control" placeholder="Masukkan Stok">
                                     <small class="text-danger pl-1" id="error-stok"></small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="row">
+                                <label for="nama" class="col-lg-2 col-form-label">Harga Beli</label>
+                                <div class="col-lg-10">
+                                    <input type="text" name="harga" id="harga" class="form-control" placeholder="Masukkan Harga Beli" oninput="formatRupiahInput(this)">
+                                    <small class="text-danger pl-1" id="error-harga"></small>
                                 </div>
                             </div>
                         </div>
@@ -116,12 +122,10 @@
 
             <div class="modal-footer d-flex justify-content-start">
                 <div class="col-lg-2">
-                    <button type="button" id="btn-tambah" onclick="insert_data()"
-                        class="btn btn-outline-primary btn-block">Tambah</button>
+                    <button type="button" id="btn-tambah" onclick="insert_data()" class="btn btn-outline-primary btn-block">Tambah</button>
                 </div>
                 <div class="col-lg-2">
-                    <button type="button" id="btn-ubah" onclick="edit_data()"
-                        class="btn btn-outline-primary btn-block">Edit</button>
+                    <button type="button" id="btn-ubah" onclick="edit_data()" class="btn btn-outline-primary btn-block">Edit</button>
                 </div>
             </div>
         </div>
