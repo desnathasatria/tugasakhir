@@ -528,7 +528,8 @@ class Front_page extends CI_Controller
                 'a.id_pelanggan' => $data['user']['id'],
                 'a.is_deleted' => '0'
             ],
-            'group_by' => 'a.id'
+            'group_by' => 'a.id',
+            'order_by' => 'a.created_date DESC'
         ];
         $result = $this->data->get($query)->result();
         echo json_encode($result);
