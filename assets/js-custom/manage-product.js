@@ -10,8 +10,13 @@ $("#reservationdate1").datetimepicker({
 	format: "YYYY-MM-DD",
 });
 
+var today = moment().startOf("day");
+$("#reservationdate1").datetimepicker({
+	minDate: today,
+});
+
 $("#reservationdate1").on("change.datetimepicker", function (e) {
-	$("#reservationdate1").datetimepicker("minDate", e.date);
+	$("#reservationdate1").datetimepicker("minDate", today);
 });
 
 get_data();
