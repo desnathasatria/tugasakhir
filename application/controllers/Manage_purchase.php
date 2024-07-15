@@ -84,6 +84,7 @@ class Manage_purchase extends CI_Controller
     {
         $date1 = $this->input->get('date1');
         $date2 = $this->input->get('date2');
+        $status = $this->input->get('status');
 
         $query = [
             'select' => 'a.id, a.id_pelanggan, a.harga_transaksi, a.created_date, a.status_pembayaran, a.status_pengiriman, GROUP_CONCAT(b.title SEPARATOR ", ") as title, c.name',
@@ -103,6 +104,10 @@ class Manage_purchase extends CI_Controller
         if (!empty($date1) && !empty($date2)) {
             $query['where']['DATE(a.created_date) >='] = $date1;
             $query['where']['DATE(a.created_date) <='] = $date2;
+        }
+
+        if (!empty($status)) {
+            $query['where']['a.status_pengiriman'] = $status;
         }
 
         $result = $this->data->get($query)->result();

@@ -15,13 +15,12 @@ $("#reservationdate2").on("change.datetimepicker", function (e) {
 	$("#reservationdate1").datetimepicker("maxDate", e.date);
 });
 
-$(".filter").select2({
+$("#filter_pengiriman").select2({
 	theme: "bootstrap4",
+	width: "100%",
+	minimumResultsForSearch: Infinity,
 });
 
-$(".filter").on("change", function () {
-	filterData();
-});
 $("#hapusPurchase").on("show.bs.modal", function (e) {
 	var button = $(e.relatedTarget);
 	var id = button.data("id");
@@ -29,11 +28,7 @@ $("#hapusPurchase").on("show.bs.modal", function (e) {
 	modalButton.attr("onclick", "delete_data(" + id + ")");
 });
 
-function filterData() {
-	$("#example").DataTable().search($(".filter").val()).draw();
-}
-
-function get_data(date1 = "", date2 = "") {
+function get_data(date1 = "", date2 = "", status = "") {
 	$.ajax({
 		url: base_url + _controller + "/get_data",
 		method: "GET",
@@ -41,6 +36,7 @@ function get_data(date1 = "", date2 = "") {
 		data: {
 			date1: date1,
 			date2: date2,
+			status: status,
 		},
 		success: function (data) {
 			var table = $("#example").DataTable({
@@ -99,7 +95,8 @@ function get_data(date1 = "", date2 = "") {
 function get_data_filter() {
 	var date1 = $("#date1").val();
 	var date2 = $("#date2").val();
-	get_data(date1, date2);
+	var status = $("#filter_pengiriman").val();
+	get_data(date1, date2, status);
 }
 
 $(document).ready(function () {
