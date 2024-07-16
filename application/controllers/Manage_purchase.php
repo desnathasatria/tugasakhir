@@ -92,8 +92,8 @@ class Manage_purchase extends CI_Controller
             'join' => [
                 'st_user c, c.id = a.id_pelanggan',
                 'detail_transaksi d, d.id_transaksi = a.id',
-                'produk b, b.id = d.id_produk',
-                'produk_promo pp, pp.id = d.id_produk'
+                'produk b, b.id = d.id_produk, LEFT',
+                'produk_promo pp, pp.id = d.id_produk, LEFT'
             ],
             'where' => [
                 'a.is_deleted' => '0',
