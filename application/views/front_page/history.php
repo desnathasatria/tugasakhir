@@ -42,16 +42,16 @@
 
 <!-- Single Page Header start -->
 <div class="container-fluid page-header py-5">
-    <h1 class="text-center text-white display-6">Histori</h1>
+    <h1 class="text-center text-white display-6">Riwayat</h1>
     <ol class="breadcrumb justify-content-center mb-0">
         <li class="breadcrumb-item"><a href="<?php echo base_url(); ?>">Home</a></li>
-        <li class="breadcrumb-item active text-white">Histori</li>
+        <li class="breadcrumb-item active text-white">Riawayat</li>
     </ol>
 </div>
 <!-- Single Page Header End -->
 <div class="container mt-4">
     <div class="card">
-        <h5 class="card-header">Data histori transaksi</h5>
+        <h5 class="card-header">Data Riwayat Transaksi</h5>
         <div class="card-body">
             <hr>
             <table id="example" class="table table-hover table-bordered" style="width:100%">

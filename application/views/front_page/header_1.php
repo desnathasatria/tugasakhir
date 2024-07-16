@@ -50,55 +50,61 @@
     </div>
     <!-- Spinner End -->
 
-    <!-- Navbar start -->
-    <div class="container-fluid fixed-top fixed-header">
-        <?php foreach ($profile as $loc) : ?>
-            <div class="container topbar bg-primary d-none d-lg-block">
-                <div class="d-flex justify-content-between">
-                    <div class="top-info ps-2">
-                        <small class="me-3"><i class="fas fa-map-marker-alt me-2 text-secondary"></i> <a href="#" class="text-white"><?= $loc->address ?></a></small>
-                        <small class="me-3"><i class="fas fa-envelope me-2 text-secondary"></i><a href="#" class="text-white"><?= $loc->email ?></a></small>
-                    </div>
+<!-- Navbar start -->
+<div class="container-fluid fixed-top fixed-header">
+    <?php foreach ($profile as $loc) : ?>
+        <div class="container topbar bg-primary d-none d-lg-block">
+            <div class="d-flex justify-content-between">
+                <div class="top-info ps-2">
+                    <small class="me-3"><i class="fas fa-map-marker-alt me-2 text-secondary"></i> <a href="#" class="text-white"><?= $loc->address ?></a></small>
+                    <small class="me-3"><i class="fas fa-envelope me-2 text-secondary"></i><a href="#" class="text-white"><?= $loc->email ?></a></small>
                 </div>
             </div>
-            <div class="container px-0">
-                <nav class="navbar navbar-light bg-white navbar-expand-xl">
-                    <a href="index.html" class="navbar-brand">
-                        <h1 class="text-primary display-6">GTT Pusat Oleh - Oleh</h1>
-                    </a>
-                    <button class="navbar-toggler py-2 px-3" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
-                        <span class="fa fa-bars text-primary"></span>
-                    </button>
-                    <div class="collapse navbar-collapse bg-white" id="navbarCollapse">
-                        <div class="navbar-nav mx-auto">
-                            <a href="<?php echo base_url(); ?>" class="nav-item nav-link <?php echo $this->uri->segment(1) == '' ? 'active' : ''; ?>">Home</a>
-                            <a href="<?php echo base_url("Front_page/product"); ?>" class="nav-item nav-link <?php echo $this->uri->segment(1) == 'Front_page' && $this->uri->segment(2) == 'product' ? 'active' : ''; ?>">Produk</a>
-                            <a href="<?php echo base_url("Front_page/gallery"); ?>" class="nav-item nav-link <?php echo $this->uri->segment(1) == 'Front_page' && $this->uri->segment(2) == 'gallery' ? 'active' : ''; ?>">Galeri</a>
-                            <a href="<?php echo base_url("Front_page/location"); ?>" class="nav-item nav-link <?php echo $this->uri->segment(1) == 'Front_page' && $this->uri->segment(2) == 'location' ? 'active' : ''; ?>">Lokasi
-                                & Kontak</a>
-                            <a href="<?php echo base_url("history"); ?>" class="nav-item nav-link <?php echo $this->uri->segment(1) == 'history'  ? 'active' : ''; ?>">History</a>
+        </div>
+        <div class="container px-0">
+            <nav class="navbar navbar-light bg-white navbar-expand-xl">
+                <a href="index.html" class="navbar-brand">
+                    <h1 class="text-primary display-6">GTT Pusat Oleh - Oleh</h1>
+                </a>
+                <button class="navbar-toggler py-2 px-3" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+                    <span class="fa fa-bars text-primary"></span>
+                </button>
+                <div class="collapse navbar-collapse bg-white" id="navbarCollapse">
+                    <div class="navbar-nav mx-auto">
+                        <a href="<?php echo base_url(); ?>" class="nav-item nav-link <?php echo $this->uri->segment(1) == '' ? 'active' : ''; ?>">Home</a>
+                        <div class="nav-item dropdown">
+                            <a href="#" class="nav-link dropdown-toggle <?php echo $this->uri->segment(1) == 'Front_page' && in_array($this->uri->segment(2), ['product', 'product_1']) ? 'active' : ''; ?>" id="navbarDropdown" role="button" data-bs-toggle="dropdown">Produk</a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item <?php echo $this->uri->segment(1) == 'Front_page' && $this->uri->segment(2) == 'product' ? 'active' : ''; ?>" href="<?php echo base_url("Front_page/product"); ?>">Produk</a></li>
+                                <li><a class="dropdown-item <?php echo $this->uri->segment(1) == 'Front_page' && $this->uri->segment(2) == 'product_1' ? 'active' : ''; ?>" href="<?php echo base_url("Front_page/product_1"); ?>">Produk Promo</a></li>
+                            </ul>
                         </div>
-                        <div class="d-flex m-3 me-0">
-                            <a href="#" data-bs-toggle="modal" data-bs-target="#shoppingCartModal" class="position-relative me-4 my-auto">
-                                <i class="fa fa-shopping-bag fa-2x"></i>
-                                <span class="position-absolute bg-secondary rounded-circle d-flex align-items-center justify-content-center text-white px-2" style="top: -5px; right: -10px; height: 20px; min-width: 20px;" id="cartItemCount"></span>
+                        <a href="<?php echo base_url("Front_page/gallery"); ?>" class="nav-item nav-link <?php echo $this->uri->segment(1) == 'Front_page' && $this->uri->segment(2) == 'gallery' ? 'active' : ''; ?>">Galeri</a>
+                        <a href="<?php echo base_url("Front_page/location"); ?>" class="nav-item nav-link <?php echo $this->uri->segment(1) == 'Front_page' && $this->uri->segment(2) == 'location' ? 'active' : ''; ?>">Lokasi & Kontak</a>
+                        <a href="<?php echo base_url("history"); ?>" class="nav-item nav-link <?php echo $this->uri->segment(1) == 'history' ? 'active' : ''; ?>">Riwayat</a>
+                    </div>
+                    <div class="d-flex m-3 me-0">
+                        <a href="#" data-bs-toggle="modal" data-bs-target="#shoppingCartModal" class="position-relative me-4 my-auto">
+                            <i class="fa fa-shopping-bag fa-2x"></i>
+                            <span class="position-absolute bg-secondary rounded-circle d-flex align-items-center justify-content-center text-white px-2" style="top: -5px; right: -10px; height: 20px; min-width: 20px;" id="cartItemCount"></span>
+                        </a>
+                        <div class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-bs-toggle="dropdown">
+                                <img src="<?= base_url() ?>assets/image/user/<?= $user['image'] ?>" alt="User Profile" class="rounded-circle" width="40" height="40">
                             </a>
-                            <div class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-bs-toggle="dropdown">
-                                    <img src="<?= base_url() ?>assets/image/user/<?= $user['image'] ?>" alt="User Profile" class="rounded-circle" width="40" height="40">
-                                </a>
-                                <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="<?= base_url('profile') ?>">Profil</a></li>
-                                    <li><a class="dropdown-item" href="<?= base_url('logout_1') ?>">Logout</a></li>
-                                </ul>
-                            </div>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="<?= base_url('profile') ?>">Profil</a></li>
+                                <li><a class="dropdown-item" href="<?= base_url('logout_1') ?>">Logout</a></li>
+                            </ul>
                         </div>
                     </div>
-                </nav>
-            </div>
-        <?php endforeach; ?>
-    </div>
-    <!-- Navbar End -->
+                </div>
+            </nav>
+        </div>
+    <?php endforeach; ?>
+</div>
+<!-- Navbar End -->
+
 </body>
 <!-- Shopping Cart Modal -->
 <div class="modal fade" id="shoppingCartModal" tabindex="-1" aria-labelledby="shoppingCartModalLabel" aria-hidden="true">

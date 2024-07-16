@@ -121,6 +121,26 @@ class Front_page extends CI_Controller
         $this->load->view('front_page/product', $this->app_data);
         $this->footer();
     }
+    public function product_1()
+    {
+        $this->check_auth();
+        $query = [
+            'select' => 'a.id, a.title, a.description, a.price, a.image, b.name, a.id_category_product, a.weight, a.total_stok',
+            'from' => 'produk a',
+            'join' => [
+                'kategori_produk b, b.id = a.id_category_product',
+            ],
+            'where' => [
+                'a.is_deleted' => 0
+            ]
+        ];
+
+        $this->app_data['produk'] = $this->data->get($query)->result();
+        $where = array('is_deleted' => '0');
+        $this->app_data['select'] = $this->data->find('kategori_produk', $where)->result();
+        $this->load->view('front_page/product_1', $this->app_data);
+        $this->footer();
+    }
     public function product_detail($x)
     {
         $this->check_auth();
