@@ -126,7 +126,7 @@ class Front_page extends CI_Controller
         $this->check_auth();
         $query = [
             'select' => 'a.id, a.title, a.description, a.price, a.image, b.name, a.id_category_product, a.weight, a.total_stok',
-            'from' => 'produk a',
+            'from' => 'produk_promo a',
             'join' => [
                 'kategori_produk b, b.id = a.id_category_product',
             ],
@@ -144,17 +144,35 @@ class Front_page extends CI_Controller
     public function product_detail($x)
     {
         $this->check_auth();
-        $query = [
-            'select' => 'a.id, a.title, a.description, a.price, a.image, b.name, a.id_category_product, a.weight, a.total_stok',
-            'from' => 'produk a',
-            'join' => [
-                'kategori_produk b, b.id = a.id_category_product',
-            ],
-            'where' => [
-                'a.is_deleted' => 0,
-                'a.id' => $x
-            ]
-        ];
+        $where = array('id' => $x);
+        $data_produk = $this->data->find('produk', $where)->row_array();
+
+        if (isset($data_produk)) {
+            $query = [
+                'select' => 'a.id, a.title, a.description, a.price, a.image, b.name, a.id_category_product, a.weight, a.total_stok',
+                'from' => 'produk a',
+                'join' => [
+                    'kategori_produk b, b.id = a.id_category_product',
+                ],
+                'where' => [
+                    'a.is_deleted' => 0,
+                    'a.id' => $x
+                ]
+            ];
+        } else {
+            $query = [
+                'select' => 'a.id, a.title, a.description, a.price, a.image, b.name, a.id_category_product, a.weight, a.total_stok',
+                'from' => 'produk_promo a',
+                'join' => [
+                    'kategori_produk b, b.id = a.id_category_product',
+                ],
+                'where' => [
+                    'a.is_deleted' => 0,
+                    'a.id' => $x
+                ]
+            ];
+        }
+
 
         $this->app_data['produk'] = $this->data->get($query)->result();
         $this->load->view('front_page/product_detail', $this->app_data);
@@ -202,31 +220,42 @@ class Front_page extends CI_Controller
         $id_produk = $this->input->post('id_produk');
         $jumlah = $this->input->post('jumlah');
         if ($this->session->userdata('logged_in_user')) {
+            $data_produk = $this->data->find('produk', array('id' => $id_produk))->row_array();
 
-            // First, get the product details including the total_stok
-            $query = [
-                'select' => 'a.id, a.title, a.description, a.price, a.image, b.name, a.id_category_product, a.total_stok',
-                'from' => 'produk a',
-                'join' => [
-                    'kategori_produk b, b.id = a.id_category_product',
-                ],
-                'where' => [
-                    'a.is_deleted' => 0,
-                    'a.id' => $id_produk
-                ]
-            ];
+            if (isset($data_produk)) {
+                $query = [
+                    'select' => 'a.id, a.title, a.description, a.price, a.image, b.name, a.id_category_product, a.total_stok',
+                    'from' => 'produk a',
+                    'join' => [
+                        'kategori_produk b, b.id = a.id_category_product',
+                    ],
+                    'where' => [
+                        'a.is_deleted' => 0,
+                        'a.id' => $id_produk
+                    ]
+                ];
+            } else {
+                $query = [
+                    'select' => 'a.id, a.title, a.description, a.price, a.image, b.name, a.id_category_product, a.total_stok',
+                    'from' => 'produk_promo a',
+                    'join' => [
+                        'kategori_produk b, b.id = a.id_category_product',
+                    ],
+                    'where' => [
+                        'a.is_deleted' => 0,
+                        'a.id' => $id_produk
+                    ]
+                ];
+            }
 
             $product = $this->data->get($query)->row();
 
-            // Check if the requested quantity exceeds the available stock
             if ($jumlah > $product->total_stok) {
-                // If it exceeds, set an error message and redirect back
                 $this->session->set_flashdata('error', 'Jumlah melebihi stok yang tersedia. Stok tersedia: ' . $product->total_stok);
-                redirect('Front_page/product_detail/' . $id_produk); // Assuming you have a product detail page
+                redirect('Front_page/product_detail/' . $id_produk);
             } else {
-                // If stock is sufficient, proceed with checkout
                 $this->app_data['jumlah'] = $jumlah;
-                $this->app_data['produk'] = [$product]; // We already have the product, no need for another query
+                $this->app_data['produk'] = [$product];
                 $this->app_data['location'] = $this->data->get_all('company_profile')->result();
                 $this->load->view('front_page/checkout', $this->app_data);
                 $this->footer();
@@ -234,7 +263,7 @@ class Front_page extends CI_Controller
             }
         } else {
             $this->session->set_flashdata('error_login', 'Anda belum <b>LOGIN</b>!!!');
-            redirect('Front_page/product_detail/' . $id_produk); // Assuming you have a product detail page
+            redirect('Front_page/product_detail/' . $id_produk);
         }
     }
 
@@ -245,19 +274,34 @@ class Front_page extends CI_Controller
 
         $product_ids = explode(',', $id_produk);
         $jumlah_array = explode(',', $jumlah);
-
         $this->app_data['jumlah'] = $jumlah_array;
 
-        $query = [
-            'select' => 'a.id, a.title, a.description, a.price, a.image, b.name, a.id_category_product, a.total_stok',
-            'from' => 'produk a',
-            'join' => [
-                'kategori_produk b, b.id = a.id_category_product',
-            ],
-            'where' => [
-                'a.is_deleted' => 0,
-            ]
-        ];
+        foreach ($product_ids as $index => $product_id) {
+            $data_produk = $this->data->find('produk', array('id' => $product_id))->row_array();
+            if (isset($data_produk)) {
+                $query = [
+                    'select' => 'a.id, a.title, a.description, a.price, a.image, b.name, a.id_category_product, a.total_stok',
+                    'from' => 'produk a',
+                    'join' => [
+                        'kategori_produk b, b.id = a.id_category_product',
+                    ],
+                    'where' => [
+                        'a.is_deleted' => 0,
+                    ]
+                ];
+            } else {
+                $query = [
+                    'select' => 'a.id, a.title, a.description, a.price, a.image, b.name, a.id_category_product, a.total_stok',
+                    'from' => 'produk_promo a',
+                    'join' => [
+                        'kategori_produk b, b.id = a.id_category_product',
+                    ],
+                    'where' => [
+                        'a.is_deleted' => 0,
+                    ]
+                ];
+            }
+        }
 
         $where_in = [];
         foreach ($product_ids as $id) {
@@ -307,25 +351,41 @@ class Front_page extends CI_Controller
         $jumlah_array = explode(',', $jumlah);
         $this->app_data['jumlah'] = $jumlah_array;
 
-        $query = [
-            'select' => 'a.id, a.title, a.description, a.price, a.image, b.name, a.id_category_product',
-            'from' => 'produk a',
-            'join' => [
-                'kategori_produk b, b.id = a.id_category_product',
-            ],
-            'where' => [
-                'a.is_deleted' => 0,
-            ]
-        ];
+        // $query = [
+        //     'select' => 'a.id, a.title, a.description, a.price, a.image, b.name, a.id_category_product',
+        //     'from' => 'produk a',
+        //     'join' => [
+        //         'kategori_produk b, b.id = a.id_category_product',
+        //     ],
+        //     'where' => [
+        //         'a.is_deleted' => 0,
+        //     ]
+        // ];
 
-        // Create the WHERE clause for multiple product IDs
-        $where_in = [];
-        foreach ($product_ids as $id) {
-            $where_in[] = $id;
-        }
+        // // Create the WHERE clause for multiple product IDs
+        // $where_in = [];
+        // foreach ($product_ids as $id) {
+        //     $where_in[] = $id;
+        // }
 
-        $query['where_in'] = ['a.id' => $where_in];
-        $this->app_data['produk'] = $this->data->get($query)->result();
+        // $query['where_in'] = ['a.id' => $where_in];
+        // $this->app_data['produk'] = $this->data->get($query)->result();
+
+        $where_in = implode(',', array_map('intval', $product_ids));
+
+        $query = "
+            SELECT a.id, a.title, a.description, a.price, a.image, b.name, a.id_category_product
+            FROM produk a
+            JOIN kategori_produk b ON b.id = a.id_category_product
+            WHERE a.is_deleted = 0 AND a.id IN ($where_in)
+            UNION
+            SELECT p.id, p.title, p.description, p.price, p.image, kp.name, p.id_category_product
+            FROM produk_promo p
+            JOIN kategori_produk kp ON kp.id = p.id_category_product
+            WHERE p.is_deleted = 0 AND p.id IN ($where_in)
+        ";
+        $this->app_data['produk'] = $this->data->custom($query)->result();
+
         $this->app_data['location'] = $this->data->get_all('company_profile')->result();
         $this->load->view('front_page/checkout', $this->app_data);
         $this->footer();
@@ -380,6 +440,23 @@ class Front_page extends CI_Controller
             ],
             'order_by' => 'sc.id'
         ];
+
+        $query = [
+            'select' => 'sc.id, p.id as id_produk, p.title, p.price, sc.quantity, 
+                         COALESCE(pp.id, p.id) as id_produk,
+                         COALESCE(pp.title, p.title) as title,
+                         COALESCE(pp.price, p.price) as price',
+            'from' => 'shopping_cart sc',
+            'join' => [
+                'produk p, p.id = sc.product_id, LEFT',
+                'produk_promo pp, ON pp.id = sc.product_id, LEFT'
+            ],
+            'where' => [
+                'sc.user_id' => $user_id,
+            ],
+            'order_by' => 'sc.id'
+        ];
+
 
         $result = $this->data->get($query)->result();
         echo json_encode($result);
@@ -538,11 +615,12 @@ class Front_page extends CI_Controller
         $where = array('email' => $this->session->userdata('email_user'));
         $data['user'] = $this->data->find('st_user', $where)->row_array();
         $query = [
-            'select' => 'a.id, GROUP_CONCAT(b.title SEPARATOR ", ") as title, a.harga_transaksi, a.status_pengiriman, a.created_date, a.keterangan',
+            'select' => 'a.id, GROUP_CONCAT(COALESCE(pp.title, b.title) SEPARATOR ", ") as title, a.harga_transaksi, a.status_pengiriman, a.created_date, a.keterangan',
             'from' => 'transaksi a',
             'join' => [
                 'detail_transaksi c, c.id_transaksi = a.id',
-                'produk b, b.id = c.id_produk'
+                'produk b, b.id = c.id_produk, left',
+                'produk_promo pp, pp.id = c.id_produk, left'
             ],
             'where' => [
                 'a.id_pelanggan' => $data['user']['id'],
