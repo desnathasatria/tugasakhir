@@ -120,12 +120,13 @@ class Manage_purchase extends CI_Controller
     {
         $id = $this->input->post('id');
         $query = [
-            'select' => 'a.id, a.id_pelanggan, a.harga_transaksi, a.created_date, a.status_pembayaran, a.status_pengiriman, GROUP_CONCAT(b.title SEPARATOR ", ") as title, c.name  ',
+            'select' => 'a.id, a.id_pelanggan, a.harga_transaksi, a.created_date, a.status_pembayaran, a.status_pengiriman, GROUP_CONCAT(COALESCE(pp.title, b.title) SEPARATOR ", ") as title, c.name  ',
             'from' => 'transaksi a',
             'join' => [
                 'st_user c, c.id = a.id_pelanggan',
                 'detail_transaksi d, d.id_transaksi = a.id',
-                'produk b, b.id = d.id_produk'
+                'produk b, b.id = d.id_produk, LEFT',
+                'produk_promo pp, pp.id = d.id_produk, LEFT'
             ],
             'where' => [
                 'a.is_deleted' => '0',
