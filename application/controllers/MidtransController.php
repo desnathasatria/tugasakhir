@@ -72,11 +72,16 @@ class MidtransController extends CI_Controller
                 $this->data->delete('shopping_cart', array('product_id' => trim($id_produk), 'user_id' => $this->session->userdata('id_user')));
             }
 
-            // Update stok produk
-            $produk = $this->data->find('produk', array('id' => $id_produk))->row_array();
-            $total = $produk['total_stok'] - $jumlah_produk;
 
-            $this->data->update('produk', array('id' => $id_produk), array('total_stok' => $total));
+            $produk = $this->data->find('produk', array('id' => $id_produk))->row_array();
+            if (isset($produk)) {
+                $total = $produk['total_stok'] - $jumlah_produk;
+                $this->data->update('produk', array('id' => $id_produk), array('total_stok' => $total));
+            } else {
+                $data = $this->data->find('produk_promo', array('id' => $id_produk))->row_array();
+                $total = $data['total_stok'] - $jumlah_produk;
+                $this->data->update('produk_promo', array('id' => $id_produk), array('total_stok' => $total));
+            }
         }
 
         // Lanjutkan dengan membuat permintaan pembayaran ke Midtrans
