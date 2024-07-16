@@ -3,12 +3,12 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Kelola Produk</h1>
+                    <h1>Kelola Produk Promo</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="<?= base_url('dashboard') ?>">Home</a></li>
-                        <li class="breadcrumb-item active">Kelola Produk</li>
+                        <li class="breadcrumb-item active">Kelola Produk Promo</li>
                     </ol>
                 </div>
             </div>
@@ -17,10 +17,8 @@
 
     <section class="content">
         <div class="card">
-            <h5 class="card-header">Data Produk</h5>
+            <h5 class="card-header">Data Produk Promo</h5>
             <div class="card-body">
-                <button class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" onclick="submit('tambah')"><i class="fa-solid fa-circle-plus"></i> Input data</button>
-                <hr>
                 <div class="row">
                     <div class="col-lg-4">
                         <div class="form-group">
@@ -44,11 +42,10 @@
                             <th width="5%">Kategori</th>
                             <th width="20%">Deskripsi</th>
                             <th width="15%">Harga Jual</th>
-                            <th width="5%">Berat</th>
-                            <th width="10%">Tgl Kadaluarsa</th>
+                            <th width="10%">Berat</th>
                             <th width="10%">Foto</th>
                             <th width="5%">Stok</th>
-                            <th width="15%">Aksi</th>
+                            <th width="10%">Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -65,7 +62,7 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">Form Data Produk</h4>
+                <h4 class="modal-title">Form Data Produk Promo</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -115,7 +112,7 @@
                             <div class="row">
                                 <label for="harga" class="col-lg-2 col-form-label">Harga Jual</label>
                                 <div class="col-lg-10">
-                                    <input type="text" name="harga" id="harga" class="form-control" placeholder="Masukkan Harga" oninput="formatRupiahInput(this)">
+                                    <input type="text" name="harga" id="harga" class="form-control" placeholder="Masukkan Harga" oninput="formatRupiahInput(this)" readonly>
                                     <small class="text-danger pl-1" id="error-harga"></small>
                                 </div>
                             </div>
@@ -126,20 +123,6 @@
                                 <div class="col-lg-10">
                                     <input type="text" name="berat" id="berat" class="form-control" placeholder="Masukkan Berat">
                                     <small class="text-danger pl-1" id="error-berat"></small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="row">
-                                <label for="berat" class="col-lg-2 col-form-label">Tanggal Kadaluarsa</label>
-                                <div class="col-lg-10">
-                                    <div class="input-group date" id="reservationdate1" data-target-input="nearest">
-                                        <input type="text" class="form-control datetimepicker-input" data-target="#reservationdate1" id="kadaluarsa" name="kadaluarsa" />
-                                        <div class="input-group-append" data-target="#reservationdate1" data-toggle="datetimepicker">
-                                            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                                        </div>
-                                    </div>
-                                    <small class="text-danger pl-1" id="error-kadaluarsa"></small>
                                 </div>
                             </div>
                         </div>
@@ -178,42 +161,8 @@
     </div>
 </div>
 
-<div class="modal fade" id="promoProduk">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title">Produk promo</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="form-group">
-                            <div class="row">
-                                <label for="stok" class="col-lg-3 col-form-label">Stok produk promo</label>
-                                <div class="col-lg-9">
-                                    <input type="hidden" name="id_produk" class="form-control">
-                                    <input type="number" name="stok" id="stok" class="form-control" placeholder="Masukkan stok promo">
-                                    <small class="text-danger pl-1" id="error-stok"></small>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer d-flex justify-content-start">
-                <div class="col-lg-3">
-                    <button type="button" id="btn-promo" onclick="insert_promo()" class="btn btn-outline-primary btn-block">Tambah promo</button>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
 <!-- modal untuk hapus data -->
-<div class="modal fade" id="hapusGaleri">
+<div class="modal fade" id="hapusPromo">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-body">

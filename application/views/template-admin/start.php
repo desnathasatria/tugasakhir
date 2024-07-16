@@ -19,7 +19,7 @@
     <link rel="stylesheet" href="<?= base_url() ?>assets/template-admin/plugins/select2/css/select2.min.css">
     <link rel="stylesheet" href="<?= base_url() ?>assets/template-admin/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
     <link rel="stylesheet" href="<?= base_url() ?>assets/template-admin/plugins/daterangepicker/daterangepicker.css">
-    <link rel="stylesheet" href="<?= base_url() ?>assets/template-admin/plugins/tempusdominus-bootstrap-/css/tempusdominus-bootstrap-4.min.css">
+    <link rel="stylesheet" href="<?= base_url() ?>assets/template-admin/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
     <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 </head>

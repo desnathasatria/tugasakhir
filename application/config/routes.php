@@ -63,6 +63,7 @@ $route['profil-admin'] = 'Manage_user';
 $route['manage-company-profile'] = 'Manage_company_profile';
 $route['manage-category-product'] = 'Manage_category_product';
 $route['manage-product'] = 'Manage_product';
+$route['manage-promo'] = 'Manage_promo';
 $route['manage-supplier'] = 'Manage_supplier';
 $route['manage-purchase'] = 'Manage_purchase';
 $route['manage-shipping'] = 'Manage_shipping';

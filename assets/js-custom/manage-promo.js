@@ -1,25 +1,8 @@
-$(".kategori").select2({
-	theme: "bootstrap4",
-});
-
-$(".filter").select2({
-	theme: "bootstrap4",
-});
-
-$("#reservationdate1").datetimepicker({
-	format: "YYYY-MM-DD",
-});
-
-var today = moment().startOf("day");
-$("#reservationdate1").datetimepicker({
-	minDate: today,
-});
-
-$("#reservationdate1").on("change.datetimepicker", function (e) {
-	$("#reservationdate1").datetimepicker("minDate", today);
-});
-
 get_data();
+
+$(".kategori, .filter").select2({
+	theme: "bootstrap4",
+});
 
 $(function () {
 	bsCustomFileInput.init();
@@ -51,6 +34,13 @@ function previewImage(event) {
 	}
 }
 
+$("#hapusPromo").on("show.bs.modal", function (e) {
+	var button = $(e.relatedTarget);
+	var id = button.data("id");
+	var modalButton = $(this).find("#btn-hapus");
+	modalButton.attr("onclick", "delete_data(" + id + ")");
+});
+
 function delete_form() {
 	const imagePreview = document.getElementById("imagePreview");
 	$("[name='id']").val("");
@@ -59,7 +49,6 @@ function delete_form() {
 	$("[name='harga']").val("");
 	$("[name='berat']").val("");
 	$("[name='kategori']").val("");
-	$("[name='kadaluarsa']").val("");
 	$("[name='image']").val("");
 	imagePreview.innerHTML = "";
 }
@@ -71,15 +60,28 @@ function delete_error() {
 	$("#error-harga").hide();
 	$("#error-berat").hide();
 	$("#error-image").hide();
-	$("#error-kadaluarsa").hide();
 }
 
-$("#hapusGaleri").on("show.bs.modal", function (e) {
-	var button = $(e.relatedTarget);
-	var id = button.data("id");
-	var modalButton = $(this).find("#btn-hapus");
-	modalButton.attr("onclick", "delete_data(" + id + ")");
-});
+function formatRupiah(angka) {
+	const numberString = angka.toString().replace(/[^,\d]/g, "");
+	const split = numberString.split(",");
+	const sisa = split[0].length % 3;
+	let rupiah = split[0].substr(0, sisa);
+	const ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+
+	if (ribuan) {
+		const separator = sisa ? "." : "";
+		rupiah += separator + ribuan.join(".");
+	}
+
+	rupiah = split[1] !== undefined ? rupiah + "," + split[1] : rupiah;
+	return "Rp. " + rupiah;
+}
+
+function formatRupiahInput(input) {
+	var value = input.value.replace(/[^,\d]/g, "");
+	input.value = formatRupiah(value);
+}
 
 function get_data() {
 	delete_error();
@@ -114,7 +116,6 @@ function get_data() {
 							return data + " grams";
 						},
 					},
-					{ data: "exp_date" },
 					{
 						data: "image",
 						className: "text-center",
@@ -141,14 +142,9 @@ function get_data() {
 								'<button class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" title="edit" onclick="submit(' +
 								row.id +
 								')"><i class="fa-solid fa-pen-to-square"></i></button> ' +
-								'<button class="btn btn-warning" data-toggle="modal" data-target="#hapusGaleri" title="hapus" data-id="' +
+								'<button class="btn btn-warning" data-toggle="modal" data-target="#hapusPromo" title="hapus" data-id="' +
 								row.id +
-								'"><i class="fa-solid fa-trash-can"></i></button> ' +
-								'<button class="btn btn-success" data-toggle="modal" data-target="#promoProduk" title="promo" onclick="delete_form_promo(' +
-								row.id +
-								'); delete_error_promo();" data-id="' +
-								row.id +
-								'"><i class="fa-solid fa-percent"></i></button>'
+								'"><i class="fa-solid fa-trash-can"></i></button> '
 							);
 						},
 					},
@@ -174,27 +170,6 @@ function get_data() {
 	});
 }
 
-function formatRupiah(angka) {
-	const numberString = angka.toString().replace(/[^,\d]/g, "");
-	const split = numberString.split(",");
-	const sisa = split[0].length % 3;
-	let rupiah = split[0].substr(0, sisa);
-	const ribuan = split[0].substr(sisa).match(/\d{3}/gi);
-
-	if (ribuan) {
-		const separator = sisa ? "." : "";
-		rupiah += separator + ribuan.join(".");
-	}
-
-	rupiah = split[1] !== undefined ? rupiah + "," + split[1] : rupiah;
-	return "Rp. " + rupiah;
-}
-
-function formatRupiahInput(input) {
-	var value = input.value.replace(/[^,\d]/g, "");
-	input.value = formatRupiah(value);
-}
-
 function submit(x) {
 	if (x == "tambah") {
 		$("#btn-tambah").show();
@@ -214,7 +189,6 @@ function submit(x) {
 				$("[name='deskripsi']").val(hasil[0].description);
 				$("[name='harga']").val(hasil[0].price);
 				$("[name='berat']").val(hasil[0].weight);
-				$("[name='kadaluarsa']").val(hasil[0].exp_date);
 				$("#kategori").val(hasil[0].id_category_product).trigger("change");
 				var nama = hasil[0].image;
 				imagePreview.innerHTML = `<br><img src="${base_url}assets/image/product/${nama}" alt="Preview Image" class="img-thumbnail" style="width: 100px; height: auto;">`;
@@ -225,46 +199,6 @@ function submit(x) {
 	delete_error();
 }
 
-function insert_data() {
-	var formData = new FormData();
-	formData.append("judul", $("[name='judul']").val());
-	formData.append("deskripsi", $("[name='deskripsi']").val());
-	formData.append("harga", $("[name='harga']").val());
-	formData.append("berat", $("[name='berat']").val());
-	formData.append("kategori", $("#kategori").val());
-	formData.append("kadaluarsa", $("[name='kadaluarsa']").val());
-
-	var imageInput = $("[name='image']")[0];
-	if (imageInput.files.length > 0) {
-		formData.append("image", imageInput.files[0]);
-	}
-
-	$.ajax({
-		type: "POST",
-		url: base_url + "/" + _controller + "/insert_data",
-		data: formData,
-		dataType: "json",
-		processData: false,
-		contentType: false,
-		success: function (response) {
-			delete_error();
-			if (response.errors) {
-				for (var fieldName in response.errors) {
-					$("#error-" + fieldName).show();
-					$("#error-" + fieldName).html(response.errors[fieldName]);
-				}
-			} else if (response.success) {
-				$("#exampleModal").modal("hide");
-				$("body").append(response.success);
-				get_data();
-			}
-		},
-		error: function (xhr, status, error) {
-			console.error("AJAX Error: " + error);
-		},
-	});
-}
-
 function edit_data() {
 	var formData = new FormData();
 	formData.append("id", $("[name='id']").val());
@@ -273,7 +207,6 @@ function edit_data() {
 	formData.append("harga", $("[name='harga']").val());
 	formData.append("berat", $("[name='berat']").val());
 	formData.append("kategori", $("#kategori").val());
-	formData.append("kadaluarsa", $("[name='kadaluarsa']").val());
 
 	var imageInput = $("[name='image']")[0];
 	if (imageInput.files.length > 0) {
@@ -315,48 +248,6 @@ function delete_data(x) {
 			console.log(response);
 			$("body").append(response);
 			get_data();
-		},
-	});
-}
-
-function delete_form_promo(x) {
-	$("[name='id']").val(x);
-	$("[name='stok']").val("");
-	$("[name='harga_baru']").val("");
-}
-
-function delete_error_promo() {
-	$("#error-stok").hide();
-	$("#error-harga_baru").hide();
-}
-
-function insert_promo() {
-	var formData = new FormData();
-	formData.append("id", $("[name='id']").val());
-	formData.append("stok", $("[name='stok']").val());
-
-	$.ajax({
-		type: "POST",
-		url: base_url + "/" + _controller + "/insert_promo",
-		data: formData,
-		dataType: "json",
-		processData: false,
-		contentType: false,
-		success: function (response) {
-			delete_error_promo();
-			if (response.errors) {
-				for (var fieldName in response.errors) {
-					$("#error-" + fieldName).show();
-					$("#error-" + fieldName).html(response.errors[fieldName]);
-				}
-			} else if (response.success) {
-				$("#promoProduk").modal("hide");
-				$("body").append(response.success);
-				get_data();
-			}
-		},
-		error: function (xhr, status, error) {
-			console.error("AJAX Error: " + error);
 		},
 	});
 }
